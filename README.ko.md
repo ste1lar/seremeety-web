@@ -17,7 +17,7 @@
 
 ## 🛠 기술 스택
 
-| 구분 | 기술 |
+| 구분 | 기술 스택 |
 |------|------|
 | Frontend | HTML5, CSS3, JavaScript, React |
 | Backend | Firebase Auth, Firestore, Storage, Hosting |
