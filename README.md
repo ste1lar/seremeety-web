@@ -1,4 +1,4 @@
-# <img width="64" height="64" alt="logo192" src="https://github.com/user-attachments/assets/dce11940-8d05-444d-853f-41ff121eeb19" /> 만남의 세레나데, Seremeety / 出会いのセレナーデ、Seremeety
+# <img width="64" height="64" alt="logo192" src="https://github.com/user-attachments/assets/dce11940-8d05-444d-853f-41ff121eeb19" /> Seremeety - 만남의 세레나데 / 出会いのセレナーデ
 
 자세한 설명과 기술 정보는 각 언어로 준비된 페이지에서 확인하실 수 있습니다.  
 詳しい説明や技術情報は、各言語で用意されたページにてご確認いただけます。
