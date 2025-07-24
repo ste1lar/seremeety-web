@@ -1,4 +1,4 @@
-# <img width="64" height="64" alt="logo192" src="https://github.com/user-attachments/assets/691b5e80-88c8-4771-b682-f65f0b33590c" /> 만남의 세레나데, Seremeety
+# <img width="64" height="64" alt="logo192" src="https://github.com/user-attachments/assets/691b5e80-88c8-4771-b682-f65f0b33590c" /> Seremeety - 만남의 세레나데
 
 **Seremeety**는 자만추가 어려운 대학생들을 위한 검증된 정보 기반의 건전한 연애 플랫폼입니다.  
 ‘세레나데’와 ‘미팅’을 결합한 이름처럼, 감성적인 분위기와 함께 자연스럽고 건강한 만남을 유도하며, 파스텔 톤의 세레니티 블루 테마를 적용해 연애 감성을 시각적으로 담아냈습니다.  
