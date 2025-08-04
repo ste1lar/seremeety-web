@@ -1,23 +1,8 @@
-.RequestContent {
+.request-content {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    padding-bottom: 10vh;
+    padding: 1.875rem;
     padding-bottom: 10svh;
-    gap: 15px;
+    gap: 0.9375rem;
     box-sizing: border-box;
-    overflow-y: auto;
-}
-
-.RequestContent .empty_content {
-    font-size: 16px;
-    text-align: center;
-    letter-spacing: 1px;
-    padding: 30px;
-}
-
-@media (max-width: 420px) {
-    .RequestContent .empty_content {
-        font-size: 3.8vw;
-    }
 }

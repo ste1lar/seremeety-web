@@ -1,57 +1,52 @@
-.ProfileCardItem {
+.profile-card {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    border: solid 1px #ececec;
-    border-radius: 5px;
-    box-shadow: rgba(100, 100, 100, 0.2) 3px 3px 4px 0px;
-    padding: 2px;
-    gap: 10px;
+    background-color: #fff;
+    border: 1px solid #ececec;
+    border-radius: 0.3125rem;
+    box-shadow: rgba(100, 100, 100, 0.2) 0.1875rem 0.1875rem 0.25rem 0;
+    padding: 0.125rem;
+    gap: 0.625rem;
+    transition: opacity 0.3s ease;
 }
 
-.ProfileCardItem .img_section {
+.profile-card:hover {
+    opacity: 0.75;
+}
+
+.profile-card__img {
     width: 100%;
     padding-top: 100%;
     position: relative;
 }
 
-.ProfileCardItem .img_section img {
+.profile-card__img img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     border: 1px solid #ececec;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
 }
 
-.ProfileCardItem .content_section {
+.profile-card__content {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding-bottom: 5px;
+    gap: 0.3125rem;
+    padding-bottom: 0.3125rem;
     align-items: center;
 }
 
-.ProfileCardItem .content_section .nickname_wrapper {
-    font-weight: bold;
-    letter-spacing: 1px;
-    font-size: 16px;
+.profile-card__nickname {
+    font-weight: 700;
+    letter-spacing: 0.0625rem;
+    font-size: 1rem;
 }
 
-.ProfileCardItem .content_section .age_gender_wrapper {
-    font-size: 14px;
+.profile-card__age-gender {
+    font-size: 0.875rem;
     display: flex;
     align-items: center;
-    gap: 5px;
-}
-
-@media (max-width: 420px) {
-    .ProfileCardItem .content_section .nickname_wrapper {
-        font-size: 3.8vw;
-    }
-
-    .ProfileCardItem .content_section .age_gender_wrapper {
-        font-size: 3.3vw;
-    }
+    gap: 0.3125rem;
 }

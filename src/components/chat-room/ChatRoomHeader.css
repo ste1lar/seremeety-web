@@ -1,0 +1,33 @@
+.chat-room-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9375rem;
+    border-bottom: 1px solid #ececec;
+    font-size: 1.25rem;
+}
+
+.chat-room-header__nickname {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+}
+
+.chat-room-header__menu {
+    display: flex;
+    gap: 0.625rem;
+}
+
+.chat-room-header__icon {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.chat-room-header__icon:hover {
+    opacity: 0.5;
+}

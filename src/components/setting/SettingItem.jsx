@@ -4,7 +4,7 @@ import { icons } from "../../utils";
 
 const SettingItem = ({ content, onClick }) => {
     return (
-        <div className="SettingItem" onClick={onClick}>
+        <div className="setting-item" onClick={onClick}>
             {content}
             <FontAwesomeIcon icon={icons.faAngleRight} />
         </div>

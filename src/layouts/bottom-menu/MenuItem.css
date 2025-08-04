@@ -1,0 +1,27 @@
+.menu-item {
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.menu-item:not(.menu-item--selected):hover {
+    color: var(--serenity-blue);
+}
+
+.menu-item--selected {
+    color: var(--serenity-blue);
+}
+
+.menu-item svg {
+    font-size: 1.75rem;
+}
+
+.menu-item__label {
+    font-family: "Outfit";
+    font-size: 0.75rem;
+}

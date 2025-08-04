@@ -1,90 +1,93 @@
-.ProfileContent {
+.profile-content {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    padding-bottom: 10vh;
+    padding: 1.875rem;
     padding-bottom: 10svh;
-    gap: 30px;
+    gap: 1.25rem;
     box-sizing: border-box;
-    overflow-y: auto;
 }
 
-.ProfileContent .img_section {
+.profile-content__img-section {
     width: 100%;
     padding-top: 100%;
     position: relative;
 }
 
-.ProfileContent .img_section img {
+.profile-content__img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     border: 1px solid #ececec;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
 }
 
-.ProfileContent .info_section_upper {
+.profile-content__img.hidden {
+    display: none;
+}
+
+.profile-content__info-upper {
     display: flex;
     align-items: center;
-    font-size: 20px;
-    gap: 20px;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight: 500;
+    gap: 1.25rem;
 }
 
-.ProfileContent .info_section_upper .age_gender_wrapper {
+.profile-content__age-gender {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
-.ProfileContent .info_section_lower {
+.profile-content__gender-icon.male {
+    color: #92a8d1;
+}
+
+.profile-content__gender-icon.female {
+    color: #f7cac9;
+}
+
+.profile-content__info-lower {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    font-size: 16px;
-    gap: 10px;
+    gap: 0.625rem;
+    font-size: 1rem;
 }
 
-.ProfileContent .info_section_lower .info_wrapper {
+.profile-content__info {
     display: flex;
-    gap: 5px;
-    padding: 5px 10px;
-    border: 1px solid lightgray;
-    border-radius: 5px;
+    align-items: center;
+    gap: 0.3125rem;
+    padding: 0.3125rem 0.625rem;
+    border: 1px solid #d3d3d3;
+    border-radius: 0.3125rem;
 }
 
-.ProfileContent .introduce_section {
+.profile-content__intro {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    font-size: 16px;
+    gap: 0.625rem;
+    font-size: 1rem;
+    margin-top: 1.75rem;
 }
 
-.ProfileContent .introduce_section .introduce_label {
+.profile-content__intro-label {
     display: flex;
-    gap: 5px;
-    font-weight: bold;
+    align-items: center;
+    gap: 0.3125rem;
+    font-weight: 500;
 }
 
-.ProfileContent .introduce_section .introduce_wrapper {
-    line-height: 1.5;
+.profile-content__intro-text {
+    line-height: 1.75;
 }
 
-@media (max-width: 420px) {
-    .ProfileContent .info_section_upper {
-        font-size: 4.8vw;
-    }
+.profile-content__button-wrapper {
+    padding-top: 2rem;
+}
 
-    .ProfileContent .info_section_lower {
-        font-size: 3.8vw;
-    }
-
-    .ProfileContent .info_section_lower .info_wrapper {
-        padding: 1.2vw 2.4vw;
-    }
-
-    .ProfileContent .introduce_section {
-        font-size: 3.8vw;
-    }
+.profile-content__button-wrapper button {
+    width: 100%;
 }

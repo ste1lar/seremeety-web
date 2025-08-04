@@ -1,42 +1,40 @@
-.ShopContent {
+.shop-content {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    padding-bottom: 10vh;
+    padding: 1.875rem;
     padding-bottom: 10svh;
-    gap: 20px;
+    gap: 1.25rem;
     box-sizing: border-box;
-    overflow-y: auto;
 }
 
-.ShopContent .shop_text {
-    font-size: 16px;
+.shop-content__text {
+    font-size: 1rem;
 }
 
-.ShopContent .shop_coupon {
+.shop-content__text p {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0.5rem 0;
+}
+
+.shop-content__coupon {
     cursor: pointer;
     width: max-content;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #92a8d1;
+    gap: 0.625rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--serenity-blue);
+    transition: opacity 0.3s ease;
+}
+
+.shop-content__coupon:hover {
+    opacity: 0.75;
 }
 
 
 .bootpay-window .progress-message-window .close-message-box .close-popup h4.sub-title {
-    font-size: 16px !important;
+    font-size: 1rem !important;
     line-height: 1.5;
-}
-
-@media (max-width: 420px) {
-    .ShopContent .shop_text,
-    .ShopContent .shop_coupon {
-        font-size: 3.8vw;
-    }
-
-    .bootpay-window .progress-message-window .close-message-box .close-popup h4.sub-title {
-        font-size: 3.8vw !important;
-    }    
 }

@@ -1,0 +1,32 @@
+.button {
+    font-family: "Noto Sans KR", "sans-serif";
+    outline: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.3rem;
+    background: var(--serenity-gradient);
+    box-shadow: var(--light-shadow);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.0625rem;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.button--light {
+    background: #fff;
+    color: var(--serenity-blue);
+    border: 1px solid var(--serenity-blue);
+    padding: calc(0.5rem - 1px);
+}
+
+.button--negative {
+    background-color: #ececec;
+    color: #000;
+}
+
+.button:hover {
+    opacity: 0.75;
+}

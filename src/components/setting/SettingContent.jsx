@@ -2,9 +2,9 @@ import { settingItem } from "../../utils";
 import "./SettingContent.css";
 import SettingItem from "./SettingItem";
 
-const SettingContent = ({ style }) => {
+const SettingContent = () => {
     return (
-        <div className="SettingContent" style={style}>
+        <div className="setting-content">
             {settingItem.map((it, idx) => <SettingItem key={idx} {...it} />)}
         </div>
     );

@@ -1,53 +1,43 @@
-.ShopItem {
+.shop-item {
+    font-family: "Outfit", "Noto Sans KR", "sans-serif";
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 10px;
-    border: 1px solid #92a8d1;
-    border-radius: 5px;
+    padding: 0.9375rem;
+    border: 1px solid var(--serenity-blue);
+    border-radius: 0.3125rem;
+    transition: opacity 0.3s ease;
 }
 
-.ShopItem:hover {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+.shop-item:hover {
+    opacity: 0.75;
 }
 
-.ShopItem .quantity_section {
+.shop-item__quantity {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 24px;
-    font-weight: bold;
+    gap: 0.625rem;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
-.ShopItem .price_section {
+.shop-item__price {
     display: flex;
     flex: 1;
     align-items: center;
-    justify-content: end;
-    gap: 10px;
-    font-weight: bold;
+    justify-content: flex-end;
+    gap: 0.625rem;
+    font-weight: 500;
 }
 
-.ShopItem .price_section .discount_wrapper {
-    font-size: 14px;
-    color: #92a8d1;
+.shop-item__discount {
+    font-size: 0.875rem;
+    color: var(--serenity-blue);
 }
 
-.ShopItem .price_section .price_wrapper {
-    font-size: 16px;
-}
-
-@media (max-width: 420px) {
-    .ShopItem .quantity_section {
-        font-size: 5.7vw;
-    }
-
-    .ShopItem .price_section .discount_wrapper {
-        font-size: 3.3vw;
-    }
-
-    .ShopItem .price_section .price_wrapper {
-        font-size: 3.8vw;
-    }
+.shop-item__price-text {
+    font-size: 1.25rem;
+    width: 5rem;
+    text-align: end;
 }

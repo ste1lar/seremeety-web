@@ -1,29 +1,30 @@
-.MyProfilePreview {
+.my-profile-preview {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding-bottom: 30px;
+    gap: 1.25rem;
+    padding-bottom: 1.875rem;
     border-bottom: 1px solid #ececec;
 }
 
-.MyProfilePreview .preview_section {
+.my-profile-preview__preview {
     display: flex;
+    gap: 1rem;
 }
 
-.MyProfilePreview .img_nickname_section {
+.my-profile-preview__left {
     display: flex;
     flex-direction: column;
-    width: 25%;
-    gap: 15px;
+    width: 6rem;
+    gap: 1rem;
 }
 
-.MyProfilePreview .img_nickname_section .img_wrapper {
+.my-profile-preview__image-wrapper {
     width: 100%;
     padding-top: 100%;
     position: relative;
 }
 
-.MyProfilePreview .img_nickname_section .img_wrapper img {
+.my-profile-preview__image-wrapper img {
     position: absolute;
     top: 0;
     left: 0;
@@ -32,83 +33,77 @@
     border-radius: 50%;
 }
 
-.MyProfilePreview .img_nickname_section .nickname_wrapper {
+.my-profile-preview__nickname {
     width: max-content;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 700;
 }
 
-.MyProfilePreview .content_section {
-    flex: 1 1;
+.my-profile-preview__right {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
 }
 
-.MyProfilePreview .content_section .info_section {
-    flex: 1 1;
-    display: flex;
+.my-profile-preview__info {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    justify-content: space-between;
 }
 
-.MyProfilePreview .content_section .info_section .info_wrapper {
-    width: 30%;
+.my-profile-preview__info-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    font-size: 14px;
+    gap: 0.5rem;
+    font-size: 1rem;
 }
 
-.MyProfilePreview .content_section .info_wrapper .text_wrapper {
-    text-overflow: ellipsis;
+.my-profile-preview__info-box svg {
+    font-size: 1.75rem;
+}
+
+.my-profile-preview__info-text {
     overflow: hidden;
+    text-overflow: ellipsis;
     word-break: break-word;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    text-align: center;
 }
 
-.MyProfilePreview .content_section .link_section {
-    display: flex;
-    justify-content: end;
-    font-size: 16px;
-}
-
-.MyProfilePreview .content_section .link_section .link_wrapper {
-    cursor: pointer;
+.my-profile-preview__link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: fit-content;
+    margin-left: auto;
+    transition: color 0.3s ease;
 }
 
-.MyProfilePreview .menu_section {
-    display: flex;
-    gap: 10px;
+.my-profile-preview__link:hover {
+    color: var(--serenity-blue);
 }
 
-.MyProfilePreview .menu_section button {
-    padding: 5px;
-    font-size: 14px;
-    width: 50%;
+.my-profile-preview__menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
-@media (max-width: 420px) {
-    .MyProfilePreview .img_nickname_section .nickname_wrapper {
-        font-size: 3.8vw;
-    }
-
-    .MyProfilePreview .content_section .info_section .info_wrapper {
-        font-size: 3.3vw;
-    }
-
-    .MyProfilePreview .menu_section button {
-        padding: 1.2vw;
-        font-size: 3.3vw;
-    }
-
-    .MyProfilePreview .content_section .link_section {
-        font-size: 3.8vw;
-    }
+.my-profile-preview__menu button {
+    padding: 0.25rem;
+    font-size: 1rem;
 }
 
+.my-profile-preview__selso-note {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0.5rem 0;
+}

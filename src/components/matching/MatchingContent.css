@@ -1,32 +1,22 @@
-.MatchingContent {
+.matching-content {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    padding-bottom: 10vh;
+    padding: 1.875rem;
     padding-bottom: 10svh;
-    gap: 60px;
+    gap: 3.75rem;
     box-sizing: border-box;
-    overflow-y: auto;
 }
 
-.MatchingContent .card_section {
+.matching-content__card-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 2.5rem 2rem;
 }
 
-.MatchingContent .option_section Button {
+.matching-content__option-section button {
     width: 100%;
 }
 
-.MatchingContent .option_section .no_more_cards {
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-align: center;
-}
-
-@media (max-width: 420px) {
-    .MatchingContent .option_section .no_more_cards {
-        font-size: 3.8vw;
-    }
+.matching-content__option-section button svg {
+    margin-right: 0.5rem;
 }

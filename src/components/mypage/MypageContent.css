@@ -1,26 +1,8 @@
-.MypageContent {
+.mypage-content {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    padding-bottom: 10vh;
+    padding: 1.875rem;
     padding-bottom: 10svh;
-    gap: 30px;
+    gap: 1.875rem;
     box-sizing: border-box;
-    overflow-y: auto;
-}
-
-.MypageContent .img_section {
-    width: 100%;
-    padding-top: 100%;
-    position: relative;
-}
-
-.MypageContent .img_section img {
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    border: 1px solid #ececec;
-    border-radius: 5px;
 }

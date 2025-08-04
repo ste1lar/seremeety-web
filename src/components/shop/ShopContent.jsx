@@ -5,7 +5,7 @@ import ShopItem from "./ShopItem";
 import BootPay from "bootpay-js";
 import Swal from "sweetalert2";
 
-const ShopContent = ({ userProfile, onUpdateCoin, style }) => {
+const ShopContent = ({ userProfile, onUpdateCoin }) => {
     const requestPayment = (quantity, price) => {
         BootPay.request({
             price,
@@ -71,12 +71,27 @@ const ShopContent = ({ userProfile, onUpdateCoin, style }) => {
         });        
     };
 
+    const handleCouponClick = () => {
+        Swal.fire({
+            title: "쿠폰 등록",
+            text: "준비 중인 기능이에요",
+            icon: "info",
+            confirmButtonText: "확인",
+            customClass: {
+                confirmButton: 'no-focus-outline'
+            },
+        });
+    };
+
     return (
-        <div className="ShopContent" style={style}>
-            <div className="shop_text">
-                {"음표는 세레미티 매칭 활동에 사용됩니다!"}
+        <div className="shop-content">
+            <div className="shop-content__text">
+                음표는 세레미티 매칭 활동에 사용됩니다!
+                <p>
+                    현재는 테스트 환경으로, 실제 결제는 이루어지지 않습니다.
+                </p>
             </div>
-            <div className="shop_coupon">
+            <div className="shop-content__coupon" onClick={handleCouponClick}>
                 {"쿠폰 등록"}
                 <FontAwesomeIcon icon={icons.faAngleRight} />
             </div>

@@ -1,9 +1,0 @@
-.ChatRoomContent {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    padding-bottom: 2.5vh;
-    padding-bottom: 2.5svh;
-    box-sizing: border-box;
-    overflow-y: auto;
-}

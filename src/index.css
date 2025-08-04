@@ -1,30 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Rochester&display=swap');
-
-@font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 
 html {
-  overflow-y: hidden;
-}
-
-html, body {
-  font-family: 'S-CoreDream-3Light';
-  margin: 0;
-  width: 100%;
-  background-color: #f6f6f6;
-  display: flex;
-  justify-content: center;
+  font-size: 16px;
 }
 
 body {
   height: 100%;
+  background-color: #f6f6f6;
+  color: #282828;
+  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+
+  font-family: "Noto Sans KR", "sans-serif";
 }
 
 body,img {
@@ -56,13 +47,42 @@ input:-moz-autofill {
     -moz-text-fill-color: #000 !important;
 }
 
-#root {
-  margin: 0 auto;
-  max-width: 420px;
-  width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
-  height: 100%;
-  background-color: white;
-  box-shadow: rgba(100, 100, 100, 0.2) 0px 7px 29px 0px;
+/* 입력 관련 요소의 포커스 아웃라인 완전 제거 */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus,
+[type="radio"]:focus,
+[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Chrome, Safari, iOS 등 추가 */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible,
+[type="radio"]:focus-visible,
+[type="checkbox"]:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+:root {
+  --serenity-blue: #92a8d1;
+  --serenity-gradient: linear-gradient(135deg, #92a8d1 -0.69%, #bcdffb 99.31%);
+  --light-shadow: 0 0.125rem 0.5rem rgba(40, 40, 40, 0.1);
+}
+
+@media (max-width: 200px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (min-width: 201px) and (max-width: 512px) {
+  html {
+    font-size: 3.125vw;
+  }
 }

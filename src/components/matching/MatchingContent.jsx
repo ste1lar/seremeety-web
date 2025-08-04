@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
 import "./MatchingContent.css";
 import ProfileCardItem from "./ProfileCardItem";
-import Button from "../common/Button";
+import Button from "../common/button/Button";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { icons } from "../../utils";
+import EmptyState from "../common/empty-state/EmptyState";
 
-const MatchingContent = ({ profileCards, filters, profileStatus, style }) => {
-    const [visibleCount, setVisibleCount] = useState(4);
+const MatchingContent = ({ profileCards, filters, profileStatus }) => {
+    const [visibleCount, setVisibleCount] = useState(8);
     const navigate = useNavigate();
 
     const filteredCards = useMemo(() => {
@@ -42,22 +44,22 @@ const MatchingContent = ({ profileCards, filters, profileStatus, style }) => {
             });
             return;
         }
-        setVisibleCount(prevCount => prevCount + 4);
+        setVisibleCount(prevCount => prevCount + 8);
     };
 
     return (
-        <div className="MatchingContent" style={style}>
-            <div className="card_section">
+        <div className="matching-content">
+            <div className="matching-content__card-section">
                 {filteredCards.slice(0, visibleCount).map((it, idx) => (
                     <ProfileCardItem key={idx} {...it} profileStatus={profileStatus} />
                 ))}
             </div>
-            <div className="option_section">
+            <div className="matching-content__option-section">
                 {visibleCount < filteredCards.length && (
-                    <Button text={"프로필 더 보기"} type={"light"} onClick={showMoreCards}/>
+                    <Button text={"프로필 더 보기"} icon={icons.faAngleDown} type={"light"} onClick={showMoreCards}/>
                 )}
                 {visibleCount >= filteredCards.length && (
-                    <div className="no_more_cards">더 이상 프로필이 없어요</div>
+                    <EmptyState icon={icons.faCardsBlank} message={"더 이상 프로필이 없어요"} />
                 )}
             </div>
         </div>

@@ -1,0 +1,24 @@
+.my-profile-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1.875rem;
+    padding-bottom: 10svh;
+    gap: 1.875rem;
+    box-sizing: border-box;
+}
+
+.my-profile-content__img-section {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
+
+.my-profile-content__img-section img {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ececec;
+    border-radius: 0.3125rem;
+}

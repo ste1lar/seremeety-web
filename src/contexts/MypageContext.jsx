@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import { dataURLToFile, getUserDataByUid, updateUserDataByUid, uploadImageToStorage } from "../utils";
 import { auth } from "../firebase";
 import Swal from "sweetalert2";
-import Loading from "../components/common/Loading";
+import Loading from "../components/common/loading/Loading";
 
 export const MypageStateContext = React.createContext();
 export const MypageDispatchContext = React.createContext();

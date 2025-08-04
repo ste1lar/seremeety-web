@@ -1,19 +1,24 @@
-.RequestItem {
+.request-item {
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding-bottom: 15px;
+    gap: 1.5rem;
+    padding-bottom: 0.9375rem;
     border-bottom: 1px solid #ececec;
+    transition: opacity 0.3s ease;
 }
 
-.RequestItem .img_section {
-    cursor: pointer;
-    width: 20%;
-    padding-top: 20%;
+.request-item:hover {
+    opacity: 0.75;
+}
+
+.request-item__image {
+    width: 5rem;
+    padding-top: 5rem;
     position: relative;
 }
 
-.RequestItem .img_section img {
+.request-item__image img {
     position: absolute;
     top: 0;
     left: 0;
@@ -21,67 +26,51 @@
     border-radius: 50%;
 }
 
-.RequestItem .content_section {
+.request-item__content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1rem;
 }
 
-.RequestItem .content_section .info_wrapper {
+.request-item__info {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
 }
 
-.RequestItem .content_section .info_wrapper .nickname_wrapper {
-    font-size: 16px;
-    font-weight: bold;
+.request-item__nickname {
+    font-size: 1rem;
+    font-weight: 700;
 }
 
-.RequestItem .content_section .info_wrapper .created_at_wrapper {
-    font-size: 12px;
-    color: gray;
+.request-item__created-at {
+    font-size: 0.75rem;
+    color: #888;
 }
 
-.RequestItem .content_section .status_wrapper {
-    cursor: pointer;
+.request-item__status {
     display: flex;
     align-items: center;
 }
 
-.RequestItem .content_section .status_wrapper .icon_wrapper {
+.request-item__status-icon {
     display: flex;
-    width: 10%;
-    font-size: 10px;
+    width: 1.5rem;
+    font-size: 0.625rem;
 }
 
-.RequestItem .content_section .status_wrapper .text_wrapper {
+.request-item__status-text {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    font-size: 16px;
+    gap: 0.3125rem;
+    font-size: 0.875rem;
 }
 
-.RequestItem .content_section .status_wrapper .text_wrapper .pending_progressbar {
+.request-item__progressbar {
     width: 100%;
-    height: 2px;
-    border-radius: 2px;
-    background-color: #92a8d1;
-}
-
-@media (max-width: 420px) {
-    .RequestItem .content_section .info_wrapper .nickname_wrapper,
-    .RequestItem .content_section .status_wrapper .text_wrapper {
-        font-size: 3.8vw;
-    }
-
-    .RequestItem .content_section .info_wrapper .created_at_wrapper {
-        font-size: 2.8vw;
-    }
-
-    .RequestItem .content_section .status_wrapper .icon_wrapper {
-        font-size: 2.4vw;
-    }
+    height: 0.125rem;
+    border-radius: 0.125rem;
+    background-color: var(--serenity-blue);
 }

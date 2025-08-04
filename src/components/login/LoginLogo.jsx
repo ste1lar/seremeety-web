@@ -1,12 +1,12 @@
 import React from "react";
 import "./LoginLogo.css";
-import seremeetyLogo from "../../images/img_seremeety_logo.png";
+import seremeetyLogo from '../../assets/images/seremeety-logo.png';
 
 const LoginLogo = () => {
     return (
-        <div className="LoginLogo">
+        <div className="login-logo">
             <img alt="SEREMEETY" src={seremeetyLogo} />
-            <div className="logo_text">Seremeety</div>
+            <div className="login-logo__text">Seremeety</div>
         </div>
     );
 };

@@ -1,0 +1,8 @@
+.chat-list-content {
+    display: flex;
+    flex-direction: column;
+    padding: 1.875rem;
+    padding-bottom: 10vh;
+    gap: 0.9375rem;
+    box-sizing: border-box;
+}

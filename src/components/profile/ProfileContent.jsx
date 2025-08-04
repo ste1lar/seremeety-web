@@ -1,14 +1,14 @@
 import Swal from "sweetalert2";
 import { auth } from "../../firebase";
 import { icons, isRequestExist } from "../../utils";
-import Button from "../common/Button";
+import Button from '../common/button/Button';
 import "./ProfileContent.css";
 import React, { useState } from "react";
-import ImageLoading from "../common/ImageLoading";
+import ImageLoading from '../common/image-loading/ImageLoading';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfile, onUpdateCoin, style }) => {
+const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfile, onUpdateCoin }) => {
     const [isImgLoaded, setIsImgLoaded] = useState(false);
     const navigate = useNavigate();
 
@@ -22,9 +22,13 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
             confirmButtonText: "확인",
             cancelButtonText: "취소",
             showCloseButton: true,
-            reverseButtons: true
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'no-focus-outline',
+                cancelButton: 'no-focus-outline'
+            },
         });
-        
+
         if (result.isConfirmed) {
             try {
                 if (!await isRequestExist(currentUserUid, uid)) {
@@ -43,7 +47,7 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
                                 cancelButton: 'no-focus-outline'
                             },
                         });
-        
+
                         if (result.isConfirmed) {
                             navigate("/shop");
                         }
@@ -51,7 +55,7 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
                     }
 
                     onCreateRequest(currentUserUid, uid);
-                    onUpdateCoin({ ...myProfile, coin: myProfile.coin - 10 })
+                    onUpdateCoin({ ...myProfile, coin: myProfile.coin - 10 });
                     Swal.fire({
                         title: "매칭 요청",
                         text: "성공적으로 전송되었어요!",
@@ -79,55 +83,63 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
     };
 
     return (
-        <div className="ProfileContent" style={style}>
-            <div className="img_section">
-                {!isImgLoaded && <ImageLoading borderRadius={"5px"} />}
+        <div className="profile-content">
+            <div className="profile-content__img-section">
+                {!isImgLoaded && <ImageLoading borderRadius="0.3125rem" />}
                 <img
                     alt="PROFILE"
-                    src={userProfile["profilePictureUrl"]}
+                    src={userProfile.profilePictureUrl}
                     onLoad={() => setIsImgLoaded(true)}
-                    style={{ display: !isImgLoaded ? "none" : "block" }}
+                    className={`profile-content__img ${!isImgLoaded ? 'hidden' : ''}`}
                 />
             </div>
-            <div className="info_section_upper">
-                <div className="nickname_wrapper">{userProfile.nickname}</div>
-                <div className="age_gender_wrapper">
+
+            <div className="profile-content__info-upper">
+                <div className="profile-content__nickname">{userProfile.nickname}</div>
+                <div className="profile-content__age-gender">
                     {userProfile.age}
                     <FontAwesomeIcon
                         icon={userProfile.gender === "male" ? icons.faMars : icons.faVenus}
-                        style={{ color: userProfile.gender === "male" ? "#92a8d1" : "#f7cac9" }}
+                        className={`profile-content__gender-icon ${userProfile.gender}`}
                     />
                 </div>
             </div>
-            <div className="info_section_lower">
-                <div className="info_wrapper">
-                    <FontAwesomeIcon icon={icons.faHeartSolid} />
+
+            <div className="profile-content__info-lower">
+                <div className="profile-content__info">
+                    <FontAwesomeIcon icon={icons.faHeartRegular} />
                     {userProfile.mbti}
                 </div>
-                <div className="info_wrapper">
+                <div className="profile-content__info">
                     <FontAwesomeIcon icon={icons.faGraduationCap} />
                     {userProfile.university}
                 </div>
-                <div className="info_wrapper">
+                <div className="profile-content__info">
                     <FontAwesomeIcon icon={icons.faLocationArrow} />
                     {userProfile.place}
                 </div>
             </div>
-            <div className="introduce_section">
-                <div className="introduce_label">
-                    <FontAwesomeIcon icon={icons.faUserSolid} />
+
+            <div className="profile-content__intro">
+                <div className="profile-content__intro-label">
+                    <FontAwesomeIcon icon={icons.faUserRegular} />
                     자기소개
                 </div>
-                <div className="introduce_wrapper">
+                <div className="profile-content__intro-text">
                     {userProfile.introduce.split('\n').map((line, idx) => (
                         <React.Fragment key={idx}>
                             {line}
-                            <br/>
+                            <br />
                         </React.Fragment>
                     ))}
                 </div>
             </div>
-            {!isViewOnly && <Button text={"매칭 요청"} onClick={handleRequestClick} />}
+
+            {!isViewOnly && 
+                <div className="profile-content__button-wrapper">
+                    <Button text="매칭 요청" onClick={handleRequestClick} />
+                </div>
+            }
         </div>
     );
 };

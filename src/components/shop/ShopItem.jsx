@@ -1,20 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icons } from "../../utils";
-import BootPay from "bootpay-js";
 import "./ShopItem.css";
 
 const ShopItem = ({ quantity, discount, price, requestPayment }) => {
     return (
-        <div className="ShopItem" onClick={() => requestPayment(quantity, price)}>
-            <div className="quantity_section">
+        <div className="shop-item" onClick={() => requestPayment(quantity, price)}>
+            <div className="shop-item__quantity">
                 <FontAwesomeIcon icon={icons.faMusic} />
                 {quantity}
             </div>
-            <div className="price_section">
-                <div className="discount_wrapper">
+            <div className="shop-item__price">
+                <div className="shop-item__discount">
                     {discount ? `${discount}% 할인` : ""}
                 </div>
-                <div className="price_wrapper">
+                <div className="shop-item__price-text">
                     {`₩ ${price.toLocaleString()}`}
                 </div>
             </div>

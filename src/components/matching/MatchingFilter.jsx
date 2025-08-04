@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./MatchingFilter.css";
-import Button from "../common/Button";
 import Select from "react-select";
 import { placeList } from "../../places";
+import Button from "../common/button/Button";
 
 const MatchingFilter = ({ filters, onApply, onClose, style }) => {
     const [ageRange, setAgeRange] = useState(filters.ageRange);
@@ -38,12 +38,11 @@ const MatchingFilter = ({ filters, onApply, onClose, style }) => {
     };
 
     return (
-        <div className="MatchingFilter" style={style}>
-            <h2>Matching Filters</h2>
-            <div className="filter_content">
-                <div className="age_filter">
-                    <h3>매칭 상대 나이</h3>
-                    <div className="age_wrapper">
+        <div className="matching-filter" style={style}>
+            <div className="matching-filter__content">
+                <div className="matching-filter__age">
+                    <h3 className="matching-filter__subtitle">매칭 상대 나이</h3>
+                    <div className="matching-filter__age-wrapper">
                         <input
                             type="tel"
                             maxLength={2}
@@ -60,10 +59,10 @@ const MatchingFilter = ({ filters, onApply, onClose, style }) => {
                         <span>세 이하</span>
                     </div>
                 </div>
-                <div className="place_filter">
-                    <h3>매칭 상대 지역</h3>
+                <div className="matching-filter__place">
+                    <h3 className="matching-filter__subtitle">매칭 상대 지역</h3>
                     <Select
-                        classNamePrefix={"mypage-select"}
+                        classNamePrefix="my-profile-select"
                         value={mainPlaceOptions.find(option => option.value === place) || null}
                         onChange={(selectedOption) => setPlace(selectedOption ? selectedOption.value : "")}
                         options={mainPlaceOptions}
@@ -73,7 +72,7 @@ const MatchingFilter = ({ filters, onApply, onClose, style }) => {
                     />
                 </div>
             </div>
-            <div className="filter_menu">
+            <div className="matching-filter__menu">
                 <Button text="닫기" type="light" onClick={onClose} />
                 <Button text="적용" onClick={handleApply} />
             </div>

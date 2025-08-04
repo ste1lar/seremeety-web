@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import "./RequestContent.css";
 import RequestItem from "./RequestItem";
-import { getUserDataByUid } from "../../utils";
+import { getUserDataByUid, icons } from "../../utils";
 import { RequestDispatchContext } from "../../contexts/RequestContext";
 import { ChatDispatchContext } from "../../contexts/ChatContext";
-import Loading from "../common/Loading";
+import Loading from "../common/loading/Loading";
+import EmptyState from "../common/empty-state/EmptyState";
 
 const RequestContent = ({ requests, isReceived, style }) => {
     const { onUpdate } = useContext(RequestDispatchContext);
@@ -42,11 +43,13 @@ const RequestContent = ({ requests, isReceived, style }) => {
         return <Loading />;
     } else {
         return (
-            <div className="RequestContent" style={style}>
-                {enhancedRequests.length <= 0 ?
-                    <div className="empty_content">
-                        {isReceived ? "아직 받은 요청이 없어요" : "아직 보낸 요청이 없어요"}
-                    </div> :
+            <div className="request-content" style={style}>
+                {enhancedRequests.length <= 0 ? (
+                    <EmptyState
+                        icon={icons.faHearts}
+                        message={isReceived ? "아직 받은 요청이 없어요" : "아직 보낸 요청이 없어요"}
+                    />
+                ) : (
                     enhancedRequests.map((it) => (
                         <RequestItem
                             key={it.id}
@@ -55,7 +58,7 @@ const RequestContent = ({ requests, isReceived, style }) => {
                             onCreateChatRoom={onCreate}
                         />
                     ))
-                }
+                )}
             </div>
         );
     }

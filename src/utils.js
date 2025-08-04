@@ -1,68 +1,148 @@
-import { faHeart as faHeartSolid, faEnvelope as faEnvelopeSolid, faComment as faCommentSolid, faUser as faUserSolid, faMusic, faGear, faPaperPlane, faAngleLeft, faCakeCandles, faLocationArrow, faAngleRight, faPhone, faHashtag, faBars, faMagnifyingGlass, faMars, faVenus, faGraduationCap, faCircleInfo, faSliders, faCheck, faQuestion, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
-import { auth, db, storage } from "./firebase";
-import { faHeart as faHeartRegular, faEnvelope as faEnvelopeRegular, faComment as faCommentRegular, faUser as faUserRegular } from "@fortawesome/free-regular-svg-icons";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import imageCompression from "browser-image-compression";
-import { universityList } from "./universities";
-import { placeList } from "./places";
+import {
+    faHeart as faHeartSolid,
+    faEnvelope as faEnvelopeSolid,
+    faComment as faCommentSolid,
+    faUser as faUserSolid,
+} from "@fortawesome/free-solid-svg-icons";
 
-export const menuItem = [
-    {
-        icon: faHeartRegular,
-        color: "gray",
-        selectedIcon: faHeartSolid,
-        selectedColor: "#92a8d1",
-        dataRoute: "/matching"
-    },
-    {
-        icon: faEnvelopeRegular,
-        color: "gray",
-        selectedIcon: faEnvelopeSolid,
-        selectedColor: "#92a8d1",
-        dataRoute: "/request"
-    },
-    {
-        icon: faCommentRegular,
-        color: "gray",
-        selectedIcon: faCommentSolid,
-        selectedColor: "#92a8d1",
-        dataRoute: "/chat"
-    },
-    {
-        icon: faUserRegular,
-        color: "gray",
-        selectedIcon: faUserSolid,
-        selectedColor: "#92a8d1",
-        dataRoute: "/mypage"
-    }
-];
-
-export const icons = {
-    faPhone,
-    faHashtag,
+import {
+    faHeart as faHeartRegular,
+    faUser as faUserRegular,
+    faKeySkeleton,
+    faLockKeyholeOpen,
+    faCakeCandles,
+    faLocationArrow,
     faMusic,
     faGear,
     faPaperPlane,
-    faQuestion,
-    faCheck,
-    faXmark,
     faAngleLeft,
     faAngleRight,
-    faCakeCandles,
-    faLocationArrow,
-    faHeartSolid,
+    faAngleDown,
+    faPhone,
+    faHashtag,
     faBars,
     faMagnifyingGlass,
     faMars,
     faVenus,
     faGraduationCap,
     faCircleInfo,
+    faSliders,
+    faCheck,
+    faQuestion,
+    faXmark,
+    faImage,
+    faPenToSquare,
+    faSparkles,
+    faEnvelopeOpen,
+    faStarChristmas
+} from "@fortawesome/pro-regular-svg-icons";
+
+import {
+    faHeart as faHeartLight,
+    faEnvelope as faEnvelopeLight,
+    faComment as faCommentLight,
+    faUser as faUserLight,
+
+    faCircleXmark,
+    faCardsBlank,
+    faHearts,
+    faComments
+} from "@fortawesome/pro-light-svg-icons";
+
+import { universityList } from "./universities";
+import { placeList } from "./places";
+
+import imageCompression from "browser-image-compression";
+
+import { auth, db, storage } from "./firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+
+import Swal from "sweetalert2";
+
+/* ======================== FontAwesome Icons ======================== */
+export const icons = {
+    // 하단 메뉴 선택
+    faHeartSolid,
+    faEnvelopeSolid,
+    faCommentSolid,
     faUserSolid,
-    faSliders
+
+    // 프로필에서 MBTI, 자기소개
+    faHeartRegular,
+    faUserRegular,
+
+    // 하단 메뉴 선택 X, pro-light
+    faHeartLight,
+    faEnvelopeLight,
+    faCommentLight,
+    faUserLight,
+
+    // EmptyState(더 이상 프로필이 없어요 등), pro-light
+    faCircleXmark,
+    faCardsBlank,
+    faHearts,
+    faComments,
+
+    // pro-regular
+    faKeySkeleton,
+    faLockKeyholeOpen,
+    faCakeCandles,
+    faLocationArrow,
+    faMusic,
+    faGear,
+    faPaperPlane,
+    faAngleLeft,
+    faAngleRight,
+    faAngleDown,
+    faPhone,
+    faHashtag,
+    faBars,
+    faMagnifyingGlass,
+    faMars,
+    faVenus,
+    faGraduationCap,
+    faCircleInfo,
+    faSliders,
+    faCheck,
+    faQuestion,
+    faXmark,
+    faImage,
+    faPenToSquare,
+    faSparkles,
+    faEnvelopeOpen,
+    faStarChristmas
 };
 
-export const mypageForm = [
+/* ======================== Config / Schema ======================== */
+export const menuItem = [
+    {
+        icon: faHeartLight,
+        selectedIcon: faHeartSolid,
+        dataRoute: "/matching",
+        label: "DISCOVER"
+    },
+    {
+        icon: faEnvelopeLight,
+        selectedIcon: faEnvelopeSolid,
+        dataRoute: "/request",
+        label: "REQUEST"
+    },
+    {
+        icon: faCommentLight,
+        selectedIcon: faCommentSolid,
+        dataRoute: "/chat-list",
+        label: "CHATS"
+    },
+    {
+        icon: faUserLight,
+        selectedIcon: faUserSolid,
+        dataRoute: "/mypage",
+        label: "MYPAGE"
+    }
+];
+
+export const myProfileForm = [
     {
         field: "닉네임",
         type: "text",
@@ -109,6 +189,68 @@ export const mypageForm = [
     }
 ];
 
+const showComingSoonAlert = (title) => {
+    Swal.fire({
+        title,
+        text: "준비 중인 기능이에요",
+        icon: "info",
+        confirmButtonText: "확인",
+        customClass: {
+            confirmButton: 'no-focus-outline'
+        },
+    });
+};
+
+export const settingItem = [
+    {
+        content: "알림 설정",
+        onClick: () => showComingSoonAlert("알림 설정")
+    },
+    {
+        content: "아는 사람 피하기",
+        onClick: () => showComingSoonAlert("아는 사람 피하기")
+    },
+    {
+        content: "이용약관",
+        onClick: () => showComingSoonAlert("이용약관")
+    },
+    {
+        content: "문의하기",
+        onClick: () => showComingSoonAlert("문의하기")
+    },
+    {
+        content: "로그아웃",
+        onClick: () => {
+            auth.signOut();
+            window.location.reload();
+        }
+    }
+];
+
+export const shopItem = [
+    {
+        quantity: 15,
+        discount: "",
+        price: 3000
+    },
+    {
+        quantity: 55,
+        discount: "10",
+        price: 9900
+    },
+    {
+        quantity: 115,
+        discount: "20",
+        price: 18400
+    },
+    {
+        quantity: 355,
+        discount: "30",
+        price: 49700
+    }
+];
+
+/* ======================== Utility Functions ======================== */
 export const validationRules = {
     nickname: async (value) => {
         if (!/^[a-zA-Z0-9가-힣]{1,6}$/.test(value)) {
@@ -143,55 +285,6 @@ export const validationRules = {
         return true;
     }
 };
-
-export const settingItem = [
-    {
-        content: "알림 설정",
-        onClick: () => console.log("알림 설정")
-    },
-    {
-        content: "아는 사람 피하기",
-        onClick: () => console.log("아는 사람 피하기")
-    },
-    {
-        content: "이용약관",
-        onClick: () => console.log("이용약관")
-    },
-    {
-        content: "문의하기",
-        onClick: () => console.log("문의하기")
-    },
-    {
-        content: "로그아웃",
-        onClick: () => {
-            auth.signOut();
-            window.location.reload();
-        }
-    }
-];
-
-export const shopItem = [
-    {
-        quantity: 15,
-        discount: "",
-        price: 3000
-    },
-    {
-        quantity: 55,
-        discount: "10",
-        price: 9900
-    },
-    {
-        quantity: 115,
-        discount: "20",
-        price: 18400
-    },
-    {
-        quantity: 355,
-        discount: "30",
-        price: 49700
-    }
-];
 
 export const toLocalePhoneNumber = (input) => {
     const cleanText = input.replace(/-/g, "");
@@ -276,36 +369,58 @@ export const formatTimeStampForMessage = (timestamp) => {
     } else if (timestamp && timestamp.seconds) {
         date = new Date(timestamp.seconds * 1000);
     } else {
-        console.log("invalid timestamp");
-        return " ";
+        return "";
     }
 
-    const now = new Date();
-    const isSameYear = date.getFullYear() === now.getFullYear();
-    const isSameDay = date.toDateString() === now.toDateString();
-    const isYesterday = new Date(now.setDate(now.getDate() - 1)).toDateString() === date.toDateString();
-
-    if (isSameDay) {
-        return date.toLocaleString("ko-KR", { hour: "numeric", minute: "numeric", hour12: true });
-    } 
-
-    const timePart = date.toLocaleString("ko-KR", { hour: "numeric", minute: "numeric", hour12: true });
-
-    if (isYesterday) {
-        return `어제 ${timePart}`;
-    } 
-    
-    const datePart = date.toLocaleString("ko-KR", {
-        month: "long",
-        day: "numeric",
+    // '19:30' 형식
+    return date.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
     });
+};
 
-    if (!isSameYear) {
-        const yearPart = `${String(date.getFullYear()).slice(2)}년`;
-        return `${yearPart} ${datePart} ${timePart}`;
+export const formatDateLabel = (timestamp) => {
+    let date;
+    if (timestamp instanceof Date) {
+        date = timestamp;
+    } else if (timestamp && timestamp.seconds) {
+        date = new Date(timestamp.seconds * 1000);
+    } else {
+        return "";
     }
 
-    return `${datePart} ${timePart}`;
+    const year = String(date.getFullYear()).slice(2);         // '24'
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // '09'
+    const day = String(date.getDate()).padStart(2, "0");        // '17'
+    const weekday = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
+
+    return `${year}.${month}.${day}. (${weekday})`;
+};
+
+export const isSameDate = (ts1, ts2) => {
+    let d1, d2;
+    if (ts1 instanceof Date) {
+        d1 = ts1;
+    } else if (ts1 && ts1.seconds) {
+        d1 = new Date(ts1.seconds * 1000);
+    } else {
+        return false;
+    }
+
+    if (ts2 instanceof Date) {
+        d2 = ts2;
+    } else if (ts2 && ts2.seconds) {
+        d2 = new Date(ts2.seconds * 1000);
+    } else {
+        return false;
+    }
+
+    return (
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate()
+    );
 };
 
 export const checkNicknameDuplicate = async (value) => {
@@ -322,6 +437,7 @@ export const checkNicknameDuplicate = async (value) => {
     return true;
 };
 
+/* ======================== Firebase Logic ======================== */
 export const getUserDataByUid = async (uid) => {
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
