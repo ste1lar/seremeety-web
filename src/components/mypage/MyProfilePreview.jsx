@@ -16,7 +16,6 @@ const MyProfilePreview = ({ userProfile }) => {
         Swal.fire({
             title: "셀소 만들기",
             text: "준비 중인 기능이에요",
-            icon: "info",
             confirmButtonText: "확인",
             customClass: {
                 confirmButton: 'no-focus-outline'
@@ -74,7 +73,7 @@ const MyProfilePreview = ({ userProfile }) => {
                 <Button text="셀소 만들기" onClick={handleMakeSelso} />
             </div>
             <div className="my-profile-preview__selso-note">
-                셀소를 등록하면 내 프로필이 DISCOVER 상단에 24시간 동안 우선 노출돼요.
+                셀소를 등록하면 프로필이 DISCOVER에 24시간 동안 우선 노출돼요.
             </div>
         </div>
     );

@@ -28,7 +28,6 @@ const Profile = () => {
             Swal.fire({
                 title: "프로필 열람",
                 text: "먼저 프로필을 완성해주세요",
-                icon: "warning",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline'
@@ -49,7 +48,6 @@ const Profile = () => {
                     Swal.fire({
                         title: "오류",
                         text: "존재하지 않는 프로필입니다",
-                        icon: "error",
                         confirmButtonText: "확인",
                         customClass: {
                             confirmButton: 'no-focus-outline'

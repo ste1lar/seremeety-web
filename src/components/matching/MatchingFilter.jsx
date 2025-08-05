@@ -44,6 +44,7 @@ const MatchingFilter = ({ filters, onApply, onClose, style }) => {
                     <h3 className="matching-filter__subtitle">매칭 상대 나이</h3>
                     <div className="matching-filter__age-wrapper">
                         <input
+                            id="youngerAgeRange"
                             type="tel"
                             maxLength={2}
                             value={ageRange[0]}
@@ -51,6 +52,7 @@ const MatchingFilter = ({ filters, onApply, onClose, style }) => {
                         />
                         <span>세 이상</span>
                         <input
+                            id="elderAgeRange"
                             type="tel"
                             maxLength={2}
                             value={ageRange[1]}

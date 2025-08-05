@@ -17,7 +17,6 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
         const result = await Swal.fire({
             title: "매칭 요청",
             text: "요청을 보내시겠어요? · 10음표",
-            icon: "question",
             showCancelButton: true,
             confirmButtonText: "확인",
             cancelButtonText: "취소",
@@ -36,7 +35,6 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
                         const result = await Swal.fire({
                             title: "음표 부족",
                             text: "음표가 부족해요 상점으로 이동할까요?",
-                            icon: "warning",
                             showCancelButton: true,
                             confirmButtonText: "확인",
                             cancelButtonText: "취소",
@@ -59,7 +57,6 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
                     Swal.fire({
                         title: "매칭 요청",
                         text: "성공적으로 전송되었어요!",
-                        icon: "success",
                         confirmButtonText: "확인",
                         customClass: {
                             confirmButton: 'no-focus-outline'
@@ -69,7 +66,6 @@ const ProfileContent = ({ userProfile, uid, isViewOnly, onCreateRequest, myProfi
                     Swal.fire({
                         title: "매칭 요청",
                         text: "이미 보내셨거나 받으신 요청이 있어요",
-                        icon: "warning",
                         confirmButtonText: "확인",
                         customClass: {
                             confirmButton: 'no-focus-outline'

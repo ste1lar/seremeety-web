@@ -4,6 +4,7 @@ import { getAgeByBirthDate, icons } from "../../utils";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "react-tooltip";
+import CustomRadio from '../common/custom-radio/CustomRadio';
 
 const MyProfileForm = ({ field, type, id, options = [], data, onChange, isDisabled }) => {
     const [mainPlace, setMainPlace] = useState("");
@@ -84,7 +85,7 @@ const MyProfileForm = ({ field, type, id, options = [], data, onChange, isDisabl
                         value={data || ""}
                         onChange={handleChange}
                         disabled={isDisabled}
-                        className="my-profile-form__input"
+                        className={`my-profile-form__input ${isDisabled ? 'my-profile-form__input--disabled' : ''}`}
                     />
                     <span className="my-profile-form__birthdate-text">
                         {data ? `${getAgeByBirthDate(data)}세` : ""}
@@ -96,18 +97,14 @@ const MyProfileForm = ({ field, type, id, options = [], data, onChange, isDisabl
                 <div className="my-profile-form__radio-group">
                     {options.map((it, idx) => (
                         <div className="my-profile-form__radio-wrapper" key={idx}>
-                            <input
-                                type="radio"
-                                id={`${id}-${it}`}
+                            <CustomRadio
                                 name={id}
                                 value={it}
                                 checked={it === data}
                                 onChange={handleChange}
+                                label={it === "male" ? "남성" : "여성"}
                                 disabled={isDisabled}
                             />
-                            <div className="my-profile-form__radio-label">
-                                {it === "male" ? "남성" : "여성"}
-                            </div>
                         </div>
                     ))}
                 </div>

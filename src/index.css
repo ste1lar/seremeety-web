@@ -47,18 +47,30 @@ input:-moz-autofill {
     -moz-text-fill-color: #000 !important;
 }
 
-/* 입력 관련 요소의 포커스 아웃라인 완전 제거 */
+/* 공통 입력 요소 스타일 초기화 */
+input,
+select,
+textarea,
+button,
+[type="radio"],
+[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border-radius: 0;
+    background: none;
+    outline: none;
+    box-shadow: none;
+}
+
+/* 포커스 상태 제거 */
 input:focus,
 textarea:focus,
 select:focus,
 button:focus,
 [type="radio"]:focus,
-[type="checkbox"]:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-/* Chrome, Safari, iOS 등 추가 */
+[type="checkbox"]:focus,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
@@ -81,8 +93,8 @@ button:focus-visible,
   }
 }
 
-@media (min-width: 201px) and (max-width: 512px) {
+@media (min-width: 201px) and (max-width: 480px) {
   html {
-    font-size: 3.125vw;
+    font-size: 3.333vw;
   }
 }

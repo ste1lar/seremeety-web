@@ -27,7 +27,6 @@ const MyProfile = () => {
         if (_.isEqual(state, formData)) {
             Swal.fire({
                 title: "프로필 저장",
-                icon: "info",
                 text: "프로필 수정 사항이 없어요",
                 confirmButtonText: "확인",
                 customClass: {
@@ -44,7 +43,6 @@ const MyProfile = () => {
                 if (result !== true) {
                     Swal.fire({
                         title: "프로필 저장 실패",
-                        icon: "warning",
                         text: result,
                         confirmButtonText: "확인",
                         customClass: {
@@ -60,7 +58,6 @@ const MyProfile = () => {
         if (isFirstSave) {
             const result = await Swal.fire({
                 title: "프로필 저장",
-                icon: "question",
                 html: "나이, 성별은 이후에 수정이 어렵습니다<br>정말 저장할까요?",
                 showCancelButton: true,
                 confirmButtonText: "확인",

@@ -51,7 +51,6 @@ export const MypageProvider = ({ children }) => {
             Swal.fire({
                 title: "프로필 저장 성공",
                 text: "성공적으로 저장되었습니다!",
-                icon: "success",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline'
@@ -62,7 +61,6 @@ export const MypageProvider = ({ children }) => {
             Swal.fire({
                 title: "프로필 저장 실패",
                 text: "오류가 발생했습니다",
-                icon: "error",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline'

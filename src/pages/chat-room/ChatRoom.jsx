@@ -29,7 +29,6 @@ const ChatRoom = () => {
                     Swal.fire({
                         title: "오류",
                         text: "존재하지 않는 채팅방입니다",
-                        icon: "error",
                         confirmButtonText: "확인",
                         customClass: {
                             confirmButton: 'no-focus-outline'

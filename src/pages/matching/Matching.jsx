@@ -37,7 +37,6 @@ const Matching = () => {
             Swal.fire({
                 title: "프로필 필터",
                 text: "먼저 프로필을 완성해주세요",
-                icon: "warning",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline'

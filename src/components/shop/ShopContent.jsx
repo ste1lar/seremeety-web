@@ -35,7 +35,6 @@ const ShopContent = ({ userProfile, onUpdateCoin }) => {
             Swal.fire({
                 title: "결제 실패",
                 text: "결제 중 오류가 발생했습니다",
-                icon: "error",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline'
@@ -62,7 +61,6 @@ const ShopContent = ({ userProfile, onUpdateCoin }) => {
             Swal.fire({
                 title: "결제 성공",
                 text: `${quantity}음표가 충전되었어요!`,
-                icon: "success",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline'
@@ -75,7 +73,6 @@ const ShopContent = ({ userProfile, onUpdateCoin }) => {
         Swal.fire({
             title: "쿠폰 등록",
             text: "준비 중인 기능이에요",
-            icon: "info",
             confirmButtonText: "확인",
             customClass: {
                 confirmButton: 'no-focus-outline'

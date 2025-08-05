@@ -193,7 +193,6 @@ const showComingSoonAlert = (title) => {
     Swal.fire({
         title,
         text: "준비 중인 기능이에요",
-        icon: "info",
         confirmButtonText: "확인",
         customClass: {
             confirmButton: 'no-focus-outline'

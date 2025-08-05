@@ -3,9 +3,9 @@
     bottom: 0;
     box-sizing: border-box;
     width: 100%;
-    max-width: 512px;
+    max-width: 480px;
     z-index: 100;
-    border-top:  solid #ececec;
+    border-top: 1px solid #ececec;
     background-color: #fff;
     display: flex;
     padding: 0.5rem;

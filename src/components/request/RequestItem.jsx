@@ -33,7 +33,6 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }) => {
         await Swal.fire({
             title: { accepted: "매칭 수락", rejected: "요청 거절" }[newStatus],
             text: { accepted: "매칭을 수락하셔서 채팅방이 생성되었어요!", rejected: "매칭을 거절하셨어요" }[newStatus],
-            icon: { accepted: "success", rejected: "error" }[newStatus],
             confirmButtonText: "확인",
             customClass: {
                 confirmButton: 'no-focus-outline',
@@ -50,7 +49,6 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }) => {
                     accepted: "수락된 매칭이에요",
                     rejected: "성사되지 않은 매칭이에요"
                 }[requestStatus],
-                icon: "info",
                 confirmButtonText: "확인",
                 customClass: {
                     confirmButton: 'no-focus-outline',
@@ -60,7 +58,6 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }) => {
             const result = await Swal.fire({
                 title: "매칭 요청",
                 text: "요청을 수락할까요?",
-                icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "수락",
                 cancelButtonText: "거절",
