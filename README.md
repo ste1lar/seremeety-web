@@ -18,7 +18,7 @@
 [`https://seremeety-kr.web.app`](https://seremeety-kr.web.app)  
 
 **🌐 포트폴리오 사이트 / ポートフォリオサイト**  
-[`https://seremeety-kr.web.app`](https://seremeety-kr.web.app)  
+[`https://seremeety-kr.web.app`](https://mesel7.dev/projects/seremeety)  
 
 **✉️ 문의 / お問い合わせ**  
 cejhans1520@gmail.com
