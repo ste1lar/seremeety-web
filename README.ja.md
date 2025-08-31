@@ -22,18 +22,20 @@
 | 区分 | 技術スタック |
 |------|------|
 | Frontend | HTML5, CSS3, JavaScript, React |
-| Backend | Firebase Auth, Firestore, Storage, Hosting |
-| その他 | GitHub |
+| Backend | Firebase Auth |
+| Database | Firebase Firestore, Firebase Storage |
+| Infra & Deployment | Firebase Hosting |
+| Collaboration & Versioning | GitHub |
 
 ---
 
 ## 🎯 主な機能
 
-- SNSスタイルのプロフィール作成（自己紹介／写真アップロード）
-- プロフィールカードの閲覧および性格傾向に基づくマッチングロジック
-- リアルタイムでのマッチング申請・承諾フロー
-- リアルタイムチャット機能
-- アプリ内通貨（音符）を購入できるショップ機能
+- SNSスタイルのユーザープロフィールを作成でき、自己紹介文の記載やプロフィール画像のアップロードが可能です。  
+- プロフィールカードを閲覧した後、自由にマッチングリクエストを送信でき、年齢などの条件に基づくフィルター機能も備えています。  
+- リアルタイムでマッチングリクエストの送信・承諾・拒否が行えます。  
+- リアルタイムチャット機能を提供しています。  
+- アプリ内通貨である「音符」を購入できるショップ機能を実装しています。  
 
 ---
 
