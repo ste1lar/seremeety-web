@@ -20,8 +20,10 @@
 | 구분 | 기술 스택 |
 |------|------|
 | Frontend | HTML5, CSS3, JavaScript, React |
-| Backend | Firebase Auth, Firestore, Storage, Hosting |
-| 기타 | GitHub |
+| Backend | Firebase Auth |
+| Database | Firebase Firestore, Firebase Storage |
+| Infra & Deployment | Firebase Hosting |
+| Collaboration & Versioning | GitHub |
 
 ---
 
