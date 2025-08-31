@@ -1,11 +1,11 @@
 .bottom-menu {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    max-width: 480px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    background-color: #fff;
-    border-top: 1px solid #ececec;
-    padding: 0.5rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 480px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: #fff;
+  border-top: 1px solid #ececec;
+  padding: 0.5rem 0;
 }

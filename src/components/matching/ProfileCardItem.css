@@ -1,52 +1,52 @@
 .profile-card {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border: 1px solid #ececec;
-    border-radius: 0.3125rem;
-    box-shadow: rgba(100, 100, 100, 0.2) 0.1875rem 0.1875rem 0.25rem 0;
-    padding: 0.125rem;
-    gap: 0.625rem;
-    transition: opacity 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.3125rem;
+  box-shadow: rgba(100, 100, 100, 0.2) 0.1875rem 0.1875rem 0.25rem 0;
+  padding: 0.125rem;
+  gap: 0.625rem;
+  transition: opacity 0.3s ease;
 }
 
 .profile-card:hover {
-    opacity: 0.75;
+  opacity: 0.75;
 }
 
 .profile-card__img {
-    width: 100%;
-    padding-top: 100%;
-    position: relative;
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
 }
 
 .profile-card__img img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    border: 1px solid #ececec;
-    border-radius: 0.3125rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ececec;
+  border-radius: 0.3125rem;
 }
 
 .profile-card__content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3125rem;
-    padding-bottom: 0.3125rem;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  align-items: center;
 }
 
 .profile-card__nickname {
-    font-weight: 700;
-    letter-spacing: 0.0625rem;
-    font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.0625rem;
+  font-size: 1rem;
 }
 
 .profile-card__age-gender {
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3125rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
 }

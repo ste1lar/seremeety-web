@@ -15,10 +15,10 @@
 ## 📎 기타 정보 / その他の情報
 
 **🧩 프로젝트 링크 / プロジェクトリンク**  
-[`https://seremeety-kr.web.app`](https://seremeety-kr.web.app)  
+[`https://seremeety-kr.web.app`](https://seremeety-kr.web.app)
 
 **🌐 포트폴리오 사이트 / ポートフォリオサイト**  
-[`https://mesel7.dev/projects/seremeety`](https://mesel7.dev/projects/seremeety)  
+[`https://mesel7.dev/projects/seremeety`](https://mesel7.dev/projects/seremeety)
 
 **✉️ 문의 / お問い合わせ**  
 cejhans1520@gmail.com

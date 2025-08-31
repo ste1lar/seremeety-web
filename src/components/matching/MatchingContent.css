@@ -1,22 +1,22 @@
 .matching-content {
-    display: flex;
-    flex-direction: column;
-    padding: 1.875rem;
-    padding-bottom: 10svh;
-    gap: 3.75rem;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 1.875rem;
+  padding-bottom: 10svh;
+  gap: 3.75rem;
+  box-sizing: border-box;
 }
 
 .matching-content__card-section {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem 2rem;
 }
 
 .matching-content__option-section button {
-    width: 100%;
+  width: 100%;
 }
 
 .matching-content__option-section button svg {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }

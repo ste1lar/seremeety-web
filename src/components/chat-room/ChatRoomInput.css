@@ -1,38 +1,38 @@
 .chat-room-input {
-    position: sticky;
-    bottom: 0;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 480px;
-    z-index: 100;
-    border-top: 1px solid #ececec;
-    background-color: #fff;
-    display: flex;
-    padding: 0.5rem;
-    gap: 0.625rem;
+  position: sticky;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 480px;
+  z-index: 100;
+  border-top: 1px solid #ececec;
+  background-color: #fff;
+  display: flex;
+  padding: 0.5rem;
+  gap: 0.625rem;
 }
 
 .chat-room-input__field {
-    flex: 1;
-    font-family: "Noto Sans KR";
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 0.3125rem;
-    background-color: #f6f6f6;
-    font-size: 0.875rem;
+  flex: 1;
+  font-family: "Noto Sans KR";
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.3125rem;
+  background-color: #f6f6f6;
+  font-size: 0.875rem;
 }
 
 .chat-room-input__field:focus {
-    outline: none;
+  outline: none;
 }
 
 .chat-room-input__icon {
-    font-size: 1.5rem;
-    color: var(--serenity-blue);
-    cursor: pointer;
-    transition: opacity 0.3s ease;
+  font-size: 1.5rem;
+  color: var(--serenity-blue);
+  cursor: pointer;
+  transition: opacity 0.3s ease;
 }
 
 .chat-room-input__icon:hover {
-    opacity: 0.75;
+  opacity: 0.75;
 }

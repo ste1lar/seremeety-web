@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap");
 
 html {
   font-size: 16px;
@@ -18,33 +18,34 @@ body {
   font-family: "Noto Sans KR", "sans-serif";
 }
 
-body,img {
-  -webkit-touch-callout:none;
-  -webkit-user-select:none;
-  -khtml-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none
-}
-  
+body,
 img {
-  -webkit-user-drag:none;
-  -khtml-user-drag:none;
-  -moz-user-drag:none;
-  -o-user-drag:none
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-    -webkit-text-fill-color: #000 !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #000 !important;
 }
 
 input:-moz-autofill {
-    box-shadow: 0 0 0 30px white inset !important;
-    -moz-text-fill-color: #000 !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  -moz-text-fill-color: #000 !important;
 }
 
 /* 공통 입력 요소 스타일 초기화 */
@@ -54,14 +55,14 @@ textarea,
 button,
 [type="radio"],
 [type="checkbox"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
-    border-radius: 0;
-    background: none;
-    outline: none;
-    box-shadow: none;
+  border-radius: 0;
+  background: none;
+  outline: none;
+  box-shadow: none;
 }
 
 /* 포커스 상태 제거 */
@@ -77,8 +78,8 @@ select:focus-visible,
 button:focus-visible,
 [type="radio"]:focus-visible,
 [type="checkbox"]:focus-visible {
-    outline: none;
-    box-shadow: none;
+  outline: none;
+  box-shadow: none;
 }
 
 :root {

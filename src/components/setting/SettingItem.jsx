@@ -1,14 +1,14 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./SettingItem.css";
-import { icons } from "../../utils";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './SettingItem.css';
+import { icons } from '../../utils';
 
 const SettingItem = ({ content, onClick }) => {
-    return (
-        <div className="setting-item" onClick={onClick}>
-            {content}
-            <FontAwesomeIcon icon={icons.faAngleRight} />
-        </div>
-    );
+  return (
+    <div className="setting-item" onClick={onClick}>
+      {content}
+      <FontAwesomeIcon icon={icons.faAngleRight} />
+    </div>
+  );
 };
 
 export default SettingItem;
