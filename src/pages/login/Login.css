@@ -50,6 +50,24 @@
   gap: 1rem;
 }
 
+.login__button-wrapper button {
+  font-family: "Noto Sans JP", "Noto Sans KR";
+}
+
 .login__button-wrapper button svg {
   margin-right: 0.5rem;
+}
+
+.login__no-account {
+  font-family: "Noto Sans JP", "Noto Sans KR";
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--serenity-blue);
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.login__no-account:hover {
+  opacity: 0.75;
 }

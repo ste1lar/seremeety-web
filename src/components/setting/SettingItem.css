@@ -1,4 +1,5 @@
 .setting-item {
+  font-family: "Noto Sans JP", "Noto Sans KR";
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -226,23 +226,23 @@ const showComingSoonAlert = (title) => {
 
 export const settingItem = [
   {
-    content: '알림 설정',
+    content: '알림 설정 / 通知設定',
     onClick: () => showComingSoonAlert('알림 설정'),
   },
   {
-    content: '아는 사람 피하기',
+    content: '아는 사람 피하기 / 知り合いをブロック',
     onClick: () => showComingSoonAlert('아는 사람 피하기'),
   },
   {
-    content: '이용약관',
+    content: '이용약관 / 利用規約',
     onClick: () => showComingSoonAlert('이용약관'),
   },
   {
-    content: '문의하기',
+    content: '문의하기 / お問い合わせ',
     onClick: () => showComingSoonAlert('문의하기'),
   },
   {
-    content: '로그아웃',
+    content: '로그아웃 / ログアウト',
     onClick: () => {
       auth.signOut();
       window.location.reload();

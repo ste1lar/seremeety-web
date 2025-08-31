@@ -119,6 +119,22 @@ const Login = () => {
     }
   }, [verificationCode]);
 
+  const handleNoAccountClick = useCallback(() => {
+    Swal.fire({
+      title: '안내 / お知らせ',
+      html: `
+        <div style="font-family: 'Noto Sans JP', 'Noto Sans KR'; text-align: left; padding: 0 1.5rem;">
+          <p>테스트 번호 01011111111을 입력 후 인증 버튼을 누르세요. 인증번호 111111을 입력하면 로그인 가능합니다.</p>
+          <p>テスト番号 01011111111 を入力し、認証ボタン を押していただきます。認証コード 111111 を入力いただくと、ログイン可能です。</p>
+        </div>
+      `,
+      confirmButtonText: '확인',
+      customClass: {
+        confirmButton: 'no-focus-outline',
+      },
+    });
+  }, []);
+
   return (
     <div className="login">
       <LoginLogo />
@@ -152,15 +168,21 @@ const Login = () => {
         </div>
         <div className="login__button-wrapper">
           <Button
-            text={'인증'}
+            text={'인증 / 認証'}
             icon={icons.faKeySkeleton}
             type={'light'}
             onClick={handleSendCode}
           />
-          <Button text={'로그인'} icon={icons.faLockKeyholeOpen} onClick={handleVerifyCode} />
+          <Button
+            text={'로그인 / ログイン'}
+            icon={icons.faLockKeyholeOpen}
+            onClick={handleVerifyCode}
+          />
         </div>
       </div>
-
+      <div className="login__no-account" onClick={handleNoAccountClick}>
+        테스트 로그인 안내 / テスト用ログインのご案内
+      </div>
       <div ref={recaptchaRef} />
     </div>
   );
