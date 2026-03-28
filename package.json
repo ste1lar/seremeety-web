@@ -3,51 +3,29 @@
   "version": "0.9.2",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^7.0.0",
-    "@fortawesome/free-regular-svg-icons": "^7.0.0",
-    "@fortawesome/free-solid-svg-icons": "^7.0.0",
-    "@fortawesome/pro-duotone-svg-icons": "^7.0.0",
-    "@fortawesome/pro-light-svg-icons": "^7.0.0",
-    "@fortawesome/pro-regular-svg-icons": "^7.0.0",
-    "@fortawesome/pro-solid-svg-icons": "^7.0.0",
-    "@fortawesome/pro-thin-svg-icons": "^7.0.0",
-    "@fortawesome/react-fontawesome": "^0.2.3",
-    "@fortawesome/sharp-light-svg-icons": "^7.0.0",
-    "@fortawesome/sharp-regular-svg-icons": "^7.0.0",
-    "@fortawesome/sharp-solid-svg-icons": "^7.0.0",
-    "@fortawesome/sharp-thin-svg-icons": "^7.0.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@react-spring/web": "^10.0.3",
     "bootpay-js": "^3.3.6",
     "browser-image-compression": "^2.0.2",
-    "firebase": "^10.13.0",
-    "lodash": "^4.17.21",
-    "react": "^19.0.0",
+    "firebase": "^12.11.0",
+    "lodash": "^4.17.23",
+    "lucide-react": "^0.577.0",
+    "next": "^16.2.1",
+    "react": "^19.2.4",
     "react-cropper": "^2.3.3",
-    "react-dom": "^19.0.0",
-    "react-dropzone": "^14.2.3",
-    "react-intersection-observer": "^9.13.1",
-    "react-router-dom": "^6.25.1",
-    "react-scripts": "5.0.1",
-    "react-select": "^5.8.0",
-    "react-spinners": "^0.14.1",
-    "react-spring": "^9.7.4",
-    "react-tooltip": "^5.28.0",
-    "sweetalert2": "^11.12.4",
-    "web-vitals": "^2.1.4"
+    "react-dom": "^19.2.4",
+    "react-dropzone": "^15.0.0",
+    "react-intersection-observer": "^10.0.3",
+    "react-select": "^5.10.2",
+    "react-tooltip": "^5.30.0",
+    "sass": "^1.89.2",
+    "web-vitals": "^5.1.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "next dev -p 3000",
+    "build": "next build",
     "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "preview": "next start -p 3000",
+    "start": "next start -p 3000"
   },
   "browserslist": {
     "production": [
@@ -62,8 +40,20 @@
     ]
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.5.0",
-    "prettier": "^3.6.2",
-    "vite": "^6.3.5"
+    "@next/eslint-plugin-next": "^16.2.1",
+    "@types/lodash": "4.17.24",
+    "@types/node": "25.5.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "^16.2.1",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.8.1",
+    "typescript": "5.9.3"
   }
 }

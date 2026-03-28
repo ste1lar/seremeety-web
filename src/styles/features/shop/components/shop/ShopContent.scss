@@ -1,0 +1,41 @@
+@use '@/styles/base' as *;
+
+.shop-content {
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding-block $page-padding-inline;
+  padding-bottom: $page-bottom-padding;
+  gap: $section-gap-lg;
+  box-sizing: border-box;
+
+  &__loading {
+    min-height: 18rem;
+  }
+
+  &__text {
+    font-size: $size-16;
+
+    p {
+      font-size: $size-14;
+      color: $color-text-secondary;
+      margin: $size-8 0;
+    }
+  }
+
+  &__coupon {
+    cursor: pointer;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: $size-10;
+    font-size: $size-16;
+    font-weight: 500;
+    color: $color-brand;
+    @include hover-opacity(0.75);
+  }
+}
+
+.bootpay-window .progress-message-window .close-message-box .close-popup h4.sub-title {
+  font-size: $size-16 !important;
+  line-height: 1.5;
+}

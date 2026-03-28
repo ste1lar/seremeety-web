@@ -1,0 +1,103 @@
+$color-white: #fff;
+$color-black: #000;
+$color-text-primary: #282828;
+$color-text-secondary: #888;
+$color-text-tertiary: #d1d1d1;
+$color-background: #f6f6f6;
+$color-border-subtle: #ececec;
+$color-border-muted: #d3d3d3;
+$color-brand: #92a8d1;
+$color-brand-soft: #bcdffb;
+$color-accent-pink: #f7cac9;
+$overlay-dark: rgba(0, 0, 0, 0.25);
+
+$font-family-body: "Noto Sans KR", "Noto Sans JP", sans-serif;
+$font-family-heading: "Outfit", "Noto Sans KR", sans-serif;
+$font-family-brand: "Dancing Script", cursive;
+
+$gradient-brand: linear-gradient(135deg, $color-brand -0.69%, $color-brand-soft 99.31%);
+
+// Core spacing scale for new code.
+$space-0: 0;
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-7: 2rem;
+$space-8: 2.5rem;
+$space-9: 3rem;
+$space-10: 4rem;
+
+// Typography scale for new code.
+$font-size-caption: 0.75rem;
+$font-size-body-sm: 0.875rem;
+$font-size-body: 1rem;
+$font-size-title-sm: 1.25rem;
+$font-size-title: 1.5rem;
+$font-size-display-sm: 1.75rem;
+$font-size-display: 3.75rem;
+
+// Mobile layout and interaction tokens.
+$page-padding-inline: $space-6;
+$page-padding-block: $space-6;
+$page-padding-compact: $space-4;
+$page-bottom-padding: calc(#{$page-padding-block} + env(safe-area-inset-bottom));
+$section-gap-sm: $space-3;
+$section-gap-md: $space-4;
+$section-gap-lg: $space-5;
+$section-gap-xl: $space-6;
+$touch-target-min: 2.75rem;
+$control-height-md: $touch-target-min;
+$icon-button-size: $touch-target-min;
+
+// Legacy numeric aliases kept during migration.
+$size-2: 0.125rem;
+$size-4: $space-1;
+$size-5: 0.3125rem;
+$size-8: $space-2;
+$size-10: 0.625rem;
+$size-12: $space-3;
+$size-14: $font-size-body-sm;
+$size-15: 0.9375rem;
+$size-16: $font-size-body;
+$size-18: 1.125rem;
+$size-20: $font-size-title-sm;
+$size-24: $font-size-title;
+$size-28: $font-size-display-sm;
+$size-30: 1.875rem;
+$size-32: $space-7;
+$size-40: $space-8;
+$size-44: $touch-target-min;
+$size-48: $space-9;
+$size-60: $font-size-display;
+$size-64: $space-10;
+
+$focus-ring-width: 2px;
+$focus-ring-offset: $size-2;
+$bottom-menu-height: 4.5rem;
+$bottom-menu-offset: calc(#{$bottom-menu-height} + env(safe-area-inset-bottom));
+
+$overlay-layer-background: rgba(17, 23, 38, 0.46);
+$overlay-layer-blur: $size-14;
+
+$radius-sm: $size-5;
+$radius-md: $size-12;
+$radius-full: 9999px;
+
+$border-width-thin: 1px;
+
+$shadow-light: 0 0.125rem 0.5rem rgba(40, 40, 40, 0.1);
+$shadow-shell: rgba(100, 100, 100, 0.2) 0 0.5rem 2rem 0;
+$shadow-card: rgba(100, 100, 100, 0.2) 0.1875rem 0.1875rem 0.25rem 0;
+$shadow-brand-glow: 0 0 $size-16 rgba($color-brand, 0.45);
+$duration-fast: 0.2s;
+$duration-base: 0.3s;
+$ease-standard: ease;
+
+$shell-max-width: 480px;
+$cropper-max-width: 512px;
+$z-bottom-menu: 90;
+$z-sticky: 100;
+$z-overlay: 200;

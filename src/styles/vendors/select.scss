@@ -1,0 +1,59 @@
+@use '@/styles/base' as *;
+
+#mbti,
+#university {
+  flex: 1;
+}
+
+.my-profile-select {
+  &__control {
+    background-color: $color-white !important;
+    border: $border-width-thin solid $color-border-muted !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  &__indicator-separator {
+    width: 0 !important;
+  }
+
+  &__menu {
+    background-color: $color-white !important;
+
+    .my-profile-select__menu-list {
+      font-size: $size-16;
+    }
+  }
+
+  &__single-value,
+  &__option {
+    font-size: $size-16 !important;
+    border: $border-width-thin solid transparent !important;
+  }
+
+  &__option--is-focused {
+    background-color: $color-white !important;
+    border: $border-width-thin solid $color-brand !important;
+  }
+
+  &__option--is-selected {
+    background-color: $color-brand !important;
+    color: $color-white !important;
+  }
+
+  &__input {
+    font-size: $size-16;
+  }
+
+  &__placeholder {
+    font-size: $size-16;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+}

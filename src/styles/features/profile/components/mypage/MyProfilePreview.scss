@@ -1,0 +1,122 @@
+@use '@/styles/base' as *;
+
+.my-profile-preview {
+  display: flex;
+  flex-direction: column;
+  gap: $size-20;
+  padding-bottom: $size-30;
+  border-bottom: $border-width-thin solid $color-border-subtle;
+
+  &__preview {
+    display: flex;
+    gap: $size-16;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    width: 6rem;
+    gap: $size-16;
+    margin: 0;
+  }
+
+  &__image-wrapper {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      border: $border-width-thin solid $color-border-subtle;
+      border-radius: 50%;
+    }
+  }
+
+  &__nickname {
+    width: max-content;
+    font-size: $size-16;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+  }
+
+  &__info {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    margin: 0;
+  }
+
+  &__info-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $size-8;
+    font-size: $size-16;
+    margin: 0;
+
+    svg {
+      font-size: $size-28;
+    }
+  }
+
+  &__info-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__info-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-align: center;
+    margin: 0;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: $size-8;
+    font-size: $size-16;
+    font-weight: 500;
+    cursor: pointer;
+    width: fit-content;
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    text-decoration: none;
+    @include hover-color();
+  }
+
+  &__menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $size-16;
+
+    button {
+      padding: $size-4;
+      font-size: $size-16;
+    }
+  }
+
+  &__selso-note {
+    font-size: $size-14;
+    color: $color-text-secondary;
+    margin: $size-8 0;
+  }
+}

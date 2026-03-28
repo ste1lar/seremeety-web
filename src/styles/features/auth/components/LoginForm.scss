@@ -1,0 +1,33 @@
+@use '@/styles/base' as *;
+
+.login-form {
+  display: flex;
+  align-items: center;
+  gap: $size-12;
+  font-size: $size-16;
+
+  &__icon {
+    color: $color-brand;
+    font-size: $size-20;
+  }
+
+  &__input {
+    font-family: $font-family-body;
+    flex: 1;
+    padding: 0.3rem;
+    border: none;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+    font-size: $size-16;
+    letter-spacing: 0.0625rem;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border-radius: 0;
+  }
+
+  button {
+    width: $size-64;
+    padding: 0.3rem;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+}

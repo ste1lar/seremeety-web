@@ -1,0 +1,41 @@
+@use '@/styles/base' as *;
+
+.chat-room-input {
+  position: sticky;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: $shell-max-width;
+  z-index: $z-sticky;
+  border-top: $border-width-thin solid $color-border-subtle;
+  background-color: $color-white;
+  display: flex;
+  align-items: center;
+  padding: $space-2;
+  gap: $space-2;
+
+  &__field {
+    flex: 1;
+    min-height: $control-height-md;
+    font-family: $font-family-body;
+    padding: $space-2 $space-3;
+    border: none;
+    border-radius: $radius-sm;
+    background-color: $color-background;
+    font-size: $font-size-body-sm;
+  }
+
+  &__icon {
+    width: $icon-button-size;
+    height: $icon-button-size;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-title;
+    color: $color-brand;
+    cursor: pointer;
+    padding: 0;
+    border: 0;
+    @include hover-opacity(0.75);
+  }
+}

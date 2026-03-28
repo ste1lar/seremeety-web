@@ -1,0 +1,45 @@
+@use './variables' as *;
+
+input,
+select,
+textarea,
+button,
+[type="radio"],
+[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+button {
+  cursor: pointer;
+  padding: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px $color-white inset !important;
+  -webkit-text-fill-color: $color-black !important;
+}
+
+input:-moz-autofill {
+  box-shadow: 0 0 0 30px $color-white inset !important;
+  -moz-text-fill-color: $color-black !important;
+}
+
+:where(a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: $focus-ring-width solid $color-brand;
+  outline-offset: $focus-ring-offset;
+  box-shadow: 0 0 0 $size-4 rgba($color-brand, 0.18);
+}
+
+:where(a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])):focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}

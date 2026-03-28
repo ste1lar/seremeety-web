@@ -1,0 +1,9 @@
+@use '@/styles/base' as *;
+
+.my-profile-tooltip {
+  z-index: $z-overlay;
+  background-color: $color-brand !important;
+  color: $color-white !important;
+  font-size: $size-14 !important;
+  opacity: 1 !important;
+}

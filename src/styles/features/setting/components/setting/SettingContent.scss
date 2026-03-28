@@ -1,0 +1,10 @@
+@use '@/styles/base' as *;
+
+.setting-content {
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding-block $page-padding-inline;
+  padding-bottom: $page-bottom-padding;
+  gap: $section-gap-xl;
+  box-sizing: border-box;
+}

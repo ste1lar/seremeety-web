@@ -1,0 +1,34 @@
+@use '@/styles/base' as *;
+
+.chat-room-header {
+  position: sticky;
+  top: 0;
+  background-color: $color-white;
+  z-index: $z-sticky;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $size-15;
+  border-bottom: $border-width-thin solid $color-border-subtle;
+  font-size: $size-20;
+
+  &__nickname {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+  }
+
+  &__menu {
+    display: flex;
+    gap: $size-10;
+  }
+
+  &__icon {
+    cursor: pointer;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    @include hover-opacity(0.5);
+  }
+}

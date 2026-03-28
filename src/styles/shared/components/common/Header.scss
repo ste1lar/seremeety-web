@@ -1,0 +1,117 @@
+@use '@/styles/base' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  background-color: $color-white;
+  z-index: $z-sticky;
+  display: flex;
+  flex-direction: column;
+  gap: $section-gap-xl;
+  padding: $space-5 $page-padding-inline;
+  border-bottom: $border-width-thin solid $color-border-subtle;
+
+  &__logo {
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+    align-items: end;
+    min-height: $touch-target-min;
+    font-family: $font-family-brand;
+    font-size: $font-size-display-sm;
+    font-weight: 700;
+    color: $color-brand;
+    letter-spacing: 0.05rem;
+    cursor: pointer;
+
+    img {
+      width: $size-48;
+    }
+  }
+
+  &__back-button,
+  &__setting,
+  &__save-profile,
+  &__filter,
+  &__search,
+  button.header__note {
+    min-height: $touch-target-min;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    @include hover-opacity(0.5);
+  }
+
+  &__back-button {
+    position: absolute;
+    top: 50%;
+    left: calc(#{$page-padding-inline} - #{$space-2});
+    width: $icon-button-size;
+    height: $icon-button-size;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-title-sm;
+    transform: translateY(-50%);
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $section-gap-md;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-weight: 500;
+    font-size: $font-size-title;
+    margin: 0;
+    letter-spacing: 0.05rem;
+  }
+
+  &__menu {
+    font-family: $font-family-heading;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: $section-gap-md;
+
+    svg {
+      cursor: pointer;
+      font-size: $font-size-title-sm;
+    }
+
+    button {
+      padding: $space-2 $space-3;
+      font-size: $font-size-body-sm;
+    }
+
+    .button--light {
+      padding: calc(#{$space-2} - 1px) calc(#{$space-3} - 1px);
+    }
+  }
+
+  &__filter,
+  &__search,
+  &__note {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__filter,
+  &__search,
+  &__setting {
+    width: $icon-button-size;
+    min-width: $icon-button-size;
+    padding: 0;
+  }
+
+  &__note {
+    gap: $space-2;
+    padding-inline: $space-2;
+  }
+}

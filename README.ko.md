@@ -5,6 +5,8 @@
 
 브라우저만 있으면 누구나 플랫폼 구애 없이 이용할 수 있도록 웹 앱으로 구현되었으며, 네이티브 앱에 가까운 사용자 경험(UX)을 제공하기 위해 인터랙션과 화면 흐름을 구성하였습니다.
 
+현재 저장소는 기존 React SPA 기반 구현을 `Next.js App Router + TypeScript + SCSS` 구조로 마이그레이션한 버전입니다.
+
 ---
 
 ## 🧭 프로젝트 개요
@@ -17,13 +19,13 @@
 
 ## 🛠 기술 스택
 
-| 구분                       | 기술 스택                            |
-| -------------------------- | ------------------------------------ |
-| Frontend                   | HTML5, CSS3, JavaScript, React       |
-| Backend                    | Firebase Auth                        |
-| Database                   | Firebase Firestore, Firebase Storage |
-| Infra & Deployment         | Firebase Hosting                     |
-| Collaboration & Versioning | GitHub                               |
+| 구분                       | 기술 스택                                                  |
+| -------------------------- | ---------------------------------------------------------- |
+| Frontend                   | Next.js 16, React 19, TypeScript, SCSS                     |
+| Backend / Auth             | Firebase Auth                                              |
+| Database / Storage         | Firebase Firestore, Firebase Storage                       |
+| Framework / Deployment     | Next.js App Router, Firebase Hosting                       |
+| Collaboration & Versioning | GitHub                                                     |
 
 ---
 

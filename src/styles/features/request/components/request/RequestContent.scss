@@ -1,0 +1,22 @@
+@use '@/styles/base' as *;
+
+.request-content {
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding-compact $page-padding-inline $page-padding-block;
+  gap: $section-gap-sm;
+  box-sizing: border-box;
+
+  &__loading {
+    min-height: 16rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $section-gap-sm;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}

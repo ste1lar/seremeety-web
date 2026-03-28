@@ -1,7 +1,0 @@
-.request-content {
-  display: flex;
-  flex-direction: column;
-  padding: 0.9375rem 1.875rem 10vh;
-  gap: 0.9375rem;
-  box-sizing: border-box;
-}

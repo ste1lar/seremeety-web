@@ -1,0 +1,44 @@
+@use '@/styles/base' as *;
+
+.shop-item {
+  font-family: $font-family-heading;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $size-15;
+  border: $border-width-thin solid $color-brand;
+  border-radius: $radius-sm;
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  @include hover-opacity(0.75);
+
+  &__quantity {
+    display: flex;
+    align-items: center;
+    gap: $size-10;
+    font-size: $size-24;
+    font-weight: 500;
+  }
+
+  &__price {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $size-10;
+    font-weight: 500;
+  }
+
+  &__discount {
+    font-size: $size-14;
+    color: $color-brand;
+  }
+
+  &__price-text {
+    font-size: $size-20;
+    width: 5rem;
+    text-align: end;
+  }
+}

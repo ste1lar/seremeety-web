@@ -10,6 +10,8 @@
 
 # production
 /dist
+/.next
+*.tsbuildinfo
 
 # misc
 .DS_Store
@@ -20,7 +22,6 @@
 .npmrc
 
 # Firebase
-src/firebase.js
 .firebase/
 
 npm-debug.log*

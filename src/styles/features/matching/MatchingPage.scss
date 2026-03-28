@@ -1,0 +1,9 @@
+@use '@/styles/base' as *;
+
+.matching {
+  width: 100%;
+
+  &__loading {
+    min-height: 18rem;
+  }
+}

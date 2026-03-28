@@ -1,0 +1,31 @@
+@use './variables' as *;
+
+@mixin hover-capable {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin hover-opacity($opacity, $duration: $duration-base, $timing: $ease-standard) {
+  transition: opacity $duration $timing;
+
+  @include hover-capable {
+    opacity: $opacity;
+  }
+}
+
+@mixin hover-color($color: $color-brand, $duration: $duration-base, $timing: $ease-standard) {
+  transition: color $duration $timing;
+
+  @include hover-capable {
+    color: $color;
+  }
+}
+
+@mixin overlay-layer($background: $overlay-layer-background, $blur: $overlay-layer-blur) {
+  background: $background;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}

@@ -7,6 +7,8 @@
 本サービスは、PCやスマートフォンなど、ブラウザさえあればどのデバイスからでも利用できるWebアプリとして構築されています。  
 ネイティブアプリに近い直感的でスムーズなユーザー体験（UX）を実現するため、インタラクションと画面遷移に工夫を凝らしました。
 
+現在のリポジトリは、既存のReact SPA実装を `Next.js App Router + TypeScript + SCSS` 構成へ移行したバージョンです。
+
 ---
 
 ## 🧭 プロジェクト概要
@@ -19,13 +21,13 @@
 
 ## 🛠 技術スタック
 
-| 区分                       | 技術スタック                         |
-| -------------------------- | ------------------------------------ |
-| Frontend                   | HTML5, CSS3, JavaScript, React       |
-| Backend                    | Firebase Auth                        |
-| Database                   | Firebase Firestore, Firebase Storage |
-| Infra & Deployment         | Firebase Hosting                     |
-| Collaboration & Versioning | GitHub                               |
+| 区分                       | 技術スタック                                                |
+| -------------------------- | ----------------------------------------------------------- |
+| Frontend                   | Next.js 16, React 19, TypeScript, SCSS                      |
+| Backend / Auth             | Firebase Auth                                               |
+| Database / Storage         | Firebase Firestore, Firebase Storage                        |
+| Framework / Deployment     | Next.js App Router, Firebase Hosting                        |
+| Collaboration & Versioning | GitHub                                                      |
 
 ---
 

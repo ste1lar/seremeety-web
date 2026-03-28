@@ -1,0 +1,26 @@
+@use '@/styles/base' as *;
+
+.common-overlay-layer {
+  position: fixed;
+  z-index: $z-overlay;
+  display: grid;
+  place-items: center;
+  @include overlay-layer;
+
+  &--viewport {
+    inset: 0;
+  }
+
+  &--scrollable {
+    overflow-y: auto;
+    padding: $size-16;
+    padding-top: calc(env(safe-area-inset-top) + #{$size-16});
+    padding-bottom: calc(env(safe-area-inset-bottom) + #{$size-24});
+  }
+}
+
+@media (min-width: $shell-max-width) {
+  .common-overlay-layer--scrollable {
+    padding: $size-24;
+  }
+}

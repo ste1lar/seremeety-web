@@ -1,0 +1,57 @@
+@use '@/styles/base' as *;
+
+.profile-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-white;
+  border: $border-width-thin solid $color-border-subtle;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-card;
+  padding: $size-2;
+  gap: $size-10;
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  @include hover-opacity(0.75);
+
+  &__img {
+    margin: 0;
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      border: $border-width-thin solid $color-border-subtle;
+      border-radius: $radius-sm;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $size-5;
+    padding-bottom: $size-5;
+    align-items: center;
+  }
+
+  &__nickname {
+    font-weight: 700;
+    letter-spacing: 0.0625rem;
+    font-size: $size-16;
+    margin: 0;
+  }
+
+  &__age-gender {
+    font-size: $size-14;
+    display: flex;
+    align-items: center;
+    gap: $size-5;
+    margin: 0;
+  }
+}

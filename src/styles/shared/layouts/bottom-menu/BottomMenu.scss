@@ -1,0 +1,17 @@
+@use '@/styles/base' as *;
+
+.bottom-menu {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: $shell-max-width;
+  min-height: $bottom-menu-height;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: $color-white;
+  border-top: $border-width-thin solid $color-border-subtle;
+  padding: $size-8 0 calc(#{$size-8} + env(safe-area-inset-bottom));
+  z-index: $z-bottom-menu;
+}
