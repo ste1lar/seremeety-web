@@ -6,10 +6,12 @@ const ChatListHeader = () => {
     <Header
       variant="chat"
       title="CHATS"
+      headingLevel="h1"
+      titleId="chat-list-heading"
       menuAriaLabel="채팅 메뉴"
       menu={
         <>
-          <button className="header__search" type="button" aria-label="검색">
+          <button type="button" aria-label="검색">
             <Search aria-hidden="true" size="1em" />
           </button>
         </>

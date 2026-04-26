@@ -1,0 +1,10 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding $page-padding;
+  padding-bottom: $page-bottom-padding;
+  gap: $size-24;
+  box-sizing: border-box;
+}

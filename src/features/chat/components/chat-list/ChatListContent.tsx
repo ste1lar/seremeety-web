@@ -7,6 +7,7 @@ import Loading from '@/shared/components/common/loading/Loading';
 import ChatRoomItem from './ChatRoomItem';
 import EmptyState from '@/shared/components/common/empty-state/EmptyState';
 import type { ChatRoomRecord, EnhancedChatRoom } from '@/shared/types/domain';
+import styles from './ChatListContent.module.scss';
 
 interface ChatListContentProps {
   chatRooms: ChatRoomRecord[];
@@ -63,16 +64,16 @@ const ChatListContent = ({ chatRooms, style }: ChatListContentProps) => {
   }, [chatRooms]);
 
   if (isChatLoading || !isDataLoaded) {
-    return <Loading className="chat-list-content__loading" />;
+    return <Loading className={styles.loading} />;
   } else {
     return (
-      <div className="chat-list-content" style={style}>
+      <div className={styles.root} style={style}>
         {chatRooms.length <= 0 ? (
           <EmptyState icon={MessagesSquare} message={'아직 진행 중인 채팅이 없어요'} />
         ) : (
-          <ul className="chat-list-content__list">
+          <ul className={styles.list}>
             {enhancedChatRooms.map((chatRoom) => (
-              <li className="chat-list-content__item" key={chatRoom.id}>
+              <li key={chatRoom.id}>
                 <ChatRoomItem {...chatRoom} />
               </li>
             ))}

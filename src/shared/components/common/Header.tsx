@@ -1,9 +1,13 @@
 'use client';
 
 import { ChevronLeft } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import seremeetyLogo from '@/shared/assets/images/seremeety-logo.png';
+import { cx } from '@/shared/lib/classNames';
+import styles from './Header.module.scss';
 
 type HeadingTag = 'h1' | 'h2';
 
@@ -36,12 +40,7 @@ export default function Header({
   const TitleTag = headingLevel;
 
   const handleLogoClick = () => {
-    if (onLogoClick) {
-      onLogoClick();
-      return;
-    }
-
-    router.push(logoHref);
+    onLogoClick?.();
   };
 
   const handleBackClick = () => {
@@ -54,24 +53,40 @@ export default function Header({
   };
 
   const MenuWrapper = menuAriaLabel ? 'nav' : 'div';
+  const logoContent = (
+    <>
+      <Image alt="Seremeety 로고" src={seremeetyLogo} width={48} height={48} />
+      Seremeety
+    </>
+  );
 
   return (
-    <header className={['header', variant && `header--${variant}`].filter(Boolean).join(' ')}>
-      <button className="header__logo" type="button" onClick={handleLogoClick}>
-        <img alt="Seremeety 로고" src={seremeetyLogo.src} />
-        Seremeety
-      </button>
+    <header className={cx(styles.root, variant && styles[`root--${variant}`])}>
+      {onLogoClick ? (
+        <button className={styles.logo} type="button" onClick={handleLogoClick}>
+          {logoContent}
+        </button>
+      ) : (
+        <Link className={styles.logo} href={logoHref}>
+          {logoContent}
+        </Link>
+      )}
       {showBackButton && (
-        <button className="header__back-button" type="button" onClick={handleBackClick} aria-label="뒤로 가기">
+        <button
+          className={styles.back}
+          type="button"
+          onClick={handleBackClick}
+          aria-label="뒤로 가기"
+        >
           <ChevronLeft aria-hidden="true" size="1em" />
         </button>
       )}
-      <div className="header__content">
-        <TitleTag className="header__title" id={titleId}>
+      <div className={styles.content}>
+        <TitleTag className={styles.title} id={titleId}>
           {title}
         </TitleTag>
         {menu && (
-          <MenuWrapper className="header__menu" aria-label={menuAriaLabel}>
+          <MenuWrapper className={styles.menu} aria-label={menuAriaLabel}>
             {menu}
           </MenuWrapper>
         )}

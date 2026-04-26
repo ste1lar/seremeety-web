@@ -12,6 +12,8 @@ const RequestHeader = ({ isReceived, setIsReceived }: RequestHeaderProps) => {
     <Header
       variant="request"
       title="REQUEST"
+      headingLevel="h1"
+      titleId="request-heading"
       menuAriaLabel="요청 보기 메뉴"
       menu={
         <>

@@ -23,7 +23,7 @@ export default function AuthenticatedRouteGate({ children }: AuthenticatedRouteG
   }, [currentUser, isLoading, router]);
 
   if (isLoading || !currentUser) {
-    return <Loading className="loading--page" />;
+    return <Loading variant="page" />;
   }
 
   return (

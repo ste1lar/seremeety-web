@@ -1,0 +1,48 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $size-30;
+  width: 100%;
+  padding: $size-24;
+  box-sizing: border-box;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $size-30;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: $size-16;
+  padding-bottom: $size-5;
+  border-bottom: $border-1 solid $color-border-subtle;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: $size-12;
+  font-weight: 500;
+
+  svg {
+    font-size: $size-20;
+  }
+}
+
+.value {
+  font-weight: 700;
+  margin: 0;
+}
+
+.note {
+  font-size: $size-14;
+  color: $color-text-secondary;
+  margin: $size-8 0 0;
+}

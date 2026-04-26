@@ -1,5 +1,6 @@
 import { Image, MailOpen, Sparkles, SquarePen, Star } from 'lucide-react';
 import type { ProfileStats } from '@/shared/types/domain';
+import styles from './ProfileStatusBox.module.scss';
 
 interface ProfileStatusBoxProps {
   stats: ProfileStats;
@@ -35,28 +36,28 @@ const ProfileStatusBox = ({ stats }: ProfileStatusBoxProps) => {
   ];
 
   return (
-    <section className="profile-status-box" aria-labelledby="profile-status-box-title">
+    <section className={styles.root} aria-labelledby="profile-status-box-title">
       <h2 className="sr-only" id="profile-status-box-title">
         프로필 상태
       </h2>
 
-      <dl className="profile-status-box__list">
+      <dl className={styles.list}>
         {rows.map((row) => {
           const RowIcon = row.icon;
 
           return (
-            <div className="profile-status-box__row" key={row.label}>
-              <dt className="profile-status-box__label">
+            <div className={styles.row} key={row.label}>
+              <dt className={styles.label}>
                 <RowIcon aria-hidden="true" size="1em" />
                 {row.label}
               </dt>
-              <dd className="profile-status-box__value">{row.value}</dd>
+              <dd className={styles.value}>{row.value}</dd>
             </div>
           );
         })}
       </dl>
 
-      <p className="profile-status-box__note">
+      <p className={styles.note}>
         현재 준비 중인 기능으로, 일부 항목은 임의로 표시됩니다.
       </p>
     </section>

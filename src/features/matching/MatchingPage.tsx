@@ -14,6 +14,7 @@ import MatchingFilter from '@/features/matching/components/matching/MatchingFilt
 import MatchingHeader from '@/features/matching/components/matching/MatchingHeader';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import type { MatchingFilters } from '@/shared/types/domain';
+import styles from './MatchingPage.module.scss';
 
 const defaultFilters: MatchingFilters = {
   ageRange: [18, 30],
@@ -79,7 +80,7 @@ const MatchingPage = () => {
   };
 
   return (
-    <div className="matching">
+    <section className={styles.root} aria-labelledby="matching-heading">
       <MatchingHeader onFilterClick={toggleFilterModal} />
       {openFilterModal && userProfile && (
         <PageTransition direction={'y'}>
@@ -88,7 +89,7 @@ const MatchingPage = () => {
       )}
       {!openFilterModal &&
         (isContentLoading || !userProfile ? (
-          <Loading className="matching__loading" />
+          <Loading className={styles.loading} />
         ) : (
           <MatchingContent
             profileCards={state}
@@ -107,7 +108,7 @@ const MatchingPage = () => {
       >
         {modal?.children}
       </Modal>
-    </div>
+    </section>
   );
 };
 

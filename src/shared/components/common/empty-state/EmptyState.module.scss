@@ -1,0 +1,20 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $size-64 0;
+  color: $color-text-secondary;
+  gap: $size-16;
+}
+
+.icon {
+  font-size: $size-48;
+  color: $color-text-tertiary;
+}
+
+.message {
+  margin: 0;
+}

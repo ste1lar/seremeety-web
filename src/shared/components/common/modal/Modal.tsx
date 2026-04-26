@@ -10,6 +10,8 @@ import {
 import OverlayLayer from '../overlay/OverlayLayer';
 import ModalPortal from './ModalPortal';
 import useLockViewportScroll from './useLockViewportScroll';
+import { cx } from '@/shared/lib/classNames';
+import styles from './Modal.module.scss';
 
 export interface ModalAction {
   autoClose?: boolean;
@@ -72,10 +74,14 @@ const Modal = ({
 
   return (
     <ModalPortal>
-      <OverlayLayer className="common-modal-layer" variant="viewport" scrollable onClick={handleBackdropClick}>
+      <OverlayLayer
+        variant="viewport"
+        scrollable
+        onClick={handleBackdropClick}
+      >
         <section
           {...rest}
-          className={['common-modal', className].filter(Boolean).join(' ')}
+          className={cx(styles.root, className)}
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
@@ -83,7 +89,7 @@ const Modal = ({
         >
           {shouldShowCloseButton && (
             <button
-              className="common-modal__close"
+              className={styles.close}
               type="button"
               onClick={onClose}
               aria-label="모달 닫기"
@@ -92,35 +98,33 @@ const Modal = ({
             </button>
           )}
 
-          <div className="common-modal__header">
-            <h2 className="common-modal__title" id={titleId}>
+          <div className={styles.header}>
+            <h2 className={styles.title} id={titleId}>
               {title}
             </h2>
           </div>
 
           {(description || children) && (
-            <div className="common-modal__body" id={descriptionId}>
-              {description && <p className="common-modal__text">{description}</p>}
-              {children && <div className="common-modal__content">{children}</div>}
+            <div className={styles.body} id={descriptionId}>
+              {description && <p className={styles.text}>{description}</p>}
+              {children && <div className={styles.content}>{children}</div>}
             </div>
           )}
 
           {actions.length > 0 && (
             <div
-              className={[
-                'common-modal__actions',
-                actions.length > 1 && 'common-modal__actions--double',
-              ]
-                .filter(Boolean)
-                .join(' ')}
+              className={cx(
+                styles.actions,
+                actions.length > 1 && styles['actions--double']
+              )}
             >
               {actions.map((action) => (
                 <button
                   key={`${action.tone ?? 'primary'}-${action.label}`}
-                  className={[
-                    'common-modal__action',
-                    `common-modal__action--${action.tone ?? 'primary'}`,
-                  ].join(' ')}
+                  className={cx(
+                    styles.action,
+                    styles[`action--${action.tone ?? 'primary'}`]
+                  )}
                   type="button"
                   onClick={() => handleActionClick(action)}
                 >

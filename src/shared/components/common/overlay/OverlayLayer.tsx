@@ -1,4 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
+import { cx } from '@/shared/lib/classNames';
+import styles from './OverlayLayer.module.scss';
 
 interface OverlayLayerProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -16,14 +18,12 @@ const OverlayLayer = ({
   return (
     <div
       {...rest}
-      className={[
-        'common-overlay-layer',
-        `common-overlay-layer--${variant}`,
-        scrollable && 'common-overlay-layer--scrollable',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      className={cx(
+        styles.root,
+        styles[`root--${variant}`],
+        scrollable && styles['root--scrollable'],
+        className
+      )}
     >
       {children}
     </div>

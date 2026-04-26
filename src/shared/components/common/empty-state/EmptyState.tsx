@@ -1,5 +1,6 @@
 import React from 'react';
 import { CircleX, type LucideIcon } from 'lucide-react';
+import styles from './EmptyState.module.scss';
 
 interface EmptyStateProps {
   icon?: LucideIcon;
@@ -8,9 +9,9 @@ interface EmptyStateProps {
 
 const EmptyState = ({ icon: Icon = CircleX, message }: EmptyStateProps) => {
   return (
-    <div className="empty-state">
-      <Icon aria-hidden="true" className="empty-state__icon" size="1em" />
-      {message && <p className="empty-state__message">{message}</p>}
+    <div className={styles.root}>
+      <Icon aria-hidden="true" className={styles.icon} size="1em" />
+      {message && <p className={styles.message}>{message}</p>}
     </div>
   );
 };

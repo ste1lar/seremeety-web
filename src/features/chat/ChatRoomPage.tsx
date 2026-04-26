@@ -13,6 +13,7 @@ import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal'
 import { getChatRoomById, subscribeToChatRoomMessages } from '@/shared/lib/firebase/chat';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
 import type { ChatMessageRecord, UserProfile } from '@/shared/types/domain';
+import styles from './ChatRoomPage.module.scss';
 
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams<{ chatRoomId: string }>();
@@ -73,11 +74,11 @@ const ChatRoomPage = () => {
     !isDataLoaded || !chatRoomId || Array.isArray(chatRoomId) || !otherUserData;
 
   return (
-    <div className="chat-room">
+    <section className={styles.root} aria-labelledby="chat-room-heading">
       <PageTransition>
         <ChatRoomHeader nickname={otherUserData?.nickname ?? '채팅'} />
         {isRoomLoading ? (
-          <Loading className="chat-room__loading" />
+          <Loading className={styles.loading} />
         ) : (
           <>
             <ChatRoomContent
@@ -100,7 +101,7 @@ const ChatRoomPage = () => {
       >
         {modal?.children}
       </Modal>
-    </div>
+    </section>
   );
 };
 

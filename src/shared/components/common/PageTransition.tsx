@@ -1,6 +1,7 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useTransition, animated } from '@react-spring/web';
 import type { ReactNode } from 'react';
+import styles from './PageTransition.module.scss';
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -28,7 +29,7 @@ const PageTransition = ({ children, direction = 'x' }: PageTransitionProps) => {
   });
 
   return transitions((props, item) => (
-    <animated.div className="page-transition" style={props} key={item}>
+    <animated.div className={styles.root} style={props} key={item}>
       {children}
     </animated.div>
   ));

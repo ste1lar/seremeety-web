@@ -2,13 +2,14 @@
 
 import { useContext, useEffect } from 'react';
 import { Music4, Settings } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { MypageStateContext, MypageStatusContext } from '@/features/profile/context/MypageContext';
 import Loading from '@/shared/components/common/loading/Loading';
 import Header from '@/shared/components/common/Header';
 import MyProfilePreview from '@/features/profile/components/mypage/MyProfilePreview';
 import ProfileStatusBox from '@/features/profile/components/mypage/ProfileStatusBox';
 import type { ProfileStats, UserProfile } from '@/shared/types/domain';
+import styles from './MypagePage.module.scss';
 
 const getProfileStats = (userProfile: UserProfile): ProfileStats => ({
   hasProfileImage: Boolean(userProfile.profilePictureUrl),
@@ -21,14 +22,13 @@ const getProfileStats = (userProfile: UserProfile): ProfileStats => ({
 const MypagePage = () => {
   const userProfile = useContext(MypageStateContext);
   const { isFetching } = useContext(MypageStatusContext);
-  const router = useRouter();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
   return (
-    <section className="mypage" aria-labelledby="mypage-title">
+    <section className={styles.root} aria-labelledby="mypage-title">
       <Header
         variant="mypage"
         title="MYPAGE"
@@ -38,26 +38,24 @@ const MypagePage = () => {
         menu={
           <>
             {userProfile && (
-              <button className="header__note" type="button" onClick={() => router.push('/shop')}>
+              <Link href="/shop" aria-label={`상점 이동 (보유 음표: ${userProfile.coin})`}>
                 <Music4 aria-hidden="true" size="1em" />
                 {userProfile.coin}
-              </button>
+              </Link>
             )}
-            <button
-              className="header__setting"
-              type="button"
+            <Link
               aria-label="설정"
-              onClick={() => router.push('/setting')}
+              href="/setting"
             >
               <Settings aria-hidden="true" size="1em" />
-            </button>
+            </Link>
           </>
         }
       />
 
-      <div className="mypage-content">
+      <div className={styles.content}>
         {isFetching || !userProfile ? (
-          <Loading className="mypage-content__loading" />
+          <Loading className={styles.loading} />
         ) : (
           <>
             <MyProfilePreview userProfile={userProfile} />

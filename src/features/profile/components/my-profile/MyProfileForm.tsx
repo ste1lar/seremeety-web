@@ -4,12 +4,14 @@ import Select from 'react-select';
 import { Tooltip } from 'react-tooltip';
 import CustomRadio from '@/shared/components/common/custom-radio/CustomRadio';
 import { getAgeByBirthDate } from '@/shared/lib/format';
+import { cx } from '@/shared/lib/classNames';
 import type {
   PlaceEntry,
   ProfileFieldId,
   ProfileFieldType,
   SelectOption,
 } from '@/shared/types/domain';
+import styles from './MyProfileForm.module.scss';
 
 interface MyProfileFormProps {
   field: string;
@@ -105,9 +107,14 @@ const MyProfileForm = ({
   }));
 
   return (
-    <div className={`my-profile-form ${id === 'introduce' ? 'my-profile-form--introduce' : ''}`}>
+    <div
+      className={cx(
+        styles.root,
+        id === 'introduce' && styles['root--introduce']
+      )}
+    >
       {isNativeInputField ? (
-        <label className="my-profile-form__label" htmlFor={id}>
+        <label className={styles.label} htmlFor={id}>
           {field}
           {['university', 'birthdate', 'introduce'].includes(id) && (
             <>
@@ -115,7 +122,7 @@ const MyProfileForm = ({
                 aria-hidden="true"
                 data-tooltip-id={`${id}-tooltip`}
                 data-tooltip-content={tooltipContent}
-                className="my-profile-form__icon"
+                className={styles.icon}
                 size="1em"
               />
               <Tooltip className="my-profile-tooltip" id={`${id}-tooltip`} />
@@ -123,7 +130,7 @@ const MyProfileForm = ({
           )}
         </label>
       ) : (
-        <span className="my-profile-form__label" id={labelId}>
+        <span className={styles.label} id={labelId}>
           {field}
           {['university', 'birthdate', 'introduce'].includes(id) && (
             <>
@@ -131,7 +138,7 @@ const MyProfileForm = ({
                 aria-hidden="true"
                 data-tooltip-id={`${id}-tooltip`}
                 data-tooltip-content={tooltipContent}
-                className="my-profile-form__icon"
+                className={styles.icon}
                 size="1em"
               />
               <Tooltip className="my-profile-tooltip" id={`${id}-tooltip`} />
@@ -146,31 +153,34 @@ const MyProfileForm = ({
           id={id}
           value={data || ''}
           onChange={handleChange}
-          className="my-profile-form__input"
+          className={styles.input}
         />
       )}
 
       {type === 'date' && (
-        <div className="my-profile-form__birthdate-wrapper">
+        <div className={styles.birthdate}>
           <input
             type="date"
             id={id}
             value={data || ''}
             onChange={handleChange}
             disabled={isDisabled}
-            className={`my-profile-form__input ${isDisabled ? 'my-profile-form__input--disabled' : ''}`}
+            className={cx(
+              styles.input,
+              isDisabled && styles['input--disabled']
+            )}
           />
-          <span className="my-profile-form__birthdate-text">
+          <span className={styles['birthdate-text']}>
             {data ? `${getAgeByBirthDate(data)}세` : ''}
           </span>
         </div>
       )}
 
       {type === 'radio' && (
-        <fieldset className="my-profile-form__radio-group" aria-labelledby={labelId}>
+        <fieldset className={styles['radio-group']} aria-labelledby={labelId}>
           <legend className="sr-only">{field}</legend>
           {stringOptions.map((it, idx) => (
-            <div className="my-profile-form__radio-wrapper" key={idx}>
+            <div className={styles['radio-item']} key={idx}>
               <CustomRadio
                 name={id}
                 value={it}
@@ -185,7 +195,7 @@ const MyProfileForm = ({
       )}
 
       {type === 'select' && ['mbti', 'university'].includes(id) && (
-        <div className="my-profile-form__select-wrapper">
+        <div className={styles.select}>
           <Select
             classNamePrefix="my-profile-select"
             inputId={id}
@@ -201,7 +211,7 @@ const MyProfileForm = ({
       )}
 
       {type === 'select' && id === 'place' && (
-        <fieldset className="my-profile-form__place-wrapper" aria-labelledby={labelId}>
+        <fieldset className={styles.place} aria-labelledby={labelId}>
           <legend className="sr-only">{field}</legend>
           <Select
             classNamePrefix="my-profile-select"
@@ -235,7 +245,7 @@ const MyProfileForm = ({
           id={id}
           value={data || ''}
           onChange={handleChange}
-          className="my-profile-form__textarea"
+          className={styles.textarea}
         />
       )}
     </div>

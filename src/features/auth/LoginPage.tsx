@@ -16,6 +16,7 @@ import { signInWithPhoneNumber } from 'firebase/auth';
 import { auth, setupRecaptchaVerifier } from '@/firebase';
 import Button from '@/shared/components/common/button/Button';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
+import styles from './LoginPage.module.scss';
 
 const LoginPage = () => {
   const [modal, setModal] = useState<ModalConfig | null>(null);
@@ -125,15 +126,19 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="login">
+    <div className={styles.root}>
       <LoginLogo />
-      <div className="login__form-wrapper">
-        <div className="login__input-wrapper">
-          <div className="login__input-box">
-            <Phone aria-hidden="true" className="login__icon" size="1em" />
+      <div className={styles.form}>
+        <div className={styles.inputs}>
+          <div className={styles.field}>
+            <Phone aria-hidden="true" className={styles.icon} size="1em" />
+            <label className="sr-only" htmlFor="phone">
+              전화번호
+            </label>
             <input
-              className="login__input"
+              className={styles.input}
               id="phone"
+              name="phone"
               type="tel"
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
@@ -142,11 +147,15 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className="login__input-box">
-            <Hash aria-hidden="true" className="login__icon" size="1em" />
+          <div className={styles.field}>
+            <Hash aria-hidden="true" className={styles.icon} size="1em" />
+            <label className="sr-only" htmlFor="code">
+              인증번호
+            </label>
             <input
-              className="login__input"
+              className={styles.input}
               id="code"
+              name="code"
               type="text"
               value={verificationCode}
               onChange={handleCodeChange}
@@ -155,7 +164,7 @@ const LoginPage = () => {
             />
           </div>
         </div>
-        <div className="login__button-wrapper">
+        <div className={styles.actions}>
           <Button
             text={'인증 / 認証'}
             icon={KeyRound}
@@ -169,7 +178,7 @@ const LoginPage = () => {
           />
         </div>
       </div>
-      <button className="login__no-account" type="button" onClick={handleNoAccountClick}>
+      <button className={styles.hint} type="button" onClick={handleNoAccountClick}>
         테스트 로그인 안내 / テスト用ログインのご案内
       </button>
       <div ref={recaptchaRef} />

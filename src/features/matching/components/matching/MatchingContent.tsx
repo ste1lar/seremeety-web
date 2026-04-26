@@ -6,6 +6,7 @@ import Button from '@/shared/components/common/button/Button';
 import EmptyState from '@/shared/components/common/empty-state/EmptyState';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import type { MatchingFilters, ProfileStatus, UserProfile } from '@/shared/types/domain';
+import styles from './MatchingContent.module.scss';
 
 interface MatchingContentProps {
   filters: MatchingFilters;
@@ -50,15 +51,15 @@ const MatchingContent = ({ profileCards, filters, profileStatus }: MatchingConte
   };
 
   return (
-    <div className="matching-content">
-      <ul className="matching-content__card-section">
+    <div className={styles.root}>
+      <ul className={styles.grid}>
         {filteredCards.slice(0, visibleCount).map((it) => (
-          <li className="matching-content__card-item" key={it.uid ?? `${it.nickname}-${it.age}`}>
+          <li className={styles.card} key={it.uid ?? `${it.nickname}-${it.age}`}>
             <ProfileCardItem {...it} profileStatus={profileStatus} />
           </li>
         ))}
       </ul>
-      <div className="matching-content__option-section">
+      <div className={styles.footer}>
         {visibleCount < filteredCards.length && (
           <Button
             text={'프로필 더 보기'}

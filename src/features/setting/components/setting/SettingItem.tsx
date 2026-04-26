@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import type { MouseEventHandler } from 'react';
+import styles from './SettingItem.module.scss';
 
 interface SettingItemProps {
   content: string;
@@ -8,7 +9,7 @@ interface SettingItemProps {
 
 const SettingItem = ({ content, onClick }: SettingItemProps) => {
   return (
-    <button className="setting-item" type="button" onClick={onClick}>
+    <button className={styles.root} type="button" onClick={onClick}>
       {content}
       <ChevronRight aria-hidden="true" size="1em" />
     </button>

@@ -1,0 +1,64 @@
+@use '@/styles/base' as *;
+
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px;
+  gap: $size-48;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $size-32;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: $size-16;
+}
+
+.icon {
+  color: $color-brand;
+  font-size: $size-20;
+}
+
+.input {
+  flex: 1;
+  font-family: $font-family-body;
+  font-size: $size-16;
+  padding: 4.8px 0;
+  border: none;
+  border-bottom: $border-1 solid $color-border-subtle;
+  background-color: transparent;
+  letter-spacing: 1px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+}
+
+.hint {
+  font-family: $font-family-body;
+  font-weight: 500;
+  font-size: $size-14;
+  text-align: center;
+  color: $color-brand;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  @include hover-opacity(0.75);
+}

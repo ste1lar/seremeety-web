@@ -1,11 +1,13 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { Cake, ChevronRight, Heart, Navigation } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
 import Button from '@/shared/components/common/button/Button';
 import { auth } from '@/firebase';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import type { UserProfile } from '@/shared/types/domain';
+import styles from './MyProfilePreview.module.scss';
 
 interface MyProfilePreviewProps {
   userProfile: UserProfile;
@@ -14,7 +16,6 @@ interface MyProfilePreviewProps {
 const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
-  const router = useRouter();
   const currentUserUid = auth.currentUser?.uid;
   const previewHref = currentUserUid ? `/profile/${currentUserUid}?viewOnly=1` : '#';
 
@@ -32,16 +33,6 @@ const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
     });
   };
 
-  const handlePreviewClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-
-    if (!currentUserUid) {
-      return;
-    }
-
-    router.push(previewHref);
-  };
-
   const infoItems = [
     { icon: Cake, label: '나이', value: userProfile.age },
     { icon: Heart, label: 'MBTI', value: userProfile.mbti },
@@ -49,57 +40,62 @@ const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
   ];
 
   return (
-    <article className="my-profile-preview" aria-labelledby="my-profile-preview-title">
+    <article className={styles.root} aria-labelledby="my-profile-preview-title">
       <h2 className="sr-only" id="my-profile-preview-title">
         내 프로필 요약
       </h2>
 
-      <div className="my-profile-preview__preview">
-        <figure className="my-profile-preview__left">
-          <div className="my-profile-preview__image-wrapper">
+      <div className={styles.preview}>
+        <figure className={styles.left}>
+          <div className={styles['image-wrapper']}>
             {!isImgLoaded && <ImageLoading borderRadius="50%" />}
-            <img
+            <Image
               alt={`${userProfile.nickname} 프로필 사진`}
               src={userProfile.profilePictureUrl}
+              fill
+              sizes="96px"
               onLoad={() => setIsImgLoaded(true)}
               style={{ display: !isImgLoaded ? 'none' : 'block' }}
             />
           </div>
-          <figcaption className="my-profile-preview__nickname">{userProfile.nickname}</figcaption>
+          <figcaption className={styles.nickname}>{userProfile.nickname}</figcaption>
         </figure>
 
-        <div className="my-profile-preview__right">
-          <dl className="my-profile-preview__info">
+        <div className={styles.right}>
+          <dl className={styles.stats}>
             {infoItems.map((item) => {
               const ItemIcon = item.icon;
 
               return (
-                <div className="my-profile-preview__info-box" key={item.label}>
-                  <dt className="my-profile-preview__info-label">
+                <div className={styles.stat} key={item.label}>
+                  <dt className={styles['stat-label']}>
                     <ItemIcon aria-hidden="true" size="1em" />
                     <span className="sr-only">{item.label}</span>
                   </dt>
-                  <dd className="my-profile-preview__info-text">{item.value}</dd>
+                  <dd className={styles['stat-value']}>{item.value}</dd>
                 </div>
               );
             })}
           </dl>
-          <a
-            className="my-profile-preview__link"
-            href={previewHref}
-            onClick={handlePreviewClick}
-          >
-            미리보기
-            <ChevronRight aria-hidden="true" size="1em" />
-          </a>
+          {currentUserUid ? (
+            <Link className={styles['preview-link']} href={previewHref}>
+              미리보기
+              <ChevronRight aria-hidden="true" size="1em" />
+            </Link>
+          ) : (
+            <span className={styles['preview-link']} aria-disabled="true">
+              미리보기
+              <ChevronRight aria-hidden="true" size="1em" />
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="my-profile-preview__menu">
-        <Button text="프로필 수정" onClick={() => router.push('/my-profile')} />
+      <div className={styles.actions}>
+        <Button text="프로필 수정" href="/my-profile" />
         <Button text="셀소 만들기" onClick={handleMakeSelso} />
       </div>
-      <p className="my-profile-preview__selso-note">
+      <p className={styles.note}>
         셀소를 등록하면 프로필이 DISCOVER에 24시간 동안 우선 노출돼요.
       </p>
       <Modal

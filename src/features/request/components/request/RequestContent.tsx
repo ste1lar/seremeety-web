@@ -10,6 +10,7 @@ import { ChatDispatchContext } from '@/features/chat/context/ChatContext';
 import Loading from '@/shared/components/common/loading/Loading';
 import EmptyState from '@/shared/components/common/empty-state/EmptyState';
 import type { EnhancedMatchRequest, RequestState } from '@/shared/types/domain';
+import styles from './RequestContent.module.scss';
 
 interface RequestContentProps {
   requests: RequestState;
@@ -62,19 +63,19 @@ const RequestContent = ({ requests, isReceived, style }: RequestContentProps) =>
   }, [addProfileDataInRequest, requests, isReceived]);
 
   if (isRequestLoading || !isDataLoaded) {
-    return <Loading className="request-content__loading" />;
+    return <Loading className={styles.loading} />;
   } else {
     return (
-      <div className="request-content" style={style}>
+      <div className={styles.root} style={style}>
         {enhancedRequests.length <= 0 ? (
           <EmptyState
             icon={HandHeart}
             message={isReceived ? '아직 받은 요청이 없어요' : '아직 보낸 요청이 없어요'}
           />
         ) : (
-          <ul className="request-content__list">
+          <ul className={styles.list}>
             {enhancedRequests.map((it) => (
-              <li className="request-content__item" key={it.id}>
+              <li key={it.id}>
                 <RequestItem request={it} onUpdateRequest={onUpdate} onCreateChatRoom={onCreate} />
               </li>
             ))}

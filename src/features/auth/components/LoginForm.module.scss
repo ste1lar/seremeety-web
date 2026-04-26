@@ -1,0 +1,33 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: $size-12;
+  font-size: $size-16;
+}
+
+.icon {
+  color: $color-brand;
+  font-size: $size-20;
+}
+
+.input {
+  font-family: $font-family-body;
+  flex: 1;
+  padding: 4.8px;
+  border: none;
+  border-bottom: $border-1 solid $color-border-subtle;
+  font-size: $size-16;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  border-radius: 0;
+}
+
+.submit {
+  width: $size-64;
+  padding: 4.8px;
+  vertical-align: middle;
+  box-sizing: border-box;
+}

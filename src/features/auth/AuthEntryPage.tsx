@@ -17,7 +17,7 @@ export default function AuthEntryPage() {
   }, [currentUser, isLoading, router]);
 
   if (isLoading || currentUser) {
-    return <Loading className="loading--page" />;
+    return <Loading variant="page" />;
   }
 
   return <LoginPage />;

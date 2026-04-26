@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 import BottomMenu from '@/shared/layouts/bottom-menu/BottomMenu';
+import { cx } from '@/shared/lib/classNames';
+import styles from './AppShell.module.scss';
 
 interface AppShellProps {
   children: ReactNode;
@@ -8,8 +10,13 @@ interface AppShellProps {
 
 const AppShell = ({ children, showBottomMenu = false }: AppShellProps) => {
   return (
-    <div className={`app-shell${showBottomMenu ? ' app-shell--with-bottom-menu' : ''}`}>
-      <main className="app-shell__content">{children}</main>
+    <div
+      className={cx(
+        styles.root,
+        showBottomMenu && styles['root--with-menu']
+      )}
+    >
+      <main className={styles.content}>{children}</main>
       {showBottomMenu ? <BottomMenu /> : null}
     </div>
   );

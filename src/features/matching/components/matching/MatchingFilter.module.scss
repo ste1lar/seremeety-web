@@ -1,0 +1,57 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $size-24;
+  padding: $page-padding $page-padding;
+  padding-bottom: $page-bottom-padding;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $size-24;
+}
+
+.subtitle {
+  font-size: $size-18;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-top: 0;
+}
+
+.age-range {
+  display: flex;
+  align-items: center;
+
+  input {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 10%;
+    font-family: $font-family-body;
+    font-size: $size-16;
+    text-align: center;
+    border: none;
+    border-bottom: $border-1 solid $color-border-muted;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  span {
+    font-size: $size-16;
+    padding-left: $size-10;
+    padding-right: $size-40;
+  }
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $size-16;
+  padding-top: $size-16;
+
+  button {
+    padding: $size-4;
+  }
+}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SettingItem from './SettingItem';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import { auth } from '@/firebase';
+import styles from './SettingContent.module.scss';
 
 type SettingEntry =
   | { content: string; kind: 'coming-soon'; title: string }
@@ -37,7 +38,7 @@ const SettingContent = () => {
   };
 
   return (
-    <div className="setting-content">
+    <div className={styles.root}>
       {settingItems.map((item, idx) => (
         <SettingItem key={idx} content={item.content} onClick={() => handleItemClick(item)} />
       ))}

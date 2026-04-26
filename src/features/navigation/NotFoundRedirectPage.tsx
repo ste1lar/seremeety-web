@@ -17,5 +17,5 @@ export default function NotFoundRedirectPage() {
     router.replace(currentUser ? '/matching' : '/');
   }, [currentUser, isLoading, router]);
 
-  return <Loading className="loading--page" />;
+  return <Loading variant="page" />;
 }

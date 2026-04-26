@@ -1,10 +1,12 @@
 import { Check, CircleHelp, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 import { formatTimeStampForList } from '@/shared/lib/format';
-import { useState, type MouseEvent } from 'react';
+import { useState } from 'react';
 import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import type { EnhancedMatchRequest, MatchRequest, RequestStatus } from '@/shared/types/domain';
+import styles from './RequestItem.module.scss';
 
 interface RequestItemProps {
   request: EnhancedMatchRequest;
@@ -27,14 +29,8 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }: RequestItem
   const [requestStatus, setRequestStatus] = useState(request.status);
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
-  const router = useRouter();
   const otherUserUid = request.isReceived ? request.from : request.to;
   const profileHref = `/profile/${otherUserUid}?viewOnly=1`;
-
-  const handleProfilePictureClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    router.push(profileHref);
-  };
 
   const handleRequestUpdate = async (newStatus: Exclude<RequestStatus, 'pending'>) => {
     setRequestStatus(newStatus);
@@ -98,18 +94,20 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }: RequestItem
   const StatusIconComponent = StatusIcon.icon;
 
   return (
-    <article className="request-item">
-      <a className="request-item__image" href={profileHref} onClick={handleProfilePictureClick}>
+    <article className={styles.root}>
+      <Link className={styles.avatar} href={profileHref}>
         {!isImgLoaded && <ImageLoading borderRadius={'50%'} />}
-        <img
+        <Image
           alt={`${request.nickname} 프로필 사진`}
           src={request.profilePictureUrl}
+          fill
+          sizes="64px"
           onLoad={() => setIsImgLoaded(true)}
           style={{ display: !isImgLoaded ? 'none' : 'block' }}
         />
-      </a>
+      </Link>
       <button
-        className="request-item__content"
+        className={styles.action}
         type="button"
         onClick={() => void handleRequestStatusClick()}
         aria-label={
@@ -118,17 +116,17 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }: RequestItem
             : `${request.nickname}님의 매칭 상태 보기`
         }
       >
-        <span className="request-item__info">
-          <span className="request-item__nickname">{request.nickname}</span>
-          <time className="request-item__created-at">{formatTimeStampForList(request.createdAt)}</time>
+        <span className={styles.info}>
+          <span className={styles.nickname}>{request.nickname}</span>
+          <time className={styles.timestamp}>{formatTimeStampForList(request.createdAt)}</time>
         </span>
-        <span className="request-item__status">
-          <span className="request-item__status-icon">
+        <span className={styles.status}>
+          <span className={styles['status-icon']}>
             <StatusIconComponent aria-hidden="true" size={20} style={{ color: StatusIcon.color }} />
           </span>
-          <span className="request-item__status-text">
+          <span className={styles['status-text']}>
             <span>{statusText}</span>
-            {requestStatus === 'pending' && <span className="request-item__progressbar" />}
+            {requestStatus === 'pending' && <span className={styles.progress} />}
           </span>
         </span>
       </button>

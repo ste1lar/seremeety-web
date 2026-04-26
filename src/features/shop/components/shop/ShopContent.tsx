@@ -5,6 +5,7 @@ import ShopItem from './ShopItem';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import { shopItems } from '@/shared/lib/constants';
 import type { BootPayPayload, UserProfile } from '@/shared/types/domain';
+import styles from './ShopContent.module.scss';
 
 interface ShopContentProps {
   onUpdateCoin: (newData: UserProfile) => Promise<void>;
@@ -82,12 +83,12 @@ const ShopContent = ({ userProfile, onUpdateCoin }: ShopContentProps) => {
   };
 
   return (
-    <div className="shop-content">
-      <div className="shop-content__text">
-        음표는 세레미티 매칭 활동에 사용됩니다!
+    <div className={styles.root}>
+      <div className={styles.description}>
+        <p>음표는 세레미티 매칭 활동에 사용됩니다!</p>
         <p>현재는 테스트 환경으로, 실제 결제는 이루어지지 않습니다.</p>
       </div>
-      <button className="shop-content__coupon" type="button" onClick={handleCouponClick}>
+      <button className={styles.coupon} type="button" onClick={handleCouponClick}>
         {'쿠폰 등록'}
         <ChevronRight aria-hidden="true" size="1em" />
       </button>

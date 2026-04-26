@@ -1,38 +1,36 @@
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 import { formatTimeStampForList } from '@/shared/lib/format';
 import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
-import { useState, type MouseEvent } from 'react';
+import { useState } from 'react';
 import type { EnhancedChatRoom } from '@/shared/types/domain';
+import styles from './ChatRoomItem.module.scss';
 
 const ChatRoomItem = ({ id, nickname, profilePictureUrl, lastMessage }: EnhancedChatRoom) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false);
-  const router = useRouter();
   const chatRoomHref = `/chat-room/${id}`;
 
-  const handleChatRoomClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    router.push(chatRoomHref);
-  };
-
   return (
-    <a className="chat-room-item" href={chatRoomHref} onClick={handleChatRoomClick}>
-      <figure className="chat-room-item__image">
+    <Link className={styles.root} href={chatRoomHref}>
+      <figure className={styles.avatar}>
         {!isImgLoaded && <ImageLoading borderRadius={'50%'} />}
-        <img
+        <Image
           alt={`${nickname} 프로필 사진`}
           src={profilePictureUrl}
+          fill
+          sizes="64px"
           onLoad={() => setIsImgLoaded(true)}
           style={{ display: !isImgLoaded ? 'none' : 'block' }}
         />
       </figure>
-      <div className="chat-room-item__content">
-        <header className="chat-room-item__info">
-          <strong className="chat-room-item__nickname">{nickname}</strong>
-          <time className="chat-room-item__sent-at">{formatTimeStampForList(lastMessage.sentAt)}</time>
+      <div className={styles.content}>
+        <header className={styles.info}>
+          <strong className={styles.nickname}>{nickname}</strong>
+          <time className={styles.timestamp}>{formatTimeStampForList(lastMessage.sentAt)}</time>
         </header>
-        <p className="chat-room-item__message">{lastMessage.text}</p>
+        <p className={styles.message}>{lastMessage.text}</p>
       </div>
-    </a>
+    </Link>
   );
 };
 

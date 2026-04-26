@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent } from 'react';
 import { Send } from 'lucide-react';
+import styles from './ChatRoomInput.module.scss';
 
 interface ChatRoomInputProps {
   chatRoomId: string;
@@ -24,17 +25,26 @@ const ChatRoomInput = ({ onUpdateChatRoom, chatRoomId }: ChatRoomInputProps) => 
   };
 
   return (
-    <div className="chat-room-input">
+    <div className={styles.root}>
+      <label className="sr-only" htmlFor="chat-message-input">
+        메시지 입력
+      </label>
       <input
+        id="chat-message-input"
         name="messageInput"
         type="text"
         value={chatMessage}
         onChange={handleInputMessage}
-        className="chat-room-input__field"
+        className={styles.input}
         placeholder="메시지 입력"
       />
       {chatMessage.trim() !== '' && (
-        <button className="chat-room-input__icon" type="button" onClick={handleSendMessage}>
+        <button
+          className={styles.send}
+          type="button"
+          onClick={handleSendMessage}
+          aria-label="메시지 보내기"
+        >
           <Send aria-hidden="true" size="1em" />
         </button>
       )}

@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { formatDateLabel, isSameDate } from '@/shared/lib/format';
 import type { ReactNode } from 'react';
 import type { ChatMessageRecord } from '@/shared/types/domain';
+import styles from './ChatRoomContent.module.scss';
 
 interface ChatRoomContentProps {
   chatRoomMessages: ChatMessageRecord[];
@@ -59,7 +60,7 @@ const ChatRoomContent = ({
   }, [visibleCount]);
 
   return (
-    <div className="chat-room-content">
+    <div className={styles.root}>
       <div ref={ref} />
       {chatRoomMessages &&
         chatRoomMessages.slice(-visibleCount).reduce<ReactNode[]>((acc, message, index, arr) => {
@@ -68,7 +69,7 @@ const ChatRoomContent = ({
 
           if (isNewDate) {
             acc.push(
-              <div key={`date-${message.id}`} className="chat-room-content__date-label">
+              <div key={`date-${message.id}`} className={styles['date-label']}>
                 {formatDateLabel(message.sentAt)}
               </div>
             );

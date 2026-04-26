@@ -1,26 +1,26 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
-import type { MouseEventHandler } from 'react';
+import Link from 'next/link';
+import { cx } from '@/shared/lib/classNames';
+import styles from './MenuItem.module.scss';
 
 interface MenuItemProps {
   icon: LucideIcon;
   dataRoute: string;
   label: string;
   isSelected: boolean;
-  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-const MenuItem = ({ icon: Icon, dataRoute, label, isSelected, onClick }: MenuItemProps) => {
+const MenuItem = ({ icon: Icon, dataRoute, label, isSelected }: MenuItemProps) => {
   return (
-    <button
-      className={`menu-item${isSelected ? ' menu-item--selected' : ''}`}
-      data-route={dataRoute}
-      type="button"
-      onClick={onClick}
+    <Link
+      className={cx(styles.root, isSelected && styles['root--selected'])}
+      href={dataRoute}
+      aria-current={isSelected ? 'page' : undefined}
     >
       <Icon aria-hidden="true" size="1em" />
-      <span className="menu-item__label">{label}</span>
-    </button>
+      <span className={styles.label}>{label}</span>
+    </Link>
   );
 };
 

@@ -1,0 +1,18 @@
+@use '@/styles/base' as *;
+
+.root {
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding $page-padding;
+  padding-bottom: $page-bottom-padding;
+  gap: $size-24;
+  box-sizing: border-box;
+}
+
+.loading {
+  min-height: 288px;
+}

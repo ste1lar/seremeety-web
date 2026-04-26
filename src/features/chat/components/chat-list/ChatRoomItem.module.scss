@@ -1,0 +1,68 @@
+@use '@/styles/base' as *;
+
+.root {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: $size-24;
+  padding-bottom: $size-15;
+  border-bottom: $border-1 solid $color-border-subtle;
+  width: 100%;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  @include hover-opacity(0.75);
+}
+
+.avatar {
+  margin: 0;
+  width: $size-64;
+  position: relative;
+  aspect-ratio: 1 / 1;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $size-12;
+}
+
+.info {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.nickname {
+  font-size: $size-16;
+  font-weight: 700;
+  margin: 0;
+}
+
+.timestamp {
+  font-size: $size-12;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+.message {
+  font-size: $size-14;
+  color: $color-text-secondary;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin: 0;
+}

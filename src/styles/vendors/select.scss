@@ -1,14 +1,9 @@
 @use '@/styles/base' as *;
 
-#mbti,
-#university {
-  flex: 1;
-}
-
 .my-profile-select {
   &__control {
     background-color: $color-white !important;
-    border: $border-width-thin solid $color-border-muted !important;
+    border: $border-1 solid $color-border-muted !important;
     outline: none !important;
     box-shadow: none !important;
     padding: 0 !important;
@@ -30,12 +25,12 @@
   &__single-value,
   &__option {
     font-size: $size-16 !important;
-    border: $border-width-thin solid transparent !important;
+    border: $border-1 solid transparent !important;
   }
 
   &__option--is-focused {
     background-color: $color-white !important;
-    border: $border-width-thin solid $color-brand !important;
+    border: $border-1 solid $color-brand !important;
   }
 
   &__option--is-selected {

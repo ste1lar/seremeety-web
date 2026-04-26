@@ -1,0 +1,79 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  padding-bottom: $size-30;
+
+  &--my {
+    flex-direction: row-reverse;
+
+    .content {
+      max-width: 384px;
+    }
+
+    .bubble {
+      background-color: $color-brand;
+      color: $color-white;
+    }
+  }
+
+  &--other {
+    .content {
+      max-width: 352px;
+    }
+
+    .bubble {
+      background-color: $color-border-subtle;
+    }
+  }
+}
+
+.avatar {
+  display: block;
+  cursor: pointer;
+  width: $size-44;
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding-inline: 0;
+  border: 0;
+  @include hover-opacity(0.75);
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.content {
+  display: flex;
+  justify-content: end;
+  flex-direction: column;
+  margin: 0 $size-10;
+  gap: $size-4;
+}
+
+.nickname {
+  font-size: $size-12;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+.bubble {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: $size-8;
+  border-radius: $size-12;
+  font-size: $size-14;
+  line-height: 1.4;
+}
+
+.timestamp {
+  display: flex;
+  align-items: flex-end;
+  font-size: $size-10;
+  color: $color-text-secondary;
+}

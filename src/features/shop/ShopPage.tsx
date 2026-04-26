@@ -10,6 +10,8 @@ import PageTransition from '@/shared/components/common/PageTransition';
 import Loading from '@/shared/components/common/loading/Loading';
 import ShopHeader from '@/features/shop/components/shop/ShopHeader';
 import ShopContent from '@/features/shop/components/shop/ShopContent';
+import shopContentStyles from './components/shop/ShopContent.module.scss';
+import styles from './ShopPage.module.scss';
 
 const ShopPage = () => {
   const state = useContext(MypageStateContext);
@@ -17,10 +19,10 @@ const ShopPage = () => {
   const { onUpdateCoin } = useContext(MypageDispatchContext);
 
   return (
-    <div className="shop">
+    <section className={styles.root} aria-labelledby="shop-heading">
       <PageTransition>
         {isFetching || !state ? (
-          <Loading className="shop-content__loading" />
+          <Loading className={shopContentStyles.loading} />
         ) : (
           <>
             <ShopHeader userProfile={state} />
@@ -28,7 +30,7 @@ const ShopPage = () => {
           </>
         )}
       </PageTransition>
-    </div>
+    </section>
   );
 };
 

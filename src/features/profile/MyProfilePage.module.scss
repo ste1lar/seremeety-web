@@ -1,0 +1,48 @@
+@use '@/styles/base' as *;
+
+.root {
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: $page-padding $page-padding;
+  padding-bottom: $page-bottom-padding;
+  gap: $size-20;
+  box-sizing: border-box;
+
+  &--loading {
+    min-height: 288px;
+  }
+}
+
+.loading {
+  min-height: 288px;
+  padding-inline: 0;
+}
+
+.image-section {
+  width: 100%;
+  margin: 0;
+}
+
+.image-label {
+  display: block;
+  width: 100%;
+  position: relative;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+
+  img {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: $border-1 solid $color-border-subtle;
+    border-radius: $size-5;
+    object-fit: cover;
+  }
+}

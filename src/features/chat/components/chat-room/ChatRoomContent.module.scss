@@ -1,0 +1,19 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: $size-30 $size-16 0;
+  box-sizing: border-box;
+}
+
+.date-label {
+  width: fit-content;
+  background-color: $color-border-subtle;
+  color: $color-text-secondary;
+  font-size: $size-12;
+  text-align: center;
+  padding: 4.8px $size-16;
+  margin: 0 auto $size-30;
+  border-radius: $radius-9999;
+}

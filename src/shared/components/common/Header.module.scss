@@ -1,0 +1,103 @@
+@use '@/styles/base' as *;
+
+.root {
+  position: sticky;
+  top: 0;
+  background-color: $color-white;
+  z-index: $z-sticky;
+  display: flex;
+  flex-direction: column;
+  gap: $size-24;
+  padding: $size-20 $page-padding;
+  border-bottom: $border-1 solid $color-border-subtle;
+}
+
+.logo {
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  align-items: end;
+  min-height: $size-44;
+  font-family: $font-family-brand;
+  font-size: $size-28;
+  font-weight: 700;
+  color: $color-brand;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+
+  img {
+    width: $size-48;
+  }
+}
+
+.back {
+  min-height: $size-44;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  @include hover-opacity(0.5);
+  position: absolute;
+  top: 50%;
+  left: calc(#{$page-padding} - #{$size-8});
+  width: $size-44;
+  height: $size-44;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $size-20;
+  transform: translateY(-50%);
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $size-16;
+}
+
+.title {
+  font-family: $font-family-heading;
+  font-weight: 500;
+  font-size: $size-24;
+  margin: 0;
+  letter-spacing: 0.8px;
+}
+
+.menu {
+  font-family: $font-family-heading;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: $size-16;
+
+  svg {
+    cursor: pointer;
+    font-size: $size-20;
+  }
+
+  > :is(a, button) {
+    min-height: $size-44;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    @include hover-opacity(0.5);
+  }
+
+  > :is(a, button, div) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $size-8;
+    padding: $size-8 $size-12;
+    font-size: $size-14;
+  }
+
+  > :is(a, button)[aria-label] {
+    width: $size-44;
+    min-width: $size-44;
+    padding: 0;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { GraduationCap, Heart, Mars, Navigation, UserRound, Venus } from 'lucide-react';
+import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import PageTransition from '@/shared/components/common/PageTransition';
 import Loading from '@/shared/components/common/loading/Loading';
@@ -18,7 +19,9 @@ import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal'
 import { auth } from '@/firebase';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
 import { isRequestExist } from '@/shared/lib/firebase/requests';
+import { cx } from '@/shared/lib/classNames';
 import type { UserProfile } from '@/shared/types/domain';
+import styles from './ProfilePage.module.scss';
 
 const ProfilePage = () => {
   const [modal, setModal] = useState<ModalConfig | null>(null);
@@ -164,7 +167,7 @@ const ProfilePage = () => {
 
   return (
     <PageTransition>
-      <section className="profile" aria-labelledby="profile-title">
+      <section className={styles.root} aria-labelledby="profile-title">
         <Header
           variant="profile"
           title="PROFILE"
@@ -173,64 +176,67 @@ const ProfilePage = () => {
           showBackButton
         />
 
-        <article className="profile-content">
+        <article className={styles.content}>
           {isContentLoading ? (
-            <Loading className="profile-content__loading" />
+            <Loading className={styles.loading} />
           ) : (
             userProfile && (
               <>
-                <figure className="profile-content__media">
+                <figure className={styles.media}>
                   {!isImgLoaded && <ImageLoading borderRadius="0.3125rem" />}
-                  <img
+                  <Image
                     alt={`${userProfile.nickname} 프로필 사진`}
                     src={userProfile.profilePictureUrl}
+                    fill
+                    sizes="(max-width: 480px) calc(100vw - 3rem), 432px"
                     onLoad={() => setIsImgLoaded(true)}
-                    className={[
-                      'profile-content__img',
-                      !isImgLoaded && 'profile-content__img--hidden',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
+                    className={cx(
+                      styles.image,
+                      !isImgLoaded && styles['image--hidden']
+                    )}
                   />
                 </figure>
 
-                <header className="profile-content__info-upper">
-                  <h2 className="profile-content__nickname">{userProfile.nickname}</h2>
-                  <p className="profile-content__age-gender">
+                <header className={styles['info-header']}>
+                  <h2 className={styles.nickname}>{userProfile.nickname}</h2>
+                  <p className={styles.meta}>
                     {userProfile.age}
                     <GenderIcon
                       aria-hidden="true"
-                      className={`profile-content__gender-icon ${userProfile.gender}`}
+                      className={cx(
+                        styles['gender-icon'],
+                        styles[userProfile.gender]
+                      )}
                       size="1em"
                     />
                   </p>
                 </header>
 
-                <ul className="profile-content__info-list">
-                  <li className="profile-content__info">
+                <ul className={styles['info-list']}>
+                  <li className={styles.info}>
                     <Heart aria-hidden="true" size="1em" />
                     {userProfile.mbti}
                   </li>
-                  <li className="profile-content__info">
+                  <li className={styles.info}>
                     <GraduationCap aria-hidden="true" size="1em" />
                     {userProfile.university}
                   </li>
-                  <li className="profile-content__info">
+                  <li className={styles.info}>
                     <Navigation aria-hidden="true" size="1em" />
                     {userProfile.place}
                   </li>
                 </ul>
 
-                <section className="profile-content__intro" aria-labelledby="profile-intro-title">
-                  <h3 className="profile-content__intro-label" id="profile-intro-title">
+                <section className={styles.intro} aria-labelledby="profile-intro-title">
+                  <h3 className={styles['intro-heading']} id="profile-intro-title">
                     <UserRound aria-hidden="true" size="1em" />
                     자기소개
                   </h3>
-                  <p className="profile-content__intro-text">{userProfile.introduce}</p>
+                  <p className={styles['intro-text']}>{userProfile.introduce}</p>
                 </section>
 
                 {!isViewOnly && (
-                  <footer className="profile-content__actions">
+                  <footer className={styles.actions}>
                     <Button text="매칭 요청" onClick={() => void handleRequestClick()} />
                   </footer>
                 )}

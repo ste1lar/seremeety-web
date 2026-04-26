@@ -11,10 +11,12 @@ const ShopHeader = ({ userProfile }: ShopHeaderProps) => {
     <Header
       variant="shop"
       title="SHOP"
+      headingLevel="h1"
+      titleId="shop-heading"
       showBackButton
       menu={
         <>
-          <div className="header__note">
+          <div>
             <Music4 aria-hidden="true" size="1em" />
             {userProfile.coin}
           </div>

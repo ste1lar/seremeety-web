@@ -2,6 +2,7 @@ import { ChevronLeft } from 'lucide-react';
 import { Cropper, type ReactCropperElement } from 'react-cropper';
 import { useRef } from 'react';
 import type { CropperModalProps } from '@/shared/types/domain';
+import styles from './CropperModal.module.scss';
 
 const CropperModal = ({
   selectedImage,
@@ -21,24 +22,25 @@ const CropperModal = ({
   };
 
   return (
-    <div className="cropper-modal-custom">
-      <div className="cropper-modal-custom__menu">
+    <div className={styles.root}>
+      <div className={styles.toolbar}>
         <button
-          className="cropper-modal-custom__back-button"
+          className={styles.back}
           type="button"
           onClick={() => setOpenCropper(false)}
+          aria-label="이미지 자르기 닫기"
         >
-          <ChevronLeft aria-hidden="true" className="cropper-modal-custom__icon" size="1em" />
+          <ChevronLeft aria-hidden="true" className={styles.icon} size="1em" />
         </button>
         <button
-          className="cropper-modal-custom__apply-button"
+          className={styles.apply}
           type="button"
           onClick={handleCropComplete}
         >
           적용
         </button>
       </div>
-      <div className="cropper-modal-custom__wrapper">
+      <div className={styles.canvas}>
         <Cropper
           src={selectedImage}
           crop={onCrop}

@@ -1,4 +1,6 @@
 import type { ChangeEventHandler } from 'react';
+import { cx } from '@/shared/lib/classNames';
+import styles from './CustomRadio.module.scss';
 
 interface CustomRadioProps {
   name: string;
@@ -19,9 +21,11 @@ const CustomRadio = ({
 }: CustomRadioProps) => {
   return (
     <label
-      className={['custom-radio', checked && 'custom-radio--checked', disabled && 'custom-radio--disabled']
-        .filter(Boolean)
-        .join(' ')}
+      className={cx(
+        styles['custom-radio'],
+        checked && styles['custom-radio--checked'],
+        disabled && styles['custom-radio--disabled']
+      )}
     >
       <input
         type="radio"
@@ -31,10 +35,10 @@ const CustomRadio = ({
         onChange={onChange}
         disabled={disabled}
       />
-      <span className="custom-radio__circle">
-        <span className="custom-radio__check" />
+      <span className={styles['custom-radio__circle']}>
+        <span className={styles['custom-radio__check']} />
       </span>
-      <span className="custom-radio__label">{label}</span>
+      <span className={styles['custom-radio__label']}>{label}</span>
     </label>
   );
 };

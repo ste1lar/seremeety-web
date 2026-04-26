@@ -6,6 +6,7 @@ import type {
   HTMLInputTypeAttribute,
   MouseEventHandler,
 } from 'react';
+import styles from './LoginForm.module.scss';
 
 interface LoginFormProps {
   btnText: string;
@@ -27,13 +28,18 @@ const LoginForm = ({
   onSubmit,
 }: LoginFormProps) => {
   const InputIcon = type === 'tel' ? Phone : Hash;
+  const inputName = type === 'tel' ? 'phoneNumber' : 'verificationCode';
 
   return (
-    <div className="login-form">
-      <InputIcon aria-hidden="true" className="login-form__icon" size="1em" />
+    <div className={styles.root}>
+      <InputIcon aria-hidden="true" className={styles.icon} size="1em" />
+      <label className="sr-only" htmlFor={inputName}>
+        {placeholder ?? btnText}
+      </label>
       <input
-        className="login-form__input"
-        name={type === 'tel' ? 'phoneNumber' : 'verificationCode'}
+        className={styles.input}
+        id={inputName}
+        name={inputName}
         type={type}
         value={value}
         onChange={onChange}

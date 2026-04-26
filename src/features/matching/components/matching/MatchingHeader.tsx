@@ -10,10 +10,16 @@ const MatchingHeader = ({ onFilterClick }: MatchingHeaderProps) => {
     <Header
       variant="matching"
       title="DISCOVER"
+      headingLevel="h1"
+      titleId="matching-heading"
       menuAriaLabel="매칭 메뉴"
       menu={
         <>
-          <button className="header__filter" type="button" onClick={onFilterClick}>
+          <button
+            type="button"
+            onClick={onFilterClick}
+            aria-label="매칭 필터 열기"
+          >
             <SlidersHorizontal aria-hidden="true" size="1em" />
           </button>
         </>

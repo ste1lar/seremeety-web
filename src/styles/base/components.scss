@@ -20,6 +20,12 @@ button {
   padding: 0;
 }
 
+html.common-modal-open,
+body.common-modal-open {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

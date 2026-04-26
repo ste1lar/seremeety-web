@@ -1,4 +1,5 @@
 import { useSpring, animated } from '@react-spring/web';
+import styles from './ImageLoading.module.scss';
 
 interface ImageLoadingProps {
   borderRadius?: string;
@@ -14,7 +15,7 @@ const ImageLoading = ({ borderRadius }: ImageLoadingProps) => {
 
   return (
     <animated.div
-      className="image-loading"
+      className={styles['image-loading']}
       style={{
         ...gradientAnimation,
         position: 'absolute',

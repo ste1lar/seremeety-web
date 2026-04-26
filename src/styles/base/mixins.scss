@@ -8,7 +8,7 @@
   }
 }
 
-@mixin hover-opacity($opacity, $duration: $duration-base, $timing: $ease-standard) {
+@mixin hover-opacity($opacity, $duration: 0.3s, $timing: ease) {
   transition: opacity $duration $timing;
 
   @include hover-capable {
@@ -16,7 +16,7 @@
   }
 }
 
-@mixin hover-color($color: $color-brand, $duration: $duration-base, $timing: $ease-standard) {
+@mixin hover-color($color: $color-brand, $duration: 0.3s, $timing: ease) {
   transition: color $duration $timing;
 
   @include hover-capable {

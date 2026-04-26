@@ -1,0 +1,35 @@
+@use '@/styles/base' as *;
+
+.root {
+  position: sticky;
+  top: 0;
+  background-color: $color-white;
+  z-index: $z-sticky;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $size-15;
+  border-bottom: $border-1 solid $color-border-subtle;
+  font-size: $size-20;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 500;
+  margin: 0;
+}
+
+.menu {
+  display: flex;
+  gap: $size-10;
+}
+
+.icon {
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  @include hover-opacity(0.5);
+}

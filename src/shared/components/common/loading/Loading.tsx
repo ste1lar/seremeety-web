@@ -1,20 +1,24 @@
 import type { HTMLAttributes } from 'react';
+import { cx } from '@/shared/lib/classNames';
+import styles from './Loading.module.scss';
 
-type LoadingProps = HTMLAttributes<HTMLDivElement>;
+interface LoadingProps extends HTMLAttributes<HTMLDivElement> {
+  variant?: 'page';
+}
 
-const Loading = ({ className, ...rest }: LoadingProps) => {
+const Loading = ({ className, variant, ...rest }: LoadingProps) => {
   return (
     <div
       {...rest}
-      className={['loading', className].filter(Boolean).join(' ')}
+      className={cx(styles.root, variant === 'page' && styles['root--page'], className)}
       role="status"
       aria-live="polite"
       aria-busy="true"
     >
-      <div className="loading__dots" aria-hidden="true">
-        <span className="loading__dot" />
-        <span className="loading__dot" />
-        <span className="loading__dot" />
+      <div className={styles.dots} aria-hidden="true">
+        <span className={styles.dot} />
+        <span className={styles.dot} />
+        <span className={styles.dot} />
       </div>
       <span className="sr-only">로딩 중</span>
     </div>

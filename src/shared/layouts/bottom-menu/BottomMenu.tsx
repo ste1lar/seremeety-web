@@ -1,13 +1,12 @@
 'use client';
 
 import { useCallback } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { menuItems } from '@/shared/lib/constants';
 import MenuItem from './MenuItem';
-import type { MouseEvent } from 'react';
+import styles from './BottomMenu.module.scss';
 
 const BottomMenu = () => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const isSelected = useCallback(
@@ -19,24 +18,13 @@ const BottomMenu = () => {
     [pathname]
   );
 
-  const handleMenuClick = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
-      const route = e.currentTarget.getAttribute('data-route');
-      if (route) {
-        router.push(route);
-      }
-    },
-    [router]
-  );
-
   return (
-    <nav className="bottom-menu" aria-label="Primary">
+    <nav className={styles.root} aria-label="주요 메뉴">
       {menuItems.map((item) => (
         <MenuItem
           key={item.dataRoute}
           {...item}
           isSelected={isSelected(item.dataRoute)}
-          onClick={handleMenuClick}
         />
       ))}
     </nav>

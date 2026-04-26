@@ -1,0 +1,46 @@
+@use '@/styles/base' as *;
+
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $color-black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $size-12;
+  z-index: $z-overlay;
+  font-family: $font-family-body;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: $cropper-max-width;
+  font-size: $size-16;
+  color: $color-white;
+  padding-top: $size-12;
+}
+
+.back,
+.apply {
+  cursor: pointer;
+  margin: $size-10;
+  font-weight: 500;
+  padding: 0;
+  border: 0;
+  color: inherit;
+}
+
+.canvas {
+  width: 100%;
+  max-width: $cropper-max-width;
+}
+
+.icon {
+  color: $color-white;
+}

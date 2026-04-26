@@ -20,7 +20,9 @@ import { myProfileForm } from '@/shared/lib/constants';
 import { getAgeByBirthDate } from '@/shared/lib/format';
 import { compressImage } from '@/shared/lib/media';
 import { validationRules } from '@/shared/lib/validation';
+import { cx } from '@/shared/lib/classNames';
 import type { ProfileFieldId, UserProfile } from '@/shared/types/domain';
+import styles from './MyProfilePage.module.scss';
 
 const MyProfilePage = () => {
   const state = useContext(MypageStateContext);
@@ -188,7 +190,7 @@ const MyProfilePage = () => {
 
   return (
     <PageTransition>
-      <section className="my-profile" aria-labelledby="my-profile-title">
+      <section className={styles.root} aria-labelledby="my-profile-title">
         <Header
           variant="my-profile"
           title="MY PROFILE"
@@ -199,7 +201,6 @@ const MyProfilePage = () => {
           menu={
             <>
               <button
-                className="header__save-profile"
                 type="submit"
                 form="my-profile-form"
                 disabled={isFetching || isUpdating || !formData}
@@ -211,11 +212,11 @@ const MyProfilePage = () => {
         />
 
         {isFetching || !state || !formData ? (
-          <div className="my-profile-content my-profile-content--loading">
-            <Loading className="my-profile-content__loading" />
+          <div className={cx(styles.content, styles['content--loading'])}>
+            <Loading className={styles.loading} />
           </div>
         ) : (
-          <form className="my-profile-content" id="my-profile-form" onSubmit={handleSubmit}>
+          <form className={styles.content} id="my-profile-form" onSubmit={handleSubmit}>
             {openCropper && (
               <CropperModal
                 selectedImage={selectedImage ?? ''}
@@ -225,9 +226,9 @@ const MyProfilePage = () => {
               />
             )}
 
-            <figure className="my-profile-content__image-section">
+            <figure className={styles['image-section']}>
               <label
-                className="my-profile-content__image-button"
+                className={styles['image-label']}
                 htmlFor="my-profile-image-upload"
               >
                 <span className="sr-only">프로필 사진 변경</span>
@@ -244,6 +245,7 @@ const MyProfilePage = () => {
 
             <input
               id="my-profile-image-upload"
+              name="profilePicture"
               type="file"
               accept="image/*"
               style={{ display: 'none' }}
