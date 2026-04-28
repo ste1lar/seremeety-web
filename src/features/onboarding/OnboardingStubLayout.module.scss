@@ -1,0 +1,48 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $size-20;
+  padding: $size-32 $page-padding;
+  padding-bottom: $page-bottom-padding;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.step {
+  font-size: $size-14;
+  color: $color-text-secondary;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: $size-28;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.description {
+  font-size: $size-16;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+  margin-top: $size-12;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $size-12;
+  padding-top: $size-32;
+}
