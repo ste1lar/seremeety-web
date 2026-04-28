@@ -28,16 +28,6 @@ export function AuthSessionProvider({ children }: AuthSessionProviderProps) {
   const [isCurrentUserReady, setIsCurrentUserReady] = useState(false);
 
   useEffect(() => {
-    const handleContextMenu = (event: Event) => event.preventDefault();
-
-    document.addEventListener('contextmenu', handleContextMenu);
-
-    return () => {
-      document.removeEventListener('contextmenu', handleContextMenu);
-    };
-  }, []);
-
-  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setIsInitializing(true);
 

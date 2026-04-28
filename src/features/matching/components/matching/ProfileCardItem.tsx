@@ -2,7 +2,6 @@ import { useState, type MouseEvent } from 'react';
 import { Mars, Venus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
 import React from 'react';
 import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import type { UserProfile } from '@/shared/types/domain';
@@ -23,7 +22,7 @@ const ProfileCardItem = ({
   place,
   profileStatus,
 }: ProfileCardItemProps) => {
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const profileHref = uid ? `/profile/${uid}` : '#';
   const GenderIcon = gender === 'male' ? Mars : Venus;
 
@@ -37,14 +36,12 @@ const ProfileCardItem = ({
   return (
     <Link className={styles.root} href={profileHref} onClick={handleProfileCardClick}>
       <figure className={styles.media}>
-        {!isImgLoaded && <ImageLoading borderRadius={'0.3125rem'} />}
         <Image
           alt={profileStatus === 1 ? `${nickname} 프로필 사진` : '비공개 프로필 기본 이미지'}
-          src={profileStatus === 1 ? profilePictureUrl : sereMeetyLogo.src}
+          src={profileStatus !== 1 || imgError ? sereMeetyLogo.src : profilePictureUrl}
           fill
           sizes="(max-width: 480px) 45vw, 12rem"
-          onLoad={() => setIsImgLoaded(true)}
-          style={{ display: !isImgLoaded ? 'none' : 'block' }}
+          onError={() => setImgError(true)}
         />
       </figure>
       <div

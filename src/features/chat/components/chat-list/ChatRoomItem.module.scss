@@ -17,15 +17,14 @@
 .avatar {
   margin: 0;
   width: $size-64;
+  height: $size-64;
   position: relative;
-  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  @include image-skeleton;
 
   img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
     object-fit: cover;
   }
 }

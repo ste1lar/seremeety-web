@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { GraduationCap, Heart, Mars, Navigation, UserRound, Venus } from 'lucide-react';
 import Image from 'next/image';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import PageTransition from '@/shared/components/common/PageTransition';
 import Loading from '@/shared/components/common/loading/Loading';
 import Header from '@/shared/components/common/Header';
@@ -14,7 +15,6 @@ import {
 } from '@/features/profile/context/MypageContext';
 import { RequestDispatchContext } from '@/features/request/context/RequestContext';
 import Button from '@/shared/components/common/button/Button';
-import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import { auth } from '@/firebase';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
@@ -34,7 +34,7 @@ const ProfilePage = () => {
   const { onCreate } = useContext(RequestDispatchContext);
   const router = useRouter();
   const isViewOnly = searchParams.get('viewOnly') === '1';
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const [isProfileLoading, setIsProfileLoading] = useState(true);
 
   const openAlert = useCallback(
@@ -98,7 +98,7 @@ const ProfilePage = () => {
   }, [openAlert, router, state, uid]);
 
   useEffect(() => {
-    setIsImgLoaded(false);
+    setImgError(false);
   }, [userProfile?.profilePictureUrl]);
 
   const submitRequest = async () => {
@@ -183,17 +183,14 @@ const ProfilePage = () => {
             userProfile && (
               <>
                 <figure className={styles.media}>
-                  {!isImgLoaded && <ImageLoading borderRadius="0.3125rem" />}
                   <Image
                     alt={`${userProfile.nickname} 프로필 사진`}
-                    src={userProfile.profilePictureUrl}
+                    src={imgError ? sereMeetyLogo.src : userProfile.profilePictureUrl}
                     fill
+                    priority
                     sizes="(max-width: 480px) calc(100vw - 3rem), 432px"
-                    onLoad={() => setIsImgLoaded(true)}
-                    className={cx(
-                      styles.image,
-                      !isImgLoaded && styles['image--hidden']
-                    )}
+                    onError={() => setImgError(true)}
+                    className={styles.image}
                   />
                 </figure>
 

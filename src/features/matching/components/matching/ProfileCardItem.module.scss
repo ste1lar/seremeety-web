@@ -22,14 +22,11 @@
   width: 100%;
   position: relative;
   aspect-ratio: 1 / 1;
+  border-radius: $size-5;
+  overflow: hidden;
+  @include image-skeleton;
 
   img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: $border-1 solid $color-border-subtle;
-    border-radius: $size-5;
     object-fit: cover;
   }
 }

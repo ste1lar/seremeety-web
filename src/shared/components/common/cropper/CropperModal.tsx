@@ -17,7 +17,7 @@ const CropperModal = ({
     if (!cropper) {
       return;
     }
-    const croppedDataURL = cropper.getCroppedCanvas().toDataURL();
+    const croppedDataURL = cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.85);
     setCroppedImage(croppedDataURL);
   };
 

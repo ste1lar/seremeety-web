@@ -2,6 +2,7 @@
 
 import React, { useEffect, useReducer, useState, type ReactNode } from 'react';
 import {
+  compressImage,
   dataURLToFile,
   uploadImageToStorage,
 } from '@/shared/lib/media';
@@ -29,6 +30,7 @@ interface MypageDispatchValue {
 
 interface MypageStatusValue {
   isFetching: boolean;
+  isFetchError: boolean;
   isUpdating: boolean;
 }
 
@@ -39,6 +41,7 @@ const defaultDispatchValue: MypageDispatchValue = {
 
 const defaultStatusValue: MypageStatusValue = {
   isFetching: true,
+  isFetchError: false,
   isUpdating: false,
 };
 
@@ -56,6 +59,7 @@ interface MypageProviderProps {
 export const MypageProvider = ({ children }: MypageProviderProps) => {
   const [state, dispatch] = useReducer(reducer, null as UserProfile | null);
   const [isFetching, setIsFetching] = useState(true);
+  const [isFetchError, setIsFetchError] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
@@ -73,6 +77,7 @@ export const MypageProvider = ({ children }: MypageProviderProps) => {
         }
       } catch (error) {
         console.error(error);
+        setIsFetchError(true);
       } finally {
         setIsFetching(false);
       }
@@ -100,7 +105,8 @@ export const MypageProvider = ({ children }: MypageProviderProps) => {
         nextData.profilePictureUrl.startsWith('data:')
       ) {
         const file = dataURLToFile(nextData.profilePictureUrl, 'profile_picture.jpg');
-        const uploadedUrl = await uploadImageToStorage(file, currentUid);
+        const compressed = await compressImage(file);
+        const uploadedUrl = await uploadImageToStorage(compressed, currentUid);
         nextData.profilePictureUrl = uploadedUrl;
       }
 
@@ -142,7 +148,7 @@ export const MypageProvider = ({ children }: MypageProviderProps) => {
   };
 
   return (
-    <MypageStatusContext.Provider value={{ isFetching, isUpdating }}>
+    <MypageStatusContext.Provider value={{ isFetching, isFetchError, isUpdating }}>
       <MypageStateContext.Provider value={state}>
         <MypageDispatchContext.Provider value={{ onUpdate, onUpdateCoin }}>
           {children}

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatTimeStampForMessage } from '@/shared/lib/format';
-import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
 import { cx } from '@/shared/lib/classNames';
+import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import type { TimestampLike } from '@/shared/types/domain';
 import styles from './ChatMessage.module.scss';
 
@@ -24,7 +24,7 @@ const ChatMessage = ({
   text,
   sentAt,
 }: ChatMessageProps) => {
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div
@@ -39,14 +39,12 @@ const ChatMessage = ({
           href={`/profile/${sender}?viewOnly=1`}
           aria-label={`${nickname} 프로필 보기`}
         >
-          {!isImgLoaded && <ImageLoading borderRadius={'50%'} />}
           <Image
             alt={`${nickname} 프로필 사진`}
-            src={profilePictureUrl}
+            src={imgError ? sereMeetyLogo.src : profilePictureUrl}
             fill
             sizes="44px"
-            onLoad={() => setIsImgLoaded(true)}
-            style={{ display: !isImgLoaded ? 'none' : 'block' }}
+            onError={() => setImgError(true)}
           />
         </Link>
       )}

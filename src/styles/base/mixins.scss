@@ -29,3 +29,19 @@
   backdrop-filter: blur($blur);
   -webkit-backdrop-filter: blur($blur);
 }
+
+@keyframes image-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@mixin image-skeleton {
+  background-color: #f0f0f0;
+  background-image: linear-gradient(90deg, #f0f0f0 0%, #e4e4e4 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: image-skeleton-shimmer 1.5s linear infinite;
+}

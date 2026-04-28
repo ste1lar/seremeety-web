@@ -23,16 +23,14 @@
 
 .image-wrapper {
   width: 100%;
+  height: 96px;
   position: relative;
-  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: $border-1 solid $color-border-subtle;
+  @include image-skeleton;
 
   img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: $border-1 solid $color-border-subtle;
-    border-radius: 50%;
     object-fit: cover;
   }
 }

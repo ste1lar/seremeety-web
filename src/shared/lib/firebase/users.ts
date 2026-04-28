@@ -17,19 +17,18 @@ import { normalizeUserProfile } from '@/shared/lib/firebase/normalizers';
 import type { UserProfile } from '@/shared/types/domain';
 
 export const checkNicknameDuplicate = async (value: string): Promise<boolean> => {
-  const userSnapshot = await getDocs(collection(db, 'users'));
   const currentUid = auth.currentUser?.uid;
+  const q = query(collection(db, 'users'), where('nickname', '==', value));
+  const querySnapshot = await getDocs(q);
 
-  for (const userDoc of userSnapshot.docs) {
-    const uid = userDoc.id;
-    const userData = normalizeUserProfile(userDoc.data(), uid);
-
-    if (uid !== currentUid && value === userData.nickname) {
-      return false;
-    }
+  if (querySnapshot.empty) {
+    return true;
   }
-
-  return true;
+  // 결과가 본인 문서 하나뿐이면 중복 아님
+  if (querySnapshot.size === 1 && currentUid && querySnapshot.docs[0].id === currentUid) {
+    return true;
+  }
+  return false;
 };
 
 export const getUserDataByUid = async (uid: string): Promise<UserProfile | null> => {

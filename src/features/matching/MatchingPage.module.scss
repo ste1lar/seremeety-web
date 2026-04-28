@@ -7,3 +7,9 @@
 .loading {
   min-height: 288px;
 }
+
+.error {
+  padding: $page-padding;
+  color: $color-text-secondary;
+  text-align: center;
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Cake, ChevronRight, Heart, Navigation } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
+import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import Button from '@/shared/components/common/button/Button';
 import { auth } from '@/firebase';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
@@ -14,13 +14,13 @@ interface MyProfilePreviewProps {
 }
 
 const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
   const currentUserUid = auth.currentUser?.uid;
   const previewHref = currentUserUid ? `/profile/${currentUserUid}?viewOnly=1` : '#';
 
   useEffect(() => {
-    setIsImgLoaded(false);
+    setImgError(false);
   }, [userProfile.profilePictureUrl]);
 
   const handleMakeSelso = () => {
@@ -48,14 +48,13 @@ const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
       <div className={styles.preview}>
         <figure className={styles.left}>
           <div className={styles['image-wrapper']}>
-            {!isImgLoaded && <ImageLoading borderRadius="50%" />}
             <Image
               alt={`${userProfile.nickname} 프로필 사진`}
-              src={userProfile.profilePictureUrl}
+              src={imgError ? sereMeetyLogo.src : userProfile.profilePictureUrl}
               fill
+              loading="eager"
               sizes="96px"
-              onLoad={() => setIsImgLoaded(true)}
-              style={{ display: !isImgLoaded ? 'none' : 'block' }}
+              onError={() => setImgError(true)}
             />
           </div>
           <figcaption className={styles.nickname}>{userProfile.nickname}</figcaption>

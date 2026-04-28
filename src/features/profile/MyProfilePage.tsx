@@ -1,8 +1,10 @@
 'use client';
 
 import { useCallback, useContext, useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import _ from 'lodash';
+import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import {
   MypageDispatchContext,
   MypageStateContext,
@@ -13,7 +15,6 @@ import Loading from '@/shared/components/common/loading/Loading';
 import PageTransition from '@/shared/components/common/PageTransition';
 import Header from '@/shared/components/common/Header';
 import CropperModal from '@/shared/components/common/cropper/CropperModal';
-import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import MyProfileForm from '@/features/profile/components/my-profile/MyProfileForm';
 import { myProfileForm } from '@/shared/lib/constants';
@@ -26,12 +27,12 @@ import styles from './MyProfilePage.module.scss';
 
 const MyProfilePage = () => {
   const state = useContext(MypageStateContext);
-  const { isFetching, isUpdating } = useContext(MypageStatusContext);
+  const { isFetching, isFetchError, isUpdating } = useContext(MypageStatusContext);
   const fetchUserProfiles = useContext(MatchingDispatchContext);
   const router = useRouter();
   const { onUpdate } = useContext(MypageDispatchContext);
   const [formData, setFormData] = useState<UserProfile | null>(null);
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
@@ -44,7 +45,7 @@ const MyProfilePage = () => {
   }, [state]);
 
   useEffect(() => {
-    setIsImgLoaded(false);
+    setImgError(false);
   }, [formData?.profilePictureUrl]);
 
   const handleFormDataChange = useCallback((id: ProfileFieldId, data: string) => {
@@ -82,7 +83,6 @@ const MyProfilePage = () => {
       return;
     }
 
-    setIsImgLoaded(false);
     setFormData((prevState) =>
       prevState ? { ...prevState, profilePictureUrl: croppedImage } : prevState
     );
@@ -211,7 +211,11 @@ const MyProfilePage = () => {
           }
         />
 
-        {isFetching || !state || !formData ? (
+        {isFetchError ? (
+          <div className={cx(styles.content, styles['content--loading'])}>
+            <p className={styles.error}>프로필 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요.</p>
+          </div>
+        ) : isFetching || !state || !formData ? (
           <div className={cx(styles.content, styles['content--loading'])}>
             <Loading className={styles.loading} />
           </div>
@@ -232,12 +236,15 @@ const MyProfilePage = () => {
                 htmlFor="my-profile-image-upload"
               >
                 <span className="sr-only">프로필 사진 변경</span>
-                {!isImgLoaded && <ImageLoading borderRadius="5px" />}
-                <img
+                <Image
+                  fill
+                  priority
+                  unoptimized
                   alt={`${formData.nickname} 프로필 사진`}
-                  src={formData.profilePictureUrl}
-                  onLoad={() => setIsImgLoaded(true)}
-                  style={{ display: !isImgLoaded ? 'none' : 'block' }}
+                  src={imgError ? sereMeetyLogo.src : formData.profilePictureUrl}
+                  sizes="(max-width: 480px) calc(100vw - 3rem), 432px"
+                  className={styles['profile-image']}
+                  onError={() => setImgError(true)}
                 />
               </label>
               <figcaption className="sr-only">현재 프로필 사진</figcaption>

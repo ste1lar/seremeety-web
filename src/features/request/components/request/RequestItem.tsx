@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatTimeStampForList } from '@/shared/lib/format';
 import { useState } from 'react';
-import ImageLoading from '@/shared/components/common/image-loading/ImageLoading';
+import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import type { EnhancedMatchRequest, MatchRequest, RequestStatus } from '@/shared/types/domain';
 import styles from './RequestItem.module.scss';
@@ -27,7 +27,7 @@ const requestUpdateContentByStatus = {
 
 const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }: RequestItemProps) => {
   const [requestStatus, setRequestStatus] = useState(request.status);
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
   const otherUserUid = request.isReceived ? request.from : request.to;
   const profileHref = `/profile/${otherUserUid}?viewOnly=1`;
@@ -96,14 +96,13 @@ const RequestItem = ({ request, onUpdateRequest, onCreateChatRoom }: RequestItem
   return (
     <article className={styles.root}>
       <Link className={styles.avatar} href={profileHref}>
-        {!isImgLoaded && <ImageLoading borderRadius={'50%'} />}
         <Image
           alt={`${request.nickname} 프로필 사진`}
-          src={request.profilePictureUrl}
+          src={imgError ? sereMeetyLogo.src : request.profilePictureUrl}
           fill
+          loading="eager"
           sizes="64px"
-          onLoad={() => setIsImgLoaded(true)}
-          style={{ display: !isImgLoaded ? 'none' : 'block' }}
+          onError={() => setImgError(true)}
         />
       </Link>
       <button

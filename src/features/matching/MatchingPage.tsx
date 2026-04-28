@@ -24,13 +24,19 @@ const defaultFilters: MatchingFilters = {
 const MatchingPage = () => {
   const state = useContext(MatchingStateContext);
   const userProfile = useContext(MypageStateContext);
-  const { isFetching: isUserProfileLoading } = useContext(MypageStatusContext);
+  const { isFetching: isUserProfileLoading, isFetchError: isUserProfileError } = useContext(MypageStatusContext);
   const isMatchingLoading = useContext(MatchingLoadingContext);
   const router = useRouter();
   const [modal, setModal] = useState<ModalConfig | null>(null);
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [filters, setFilters] = useState<MatchingFilters>(defaultFilters);
   const isContentLoading = isUserProfileLoading || isMatchingLoading;
+
+  useEffect(() => {
+    if (!isUserProfileLoading && userProfile && userProfile.profileStatus !== 1) {
+      router.replace('/my-profile');
+    }
+  }, [isUserProfileLoading, userProfile, router]);
 
   useEffect(() => {
     const savedFilters = sessionStorage.getItem('filters');
@@ -88,7 +94,9 @@ const MatchingPage = () => {
         </PageTransition>
       )}
       {!openFilterModal &&
-        (isContentLoading || !userProfile ? (
+        (isUserProfileError ? (
+          <p className={styles.error}>프로필 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요.</p>
+        ) : isContentLoading || !userProfile ? (
           <Loading className={styles.loading} />
         ) : (
           <MatchingContent

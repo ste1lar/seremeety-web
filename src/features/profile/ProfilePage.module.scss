@@ -23,21 +23,14 @@
   position: relative;
   aspect-ratio: 1 / 1;
   margin: 0;
+  border-radius: $size-5;
+  overflow: hidden;
+  border: $border-1 solid $color-border-subtle;
+  @include image-skeleton;
 }
 
 .image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: $border-1 solid $color-border-subtle;
-  border-radius: $size-5;
   object-fit: cover;
-
-  &--hidden {
-    display: none;
-  }
 }
 
 .info-header {
