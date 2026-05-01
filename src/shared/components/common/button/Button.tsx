@@ -9,10 +9,11 @@ interface ButtonProps {
   icon?: LucideIcon | null;
   href?: string;
   type?: string;
+  disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ text, icon, href, type, onClick }: ButtonProps) => {
+const Button = ({ text, icon, href, type, disabled, onClick }: ButtonProps) => {
   const Icon = icon;
   const className = cx(styles.root, type && styles[`root--${type}`]);
   const content = (
@@ -31,7 +32,7 @@ const Button = ({ text, icon, href, type, onClick }: ButtonProps) => {
   }
 
   return (
-    <button className={className} type="button" onClick={onClick}>
+    <button className={className} type="button" disabled={disabled} onClick={onClick}>
       {content}
     </button>
   );

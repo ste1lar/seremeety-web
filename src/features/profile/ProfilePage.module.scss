@@ -132,9 +132,17 @@
 }
 
 .actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $size-16;
   padding-top: $size-32;
 
-  button {
+  button,
+  a {
     width: 100%;
+  }
+
+  &:has(> :only-child) {
+    grid-template-columns: 1fr;
   }
 }

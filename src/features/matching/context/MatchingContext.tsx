@@ -2,7 +2,8 @@
 
 import React, { useEffect, useReducer, useState, type ReactNode } from 'react';
 import { auth } from '@/firebase';
-import { getUserDataByUid, getUserProfiles } from '@/shared/lib/firebase/users';
+import { getUserDataByUid } from '@/shared/lib/firebase/users';
+import { getTodayRecommendations } from '@/shared/lib/firebase/recommendations';
 import type { UserProfile } from '@/shared/types/domain';
 
 interface MatchingAction {
@@ -44,7 +45,7 @@ export const MatchingProvider = ({ children }: MatchingProviderProps) => {
         return;
       }
 
-      const userProfiles = await getUserProfiles(currentUserData);
+      const userProfiles = await getTodayRecommendations(currentUserData);
       dispatch({ type: 'INIT', data: userProfiles });
     } catch (error) {
       console.error(error);

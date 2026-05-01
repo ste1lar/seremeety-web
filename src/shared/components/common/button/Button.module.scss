@@ -31,4 +31,9 @@
     background-color: $color-border-subtle;
     color: $color-black;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }

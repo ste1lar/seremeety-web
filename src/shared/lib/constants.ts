@@ -1,10 +1,9 @@
-import { Heart, Mail, MessageCircle, UserRound } from 'lucide-react';
+import { Heart, MessageCircle, UserRound } from 'lucide-react';
 import { placeList } from '@/shared/data/places';
 import { universityList } from '@/shared/data/universities';
 import type {
   MenuItemConfig,
   ProfileFormItem,
-  RequestState,
   ShopItemConfig,
   UserProfile,
 } from '@/shared/types/domain';
@@ -28,21 +27,11 @@ export const emptyUserProfile: UserProfile = {
   university: '',
 };
 
-export const emptyRequestState: RequestState = {
-  receivedRequests: [],
-  sentRequests: [],
-};
-
 export const menuItems: MenuItemConfig[] = [
   {
     icon: Heart,
     dataRoute: '/matching',
     label: 'DISCOVER',
-  },
-  {
-    icon: Mail,
-    dataRoute: '/request',
-    label: 'REQUEST',
   },
   {
     icon: MessageCircle,

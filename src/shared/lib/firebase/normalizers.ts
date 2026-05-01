@@ -3,9 +3,7 @@ import type {
   ChatMessageRecord,
   ChatRoomRecord,
   Gender,
-  MatchRequest,
   ProfileStatus,
-  RequestStatus,
   TimestampLike,
   UserProfile,
 } from '@/shared/types/domain';
@@ -24,9 +22,6 @@ const toGender = (value: unknown): Gender =>
   value === 'male' || value === 'female' ? value : '';
 
 const toProfileStatus = (value: unknown): ProfileStatus => (value === 1 ? 1 : 0);
-
-const toRequestStatus = (value: unknown): RequestStatus =>
-  value === 'accepted' || value === 'rejected' ? value : 'pending';
 
 const toTimestampLike = (value: unknown): TimestampLike => {
   if (value instanceof Date) {
@@ -59,18 +54,6 @@ export const normalizeUserProfile = (value: unknown, uid?: string): UserProfile 
     profilePictureUrl: readString(data.profilePictureUrl) || DEFAULT_PROFILE_PICTURE_URL,
     profileStatus: toProfileStatus(data.profileStatus),
     university: readString(data.university),
-  };
-};
-
-export const normalizeRequest = (value: unknown, id = ''): MatchRequest => {
-  const data = isRecord(value) ? value : {};
-
-  return {
-    id,
-    createdAt: toTimestampLike(data.createdAt),
-    from: readString(data.from),
-    status: toRequestStatus(data.status),
-    to: readString(data.to),
   };
 };
 

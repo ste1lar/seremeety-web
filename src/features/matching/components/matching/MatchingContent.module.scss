@@ -5,8 +5,14 @@
   flex-direction: column;
   padding: $page-padding $page-padding;
   padding-bottom: $page-padding;
-  gap: $size-48;
+  gap: $size-20;
   box-sizing: border-box;
+}
+
+.summary {
+  font-size: $size-14;
+  color: $color-text-secondary;
+  margin: 0;
 }
 
 .grid {
@@ -20,10 +26,4 @@
 
 .card {
   min-width: 0;
-}
-
-.footer {
-  button {
-    width: 100%;
-  }
 }

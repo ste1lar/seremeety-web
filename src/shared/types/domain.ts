@@ -3,7 +3,6 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { FieldValue, Timestamp } from 'firebase/firestore';
 
 export type Gender = '' | 'male' | 'female';
-export type RequestStatus = 'pending' | 'accepted' | 'rejected';
 export type ProfileStatus = 0 | 1;
 export type ProfileFieldId =
   | 'nickname'
@@ -48,11 +47,6 @@ export interface ShopItemConfig {
   price: number;
 }
 
-export interface MatchingFilters {
-  ageRange: [number, number];
-  place: string;
-}
-
 export interface UserProfile {
   uid?: string;
   age: string;
@@ -68,32 +62,6 @@ export interface UserProfile {
   profilePictureUrl: string;
   profileStatus: ProfileStatus;
   university: string;
-}
-
-export interface MatchRequest {
-  id: string;
-  createdAt: TimestampLike;
-  from: string;
-  status: RequestStatus;
-  to: string;
-}
-
-export interface NewMatchRequest {
-  createdAt: FirestoreTimestampInput;
-  from: string;
-  status: RequestStatus;
-  to: string;
-}
-
-export interface EnhancedMatchRequest extends MatchRequest {
-  isReceived: boolean;
-  nickname: string;
-  profilePictureUrl: string;
-}
-
-export interface RequestState {
-  receivedRequests: MatchRequest[];
-  sentRequests: MatchRequest[];
 }
 
 export interface ChatMessageRecord {
