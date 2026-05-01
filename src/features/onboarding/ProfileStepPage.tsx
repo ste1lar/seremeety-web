@@ -14,6 +14,7 @@ import { checkNicknameDuplicate } from '@/shared/lib/firebase/users';
 import { placeList } from '@/shared/data/places';
 import { universityList } from '@/shared/data/universities';
 import Button from '@/shared/components/common/button/Button';
+import Select, { type SelectOption } from '@/shared/components/common/select/Select';
 import type { Gender } from '@/shared/types/model/profile';
 import styles from './ProfileStepPage.module.scss';
 
@@ -49,6 +50,21 @@ const initialForm: ProfileFormState = {
 };
 
 const flatLocationList = placeList.flatMap(([region]) => [region]);
+
+const LOCATION_OPTIONS: SelectOption[] = flatLocationList.map((region) => ({
+  value: region,
+  label: region,
+}));
+
+const MBTI_SELECT_OPTIONS: SelectOption[] = MBTI_OPTIONS.map((option) => ({
+  value: option,
+  label: option,
+}));
+
+const UNIVERSITY_OPTIONS: SelectOption[] = universityList.map((option) => ({
+  value: option,
+  label: option,
+}));
 
 const ProfileStepPage = () => {
   const router = useRouter();
@@ -232,51 +248,40 @@ const ProfileStepPage = () => {
           </div>
         </fieldset>
 
-        <label className={styles.field}>
-          <span className={styles.label}>지역</span>
-          <select
+        <div className={styles.field}>
+          <span className={styles.label} id="onboarding-location-label">지역</span>
+          <Select
             value={form.location}
-            onChange={(e) => updateField('location', e.target.value)}
-            required
-          >
-            <option value="">선택</option>
-            {flatLocationList.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={(next) => updateField('location', next)}
+            options={LOCATION_OPTIONS}
+            placeholder="선택"
+            aria-labelledby="onboarding-location-label"
+          />
+        </div>
 
-        <label className={styles.field}>
-          <span className={styles.label}>MBTI (선택)</span>
-          <select
+        <div className={styles.field}>
+          <span className={styles.label} id="onboarding-mbti-label">MBTI (선택)</span>
+          <Select
             value={form.mbti}
-            onChange={(e) => updateField('mbti', e.target.value)}
-          >
-            <option value="">선택 안 함</option>
-            {MBTI_OPTIONS.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={(next) => updateField('mbti', next)}
+            options={MBTI_SELECT_OPTIONS}
+            placeholder="선택 안 함"
+            isClearable
+            aria-labelledby="onboarding-mbti-label"
+          />
+        </div>
 
-        <label className={styles.field}>
-          <span className={styles.label}>학교 (선택)</span>
-          <select
+        <div className={styles.field}>
+          <span className={styles.label} id="onboarding-university-label">학교 (선택)</span>
+          <Select
             value={form.university}
-            onChange={(e) => updateField('university', e.target.value)}
-          >
-            <option value="">선택 안 함</option>
-            {universityList.map((u) => (
-              <option key={u} value={u}>
-                {u}
-              </option>
-            ))}
-          </select>
-        </label>
+            onChange={(next) => updateField('university', next)}
+            options={UNIVERSITY_OPTIONS}
+            placeholder="선택 안 함"
+            isClearable
+            aria-labelledby="onboarding-university-label"
+          />
+        </div>
 
         <label className={styles.field}>
           <span className={styles.label}>자기소개</span>

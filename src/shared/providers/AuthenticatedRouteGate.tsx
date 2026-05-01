@@ -32,7 +32,12 @@ export default function AuthenticatedRouteGate({ children }: AuthenticatedRouteG
       return;
     }
     const target = resolveEntryRoute(entryState);
-    if (target !== pathname) {
+    // resolveEntryRoute는 사용자의 "초기 진입점"만 결정한다.
+    // - target이 /onboarding/* 또는 /account/*: 해당 단계에서만 머물러야 하므로 강제 이동
+    // - target이 /matching (approved 상태): 모든 보호 라우트(mypage, chat-list 등) 자유 이동 허용
+    const isGatedRoute =
+      target.startsWith('/onboarding/') || target.startsWith('/account/');
+    if (isGatedRoute && target !== pathname) {
       router.replace(target);
     }
   }, [currentUser, entryState, isAuthLoading, isEntryLoading, pathname, router]);
@@ -43,10 +48,11 @@ export default function AuthenticatedRouteGate({ children }: AuthenticatedRouteG
   if (isEntryLoading || !entryState) {
     return <Loading variant="page" />;
   }
-  // 가드가 redirect를 트리거하는 동안에도 잘못된 페이지가 잠시 보이지 않도록
-  // pathname이 target과 다르면 Loading을 보여준다.
+  // gated 라우트로 이동 중일 때만 Loading 표시 (잘못된 페이지 깜빡임 방지)
   const target = resolveEntryRoute(entryState);
-  if (target !== pathname) {
+  const isGatedRoute =
+    target.startsWith('/onboarding/') || target.startsWith('/account/');
+  if (isGatedRoute && target !== pathname) {
     return <Loading variant="page" />;
   }
 

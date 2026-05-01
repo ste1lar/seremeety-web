@@ -3,7 +3,6 @@
 import { useCallback, useContext, useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import _ from 'lodash';
 import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import {
   MypageDispatchContext,
@@ -24,6 +23,21 @@ import { validationRules } from '@/shared/lib/validation';
 import { cx } from '@/shared/lib/classNames';
 import type { ProfileFieldId, UserProfile } from '@/shared/types/domain';
 import styles from './MyProfilePage.module.scss';
+
+const PROFILE_FORM_KEYS: (keyof UserProfile)[] = [
+  'nickname',
+  'birthdate',
+  'age',
+  'gender',
+  'mbti',
+  'university',
+  'place',
+  'introduce',
+  'profilePictureUrl',
+];
+
+const isProfileFormUnchanged = (a: UserProfile, b: UserProfile): boolean =>
+  PROFILE_FORM_KEYS.every((key) => a[key] === b[key]);
 
 const MyProfilePage = () => {
   const state = useContext(MypageStateContext);
@@ -124,7 +138,7 @@ const MyProfilePage = () => {
       return;
     }
 
-    if (_.isEqual(state, nextFormData)) {
+    if (isProfileFormUnchanged(state, nextFormData)) {
       openAlert('프로필 저장', '프로필 수정 사항이 없어요');
       return;
     }

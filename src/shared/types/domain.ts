@@ -27,10 +27,6 @@ export type ValidationResult = true | string;
 export type ValidationRule = (value: string) => ValidationResult | Promise<ValidationResult>;
 export type Nullable<T> = T | null;
 export type StateSetter<T> = Dispatch<SetStateAction<T>>;
-export type SelectOption = {
-  value: string;
-  label: string;
-};
 export type PlaceEntry = [string, string[]];
 
 export interface MenuItemConfig {

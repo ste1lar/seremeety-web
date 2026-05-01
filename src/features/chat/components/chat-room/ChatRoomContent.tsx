@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { auth } from '@/firebase';
 import ChatMessage from './ChatMessage';
-import { useInView } from 'react-intersection-observer';
+import { useInView } from '@/shared/hooks/useInView';
 import { formatDateLabel, isSameDate } from '@/shared/lib/format';
 import type { ReactNode } from 'react';
 import type { ChatMessageRecord } from '@/shared/types/domain';
@@ -24,7 +24,7 @@ const ChatRoomContent = ({
 
   const visibleCountRef = useRef(visibleCount);
   const currentUserUid = auth.currentUser?.uid ?? '';
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView<HTMLDivElement>();
 
   useEffect(() => {
     if (chatRoomMessages.length > 0) {

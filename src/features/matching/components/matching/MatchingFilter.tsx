@@ -1,8 +1,8 @@
-import { useState, type ChangeEvent, type CSSProperties } from 'react';
-import Select from 'react-select';
+import { useMemo, useState, type ChangeEvent, type CSSProperties } from 'react';
 import { placeList } from '@/shared/data/places';
 import Button from '@/shared/components/common/button/Button';
-import type { MatchingFilters, SelectOption } from '@/shared/types/domain';
+import Select, { type SelectOption } from '@/shared/components/common/select/Select';
+import type { MatchingFilters } from '@/shared/types/domain';
 import styles from './MatchingFilter.module.scss';
 
 interface MatchingFilterProps {
@@ -21,7 +21,10 @@ const MatchingFilter = ({ filters, onApply, onClose, style }: MatchingFilterProp
   ]);
   const [place, setPlace] = useState(filters.place);
 
-  const mainPlaceOptions: SelectOption[] = placeList.map(([it]) => ({ value: it, label: it }));
+  const placeOptions: SelectOption[] = useMemo(
+    () => placeList.map(([region]) => ({ value: region, label: region })),
+    []
+  );
 
   const setYoungerAgeRange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -81,14 +84,11 @@ const MatchingFilter = ({ filters, onApply, onClose, style }: MatchingFilterProp
         <div>
           <h3 className={styles.subtitle}>매칭 상대 지역</h3>
           <Select
-            classNamePrefix="my-profile-select"
-            inputId="matching-place"
-            instanceId="matching-place"
-            value={mainPlaceOptions.find((option) => option.value === place) || null}
-            onChange={(selectedOption) => setPlace(selectedOption?.value ?? '')}
-            options={mainPlaceOptions}
-            placeholder="지역"
-            noOptionsMessage={() => ''}
+            id="matching-place"
+            value={place}
+            onChange={setPlace}
+            options={placeOptions}
+            placeholder="전체"
             isClearable
             aria-label="매칭 상대 지역"
           />

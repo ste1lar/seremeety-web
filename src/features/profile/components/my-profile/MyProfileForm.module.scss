@@ -28,7 +28,40 @@
 .icon {
   color: $color-brand;
   cursor: pointer;
+}
+
+.hint {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   margin-left: $size-5;
+  cursor: help;
+  outline: none;
+
+  &::after {
+    content: attr(data-hint);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $color-brand;
+    color: $color-white;
+    padding: $size-5 $size-8;
+    border-radius: $size-5;
+    font-size: $size-12;
+    font-weight: 400;
+    letter-spacing: normal;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    z-index: $z-overlay;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+  }
 }
 
 .select {

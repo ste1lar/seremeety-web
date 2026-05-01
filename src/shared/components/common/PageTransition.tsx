@@ -1,38 +1,14 @@
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useTransition, animated } from '@react-spring/web';
 import type { ReactNode } from 'react';
 import styles from './PageTransition.module.scss';
 
 interface PageTransitionProps {
   children: ReactNode;
+  // 호환성을 위해 prop은 유지하되 무시. 페이지 전환 애니메이션은 제거됨.
   direction?: 'x' | 'y';
 }
 
-const PageTransition = ({ children, direction = 'x' }: PageTransitionProps) => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const search = searchParams.toString();
-  const transitionKey = search ? `${pathname}?${search}` : pathname;
-  const transitions = useTransition(transitionKey, {
-    from: {
-      opacity: 0,
-      transform: direction === 'y' ? 'translateY(-100%)' : 'translateX(100%)',
-    },
-    enter: {
-      opacity: 1,
-      transform: direction === 'y' ? 'translateY(0%)' : 'translateX(0%)',
-    },
-    leave: {
-      opacity: 0,
-      transform: direction === 'y' ? 'translateY(100%)' : 'translateX(-100%)',
-    },
-  });
-
-  return transitions((props, item) => (
-    <animated.div className={styles.root} style={props} key={item}>
-      {children}
-    </animated.div>
-  ));
-};
+const PageTransition = ({ children }: PageTransitionProps) => (
+  <div className={styles.root}>{children}</div>
+);
 
 export default PageTransition;
