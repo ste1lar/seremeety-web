@@ -33,6 +33,31 @@
   object-fit: cover;
 }
 
+.extra-photos {
+  display: flex;
+  gap: $size-8;
+  overflow-x: auto;
+  padding-bottom: $size-4;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+}
+
+.extra-photo {
+  position: relative;
+  flex: 0 0 auto;
+  width: 120px;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  border-radius: $size-5;
+  overflow: hidden;
+  border: $border-1 solid $color-border-subtle;
+  @include image-skeleton;
+}
+
 .info-header {
   display: flex;
   align-items: center;

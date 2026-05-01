@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useReducer, useState, type ReactNode } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+  type ReactNode,
+} from 'react';
 import {
   compressImage,
   dataURLToFile,
@@ -26,6 +32,7 @@ interface UpdateProfileResult {
 interface MypageDispatchValue {
   onUpdate: (newData: UserProfile) => Promise<UpdateProfileResult>;
   onUpdateCoin: (newData: UserProfile) => Promise<void>;
+  onRefresh: () => Promise<void>;
 }
 
 interface MypageStatusValue {
@@ -37,6 +44,7 @@ interface MypageStatusValue {
 const defaultDispatchValue: MypageDispatchValue = {
   onUpdate: async () => ({ success: false }),
   onUpdateCoin: async () => undefined,
+  onRefresh: async () => undefined,
 };
 
 const defaultStatusValue: MypageStatusValue = {
@@ -62,29 +70,30 @@ export const MypageProvider = ({ children }: MypageProviderProps) => {
   const [isFetchError, setIsFetchError] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      const currentUid = auth.currentUser?.uid;
-      if (!currentUid) {
-        setIsFetching(false);
-        return;
-      }
+  const fetchUserProfile = useCallback(async () => {
+    const currentUid = auth.currentUser?.uid;
+    if (!currentUid) {
+      setIsFetching(false);
+      return;
+    }
 
-      try {
-        const userData = await getUserDataByUid(currentUid);
-        if (userData) {
-          dispatch({ type: 'INIT', data: userData });
-        }
-      } catch (error) {
-        console.error(error);
-        setIsFetchError(true);
-      } finally {
-        setIsFetching(false);
+    try {
+      const userData = await getUserDataByUid(currentUid);
+      if (userData) {
+        dispatch({ type: 'INIT', data: userData });
+        setIsFetchError(false);
       }
-    };
-
-    void fetchUserProfile();
+    } catch (error) {
+      console.error(error);
+      setIsFetchError(true);
+    } finally {
+      setIsFetching(false);
+    }
   }, []);
+
+  useEffect(() => {
+    void fetchUserProfile();
+  }, [fetchUserProfile]);
 
   const onUpdate = async (newData: UserProfile) => {
     const currentUid = auth.currentUser?.uid;
@@ -150,7 +159,9 @@ export const MypageProvider = ({ children }: MypageProviderProps) => {
   return (
     <MypageStatusContext.Provider value={{ isFetching, isFetchError, isUpdating }}>
       <MypageStateContext.Provider value={state}>
-        <MypageDispatchContext.Provider value={{ onUpdate, onUpdateCoin }}>
+        <MypageDispatchContext.Provider
+          value={{ onUpdate, onUpdateCoin, onRefresh: fetchUserProfile }}
+        >
           {children}
         </MypageDispatchContext.Provider>
       </MypageStateContext.Provider>

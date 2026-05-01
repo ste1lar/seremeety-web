@@ -1,9 +1,7 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
-import Image from 'next/image';
+import { useCallback, useContext, useEffect, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import {
   MypageDispatchContext,
   MypageStateContext,
@@ -13,14 +11,16 @@ import { MatchingDispatchContext } from '@/features/matching/context/MatchingCon
 import Loading from '@/shared/components/common/loading/Loading';
 import PageTransition from '@/shared/components/common/PageTransition';
 import Header from '@/shared/components/common/Header';
-import CropperModal from '@/shared/components/common/cropper/CropperModal';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import MyProfileForm from '@/features/profile/components/my-profile/MyProfileForm';
+import ProfilePhotosManager from '@/features/profile/components/photos/ProfilePhotosManager';
+import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { createDraftProfile, getProfileByUserId } from '@/shared/lib/firebase/profiles';
 import { myProfileForm } from '@/shared/lib/constants';
 import { getAgeByBirthDate } from '@/shared/lib/format';
-import { compressImage } from '@/shared/lib/media';
 import { validationRules } from '@/shared/lib/validation';
 import { cx } from '@/shared/lib/classNames';
+import type { ProfilePhoto } from '@/shared/types/model/photo';
 import type { ProfileFieldId, UserProfile } from '@/shared/types/domain';
 import styles from './MyProfilePage.module.scss';
 
@@ -33,7 +33,6 @@ const PROFILE_FORM_KEYS: (keyof UserProfile)[] = [
   'university',
   'place',
   'introduce',
-  'profilePictureUrl',
 ];
 
 const isProfileFormUnchanged = (a: UserProfile, b: UserProfile): boolean =>
@@ -44,13 +43,11 @@ const MyProfilePage = () => {
   const { isFetching, isFetchError, isUpdating } = useContext(MypageStatusContext);
   const fetchUserProfiles = useContext(MatchingDispatchContext);
   const router = useRouter();
-  const { onUpdate } = useContext(MypageDispatchContext);
+  const { onUpdate, onRefresh } = useContext(MypageDispatchContext);
+  const { currentUser } = useAuthSession();
   const [formData, setFormData] = useState<UserProfile | null>(null);
-  const [imgError, setImgError] = useState(false);
+  const [profileId, setProfileId] = useState<string | null>(null);
   const [modal, setModal] = useState<ModalConfig | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
-  const [openCropper, setOpenCropper] = useState(false);
 
   useEffect(() => {
     if (state) {
@@ -58,9 +55,23 @@ const MyProfilePage = () => {
     }
   }, [state]);
 
+  // Phase 4: profilePhotos 컬렉션 사용을 위해 신규 Profile 문서 보장.
+  // grandfather 사용자(old shape만 있고 신규 profile 없음)도 마이페이지 진입 시 자동 생성.
   useEffect(() => {
-    setImgError(false);
-  }, [formData?.profilePictureUrl]);
+    if (!currentUser) {
+      return;
+    }
+    const ensureProfile = async () => {
+      const existing = await getProfileByUserId(currentUser.uid);
+      if (existing) {
+        setProfileId(existing.id);
+      } else {
+        const newId = await createDraftProfile(currentUser.uid);
+        setProfileId(newId);
+      }
+    };
+    void ensureProfile();
+  }, [currentUser]);
 
   const handleFormDataChange = useCallback((id: ProfileFieldId, data: string) => {
     setFormData((prevState) => {
@@ -77,31 +88,20 @@ const MyProfilePage = () => {
     });
   }, []);
 
-  const handleSelectImage = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    try {
-      const compressedFile = await compressImage(file);
-      setSelectedImage(URL.createObjectURL(compressedFile));
-      setOpenCropper(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleCropComplete = () => {
-    if (!croppedImage) {
-      return;
-    }
-
-    setFormData((prevState) =>
-      prevState ? { ...prevState, profilePictureUrl: croppedImage } : prevState
-    );
-    setOpenCropper(false);
-  };
+  const handlePhotosChange = useCallback(
+    (photos: ProfilePhoto[]) => {
+      const main = photos.find((p) => p.isMain);
+      setFormData((prev) => {
+        if (!prev) return prev;
+        return { ...prev, profilePictureUrl: main?.displayUrl ?? '' };
+      });
+      // 사진 변경 시 users/{uid}는 dual-write로 갱신되지만
+      // MypageContext가 캐시한 state는 stale → 마이페이지로 돌아가도 96px 아바타가 안 갱신됨.
+      // 명시적으로 다시 fetch 해서 동기화한다.
+      void onRefresh();
+    },
+    [onRefresh]
+  );
 
   const openAlert = useCallback((title: string, description: string, onConfirm?: () => void) => {
     setModal({
@@ -235,44 +235,13 @@ const MyProfilePage = () => {
           </div>
         ) : (
           <form className={styles.content} id="my-profile-form" onSubmit={handleSubmit}>
-            {openCropper && (
-              <CropperModal
-                selectedImage={selectedImage ?? ''}
-                setCroppedImage={setCroppedImage}
-                setOpenCropper={setOpenCropper}
-                handleCropComplete={handleCropComplete}
+            {currentUser && profileId && (
+              <ProfilePhotosManager
+                userId={currentUser.uid}
+                profileId={profileId}
+                onChange={handlePhotosChange}
               />
             )}
-
-            <figure className={styles['image-section']}>
-              <label
-                className={styles['image-label']}
-                htmlFor="my-profile-image-upload"
-              >
-                <span className="sr-only">프로필 사진 변경</span>
-                <Image
-                  fill
-                  priority
-                  unoptimized
-                  alt={`${formData.nickname} 프로필 사진`}
-                  src={imgError ? sereMeetyLogo.src : formData.profilePictureUrl}
-                  sizes="(max-width: 480px) calc(100vw - 3rem), 432px"
-                  className={styles['profile-image']}
-                  onError={() => setImgError(true)}
-                />
-              </label>
-              <figcaption className="sr-only">현재 프로필 사진</figcaption>
-            </figure>
-
-            <input
-              id="my-profile-image-upload"
-              name="profilePicture"
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleSelectImage}
-              tabIndex={-1}
-            />
 
             {myProfileForm.map((fieldConfig) => (
               <MyProfileForm

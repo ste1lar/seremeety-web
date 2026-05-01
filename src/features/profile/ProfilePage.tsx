@@ -19,7 +19,9 @@ import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal'
 import { auth } from '@/firebase';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
 import { isRequestExist } from '@/shared/lib/firebase/requests';
+import { getProfilePhotosByUserId } from '@/shared/lib/firebase/profilePhotos';
 import { cx } from '@/shared/lib/classNames';
+import type { ProfilePhoto } from '@/shared/types/model/photo';
 import type { UserProfile } from '@/shared/types/domain';
 import styles from './ProfilePage.module.scss';
 
@@ -36,6 +38,7 @@ const ProfilePage = () => {
   const isViewOnly = searchParams.get('viewOnly') === '1';
   const [imgError, setImgError] = useState(false);
   const [isProfileLoading, setIsProfileLoading] = useState(true);
+  const [extraPhotos, setExtraPhotos] = useState<ProfilePhoto[]>([]);
 
   const openAlert = useCallback(
     (title: string, description: string, onConfirm?: () => void) => {
@@ -100,6 +103,24 @@ const ProfilePage = () => {
   useEffect(() => {
     setImgError(false);
   }, [userProfile?.profilePictureUrl]);
+
+  // 다중 사진 fetch — 승인된 사진만, 메인은 제외 (메인은 위 큰 카드로 표시).
+  useEffect(() => {
+    if (!uid || Array.isArray(uid) || !userProfile) {
+      return;
+    }
+    const load = async () => {
+      try {
+        const photos = await getProfilePhotosByUserId(uid);
+        setExtraPhotos(
+          photos.filter((p) => !p.isMain && p.status === 'approved')
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    void load();
+  }, [uid, userProfile]);
 
   const submitRequest = async () => {
     const currentUserUid = auth.currentUser?.uid;
@@ -194,6 +215,17 @@ const ProfilePage = () => {
                   />
                 </figure>
 
+                {extraPhotos.length > 0 && (
+                  <div
+                    className={styles['extra-photos']}
+                    aria-label={`${userProfile.nickname}님의 추가 사진`}
+                  >
+                    {extraPhotos.map((photo) => (
+                      <ExtraPhotoThumb key={photo.id} photo={photo} />
+                    ))}
+                  </div>
+                )}
+
                 <header className={styles['info-header']}>
                   <h2 className={styles.nickname}>{userProfile.nickname}</h2>
                   <p className={styles.meta}>
@@ -244,6 +276,27 @@ const ProfilePage = () => {
       </section>
       {modalElement}
     </PageTransition>
+  );
+};
+
+interface ExtraPhotoThumbProps {
+  photo: ProfilePhoto;
+}
+
+const ExtraPhotoThumb = ({ photo }: ExtraPhotoThumbProps) => {
+  const [thumbError, setThumbError] = useState(false);
+  return (
+    <figure className={styles['extra-photo']}>
+      <Image
+        alt="추가 프로필 사진"
+        src={thumbError ? sereMeetyLogo.src : photo.displayUrl}
+        fill
+        sizes="160px"
+        loading="eager"
+        className={styles.image}
+        onError={() => setThumbError(true)}
+      />
+    </figure>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Cake, ChevronRight, Heart, Navigation } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,8 +6,12 @@ import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import Button from '@/shared/components/common/button/Button';
 import { auth } from '@/firebase';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
+import { getProfilePhotosByUserId } from '@/shared/lib/firebase/profilePhotos';
+import type { ProfilePhoto } from '@/shared/types/model/photo';
 import type { UserProfile } from '@/shared/types/domain';
 import styles from './MyProfilePreview.module.scss';
+
+const MIN_BIO_LENGTH = 30;
 
 interface MyProfilePreviewProps {
   userProfile: UserProfile;
@@ -16,12 +20,39 @@ interface MyProfilePreviewProps {
 const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
   const [imgError, setImgError] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
+  const [photos, setPhotos] = useState<ProfilePhoto[]>([]);
   const currentUserUid = auth.currentUser?.uid;
   const previewHref = currentUserUid ? `/profile/${currentUserUid}?viewOnly=1` : '#';
 
   useEffect(() => {
     setImgError(false);
   }, [userProfile.profilePictureUrl]);
+
+  useEffect(() => {
+    if (!currentUserUid) {
+      return;
+    }
+    getProfilePhotosByUserId(currentUserUid)
+      .then(setPhotos)
+      .catch(() => undefined);
+  }, [currentUserUid, userProfile.profilePictureUrl]);
+
+  const completeness = useMemo(() => {
+    let score = 0;
+    if (userProfile.nickname?.trim()) score += 10;
+    if (userProfile.birthdate) score += 10;
+    if (userProfile.place?.trim()) score += 10;
+    if ((userProfile.introduce ?? '').trim().length >= MIN_BIO_LENGTH) score += 10;
+    if (userProfile.mbti) score += 5;
+    if (userProfile.university) score += 5;
+
+    const visible = photos.filter((p) => p.status !== 'deleted');
+    if (visible.some((p) => p.isMain)) score += 30;
+    const extra = visible.filter((p) => !p.isMain).length;
+    score += Math.min(extra * 5, 20);
+
+    return Math.min(score, 100);
+  }, [userProfile, photos]);
 
   const handleMakeSelso = () => {
     setModal({
@@ -88,6 +119,30 @@ const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
             </span>
           )}
         </div>
+      </div>
+
+      <div className={styles.completeness} aria-label="프로필 완성도">
+        <div className={styles['completeness-header']}>
+          <span className={styles['completeness-label']}>프로필 완성도</span>
+          <span className={styles['completeness-value']}>{completeness}%</span>
+        </div>
+        <div
+          className={styles['completeness-bar']}
+          role="progressbar"
+          aria-valuenow={completeness}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className={styles['completeness-fill']}
+            style={{ width: `${completeness}%` }}
+          />
+        </div>
+        {completeness < 100 && (
+          <p className={styles['completeness-hint']}>
+            완성도가 높을수록 추천에 더 잘 노출돼요.
+          </p>
+        )}
       </div>
 
       <div className={styles.actions}>
