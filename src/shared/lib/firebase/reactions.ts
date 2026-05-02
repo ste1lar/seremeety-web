@@ -9,6 +9,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { toPlainTimestamps } from '@/shared/lib/firebase/serialize';
 import type { Reaction, ReactionType } from '@/shared/types/model/reaction';
 
 const COLLECTION = 'reactions';
@@ -45,7 +46,10 @@ export const getReaction = async (
   if (!snap.exists()) {
     return null;
   }
-  return { id: snap.id, ...(snap.data() as Omit<Reaction, 'id'>) };
+  return toPlainTimestamps({
+    id: snap.id,
+    ...(snap.data() as Omit<Reaction, 'id'>),
+  });
 };
 
 // fromUserId가 보낸 모든 반응. Phase 5-B 추천 후보에서 이미 react한 유저
@@ -55,8 +59,7 @@ export const getReactionsFromUser = async (
 ): Promise<Reaction[]> => {
   const q = query(collection(db, COLLECTION), where('fromUserId', '==', fromUserId));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({
-    id: d.id,
-    ...(d.data() as Omit<Reaction, 'id'>),
-  }));
+  return snap.docs.map((d) =>
+    toPlainTimestamps({ id: d.id, ...(d.data() as Omit<Reaction, 'id'>) })
+  );
 };

@@ -1,23 +1,27 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { MypageStateContext, MypageStatusContext } from '@/features/profile/context/MypageContext';
-import {
-  MatchingLoadingContext,
-  MatchingStateContext,
-} from '@/features/matching/context/MatchingContext';
+import { useGetMeQuery } from '@/shared/lib/api/profileApi';
+import { useGetTodayRecommendationsQuery } from '@/shared/lib/api/recommendationApi';
 import MatchingContent from '@/features/matching/components/matching/MatchingContent';
 import Loading from '@/shared/components/common/loading/Loading';
 import MatchingHeader from '@/features/matching/components/matching/MatchingHeader';
 import styles from './MatchingPage.module.scss';
 
 const MatchingPage = () => {
-  const state = useContext(MatchingStateContext);
-  const userProfile = useContext(MypageStateContext);
-  const { isFetching: isUserProfileLoading, isFetchError: isUserProfileError } =
-    useContext(MypageStatusContext);
-  const isMatchingLoading = useContext(MatchingLoadingContext);
+  const {
+    data: userProfile,
+    isLoading: isUserProfileLoading,
+    isError: isUserProfileError,
+  } = useGetMeQuery();
+  const {
+    data: cards = [],
+    isLoading: isMatchingLoading,
+  } = useGetTodayRecommendationsQuery(undefined, {
+    // /matching 진입 시 30초 이상 경과한 캐시면 재페치해 신선한 카드 보장.
+    refetchOnMountOrArgChange: 30,
+  });
   const router = useRouter();
   const isContentLoading = isUserProfileLoading || isMatchingLoading;
 
@@ -37,7 +41,7 @@ const MatchingPage = () => {
       ) : isContentLoading || !userProfile ? (
         <Loading className={styles.loading} />
       ) : (
-        <MatchingContent profileCards={state} />
+        <MatchingContent profileCards={cards} />
       )}
     </section>
   );

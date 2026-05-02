@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { auth } from '@/firebase';
 import ChatRoomHeader from '@/features/chat/components/chat-room/ChatRoomHeader';
@@ -8,76 +8,87 @@ import ChatRoomContent from '@/features/chat/components/chat-room/ChatRoomConten
 import ChatRoomInput from '@/features/chat/components/chat-room/ChatRoomInput';
 import PageTransition from '@/shared/components/common/PageTransition';
 import Loading from '@/shared/components/common/loading/Loading';
-import { ChatDispatchContext } from '@/features/chat/context/ChatContext';
+import {
+  useGetChatRoomMessagesQuery,
+  useGetChatRoomQuery,
+  useSendMessageMutation,
+} from '@/shared/lib/api/chatApi';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
-import { getChatRoomById, subscribeToChatRoomMessages } from '@/shared/lib/firebase/chat';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
-import type { ChatMessageRecord, UserProfile } from '@/shared/types/domain';
+import type { UserProfile } from '@/shared/types/domain';
 import styles from './ChatRoomPage.module.scss';
 
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams<{ chatRoomId: string }>();
-  const [chatRoomMessages, setChatRoomMessages] = useState<ChatMessageRecord[]>([]);
-  const [otherUserData, setOtherUserData] = useState<UserProfile | null>(null);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [modal, setModal] = useState<ModalConfig | null>(null);
+  const isRoomIdValid = Boolean(chatRoomId) && !Array.isArray(chatRoomId);
+  const targetRoomId = isRoomIdValid ? (chatRoomId as string) : '';
 
-  const { onUpdate } = useContext(ChatDispatchContext);
+  const [otherUserData, setOtherUserData] = useState<UserProfile | null>(null);
+  const [modal, setModal] = useState<ModalConfig | null>(null);
   const router = useRouter();
 
+  const { data: chatRoom, isLoading: isRoomLoading } = useGetChatRoomQuery(
+    targetRoomId,
+    { skip: !isRoomIdValid }
+  );
+  const { data: chatRoomMessages = [], isSuccess: isMessagesReady } =
+    useGetChatRoomMessagesQuery(targetRoomId, { skip: !isRoomIdValid });
+  const [sendMessage] = useSendMessageMutation();
+
   useEffect(() => {
-    if (!chatRoomId || Array.isArray(chatRoomId)) {
+    if (isRoomLoading || !isRoomIdValid) return;
+    if (chatRoom === null) {
+      setModal({
+        actions: [{ label: '확인', onClick: () => router.back() }],
+        closeOnBackdrop: false,
+        description: '존재하지 않는 채팅방입니다',
+        showCloseButton: false,
+        title: '오류',
+      });
+    }
+  }, [chatRoom, isRoomLoading, isRoomIdValid, router]);
+
+  // 상대 사용자 프로필 fetch — 채팅방 데이터에서 다른 uid를 추출해 1회 fetch.
+  // TODO(Phase 6 후속): profileApi.getPublicProfile로 마이그레이션 가능.
+  useEffect(() => {
+    if (!chatRoom) {
+      setOtherUserData(null);
       return;
     }
+    const currentUid = auth.currentUser?.uid;
+    if (!currentUid) return;
 
-    const fetchChatRoomData = async () => {
-      try {
-        const chatRoomData = await getChatRoomById(chatRoomId);
+    const otherUid =
+      chatRoom.users[0] !== currentUid ? chatRoom.users[0] : chatRoom.users[1];
 
-        if (!chatRoomData) {
-          setModal({
-            actions: [{ label: '확인', onClick: () => router.back() }],
-            closeOnBackdrop: false,
-            description: '존재하지 않는 채팅방입니다',
-            showCloseButton: false,
-            title: '오류',
-          });
-          return;
-        }
-
-        const currentUid = auth.currentUser?.uid;
-        if (!currentUid) {
-          return;
-        }
-
-        const otherUserUid =
-          chatRoomData.users[0] !== currentUid ? chatRoomData.users[0] : chatRoomData.users[1];
-        const nextUserData = await getUserDataByUid(otherUserUid);
-        setOtherUserData(nextUserData);
-      } catch (error) {
-        console.error(error);
+    let cancelled = false;
+    void getUserDataByUid(otherUid).then((data) => {
+      if (!cancelled) {
+        setOtherUserData(data);
       }
-    };
-
-    void fetchChatRoomData();
-    const unsubscribe = subscribeToChatRoomMessages(chatRoomId, (messages) => {
-      setChatRoomMessages(messages);
-      setIsDataLoaded(true);
     });
 
     return () => {
-      unsubscribe();
+      cancelled = true;
     };
-  }, [chatRoomId, router]);
+  }, [chatRoom]);
 
-  const isRoomLoading =
-    !isDataLoaded || !chatRoomId || Array.isArray(chatRoomId) || !otherUserData;
+  const handleSendMessage = async (text: string, roomId: string) => {
+    try {
+      await sendMessage({ chatRoomId: roomId, text }).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const isContentLoading =
+    isRoomLoading || !isMessagesReady || !isRoomIdValid || !otherUserData;
 
   return (
     <section className={styles.root} aria-labelledby="chat-room-heading">
       <PageTransition>
         <ChatRoomHeader nickname={otherUserData?.nickname ?? '채팅'} />
-        {isRoomLoading ? (
+        {isContentLoading ? (
           <Loading className={styles.loading} />
         ) : (
           <>
@@ -86,7 +97,10 @@ const ChatRoomPage = () => {
               nickname={otherUserData.nickname}
               profilePictureUrl={otherUserData.profilePictureUrl}
             />
-            <ChatRoomInput onUpdateChatRoom={onUpdate} chatRoomId={chatRoomId} />
+            <ChatRoomInput
+              onUpdateChatRoom={handleSendMessage}
+              chatRoomId={targetRoomId}
+            />
           </>
         )}
       </PageTransition>

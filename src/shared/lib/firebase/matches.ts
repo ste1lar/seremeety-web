@@ -9,6 +9,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { toPlainTimestamps } from '@/shared/lib/firebase/serialize';
 import type { Match } from '@/shared/types/model/match';
 
 const COLLECTION = 'matches';
@@ -46,7 +47,10 @@ export const getActiveMatchByUsers = async (
   if (!snap.exists()) {
     return null;
   }
-  const match = { id: snap.id, ...(snap.data() as Omit<Match, 'id'>) };
+  const match = toPlainTimestamps({
+    id: snap.id,
+    ...(snap.data() as Omit<Match, 'id'>),
+  });
   return match.status === 'active' ? match : null;
 };
 
@@ -58,6 +62,8 @@ export const getMatchesByUserId = async (userId: string): Promise<Match[]> => {
   );
   const snap = await getDocs(q);
   return snap.docs
-    .map((d) => ({ id: d.id, ...(d.data() as Omit<Match, 'id'>) }))
+    .map((d) =>
+      toPlainTimestamps({ id: d.id, ...(d.data() as Omit<Match, 'id'>) })
+    )
     .filter((m) => m.status === 'active');
 };

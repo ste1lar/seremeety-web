@@ -6,8 +6,7 @@ import sereMeetyLogo from '@/shared/assets/images/seremeety-logo.png';
 import Button from '@/shared/components/common/button/Button';
 import { auth } from '@/firebase';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
-import { getProfilePhotosByUserId } from '@/shared/lib/firebase/profilePhotos';
-import type { ProfilePhoto } from '@/shared/types/model/photo';
+import { useGetProfilePhotosQuery } from '@/shared/lib/api/photoApi';
 import type { UserProfile } from '@/shared/types/domain';
 import styles from './MyProfilePreview.module.scss';
 
@@ -20,22 +19,15 @@ interface MyProfilePreviewProps {
 const MyProfilePreview = ({ userProfile }: MyProfilePreviewProps) => {
   const [imgError, setImgError] = useState(false);
   const [modal, setModal] = useState<ModalConfig | null>(null);
-  const [photos, setPhotos] = useState<ProfilePhoto[]>([]);
   const currentUserUid = auth.currentUser?.uid;
   const previewHref = currentUserUid ? `/profile/${currentUserUid}?viewOnly=1` : '#';
+  const { data: photos = [] } = useGetProfilePhotosQuery(currentUserUid ?? '', {
+    skip: !currentUserUid,
+  });
 
   useEffect(() => {
     setImgError(false);
   }, [userProfile.profilePictureUrl]);
-
-  useEffect(() => {
-    if (!currentUserUid) {
-      return;
-    }
-    getProfilePhotosByUserId(currentUserUid)
-      .then(setPhotos)
-      .catch(() => undefined);
-  }, [currentUserUid, userProfile.profilePictureUrl]);
 
   const completeness = useMemo(() => {
     let score = 0;

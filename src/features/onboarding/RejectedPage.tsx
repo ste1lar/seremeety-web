@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import { getProfileByUserId } from '@/shared/lib/firebase/profiles';
 import { setOnboardingStatus } from '@/shared/lib/firebase/usersV2';
 import OnboardingStubLayout from './OnboardingStubLayout';
@@ -12,25 +13,25 @@ import OnboardingStubLayout from './OnboardingStubLayout';
 // onboardingStatus 'profile_required'로 되돌리고 profile step으로 라우팅.
 const RejectedPage = () => {
   const router = useRouter();
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
   const [reason, setReason] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!uid) {
       return;
     }
     const load = async () => {
-      const profile = await getProfileByUserId(currentUser.uid);
+      const profile = await getProfileByUserId(uid);
       setReason(profile?.rejectionReason ?? null);
     };
     void load();
-  }, [currentUser]);
+  }, [uid]);
 
   const handleRetry = async () => {
-    if (!currentUser) {
+    if (!uid) {
       return;
     }
-    await setOnboardingStatus(currentUser.uid, 'profile_required');
+    await setOnboardingStatus(uid, 'profile_required');
     router.replace('/onboarding/profile');
   };
 

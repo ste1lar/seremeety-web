@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { auth } from '@/firebase';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import {
   createDefaultEntitlement,
   getEntitlementByUserId,
@@ -24,23 +26,22 @@ import OnboardingStubLayout from './OnboardingStubLayout';
 // /onboarding/profile로 라우팅한다.
 const BootstrapPage = () => {
   const router = useRouter();
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
   const [error, setError] = useState<string | null>(null);
   const ranRef = useRef(false);
 
   useEffect(() => {
-    if (!currentUser || ranRef.current) {
+    if (!uid || ranRef.current) {
       return;
     }
     ranRef.current = true;
 
     const bootstrap = async () => {
       try {
-        const uid = currentUser.uid;
-
         let user = await getUserV2ByUid(uid);
         if (!user) {
-          await createNewUserV2(uid, currentUser.phoneNumber ?? '');
+          // phoneNumber는 firebase User 객체에서만 얻을 수 있어 모듈 글로벌 참조.
+          await createNewUserV2(uid, auth.currentUser?.phoneNumber ?? '');
           user = await getUserV2ByUid(uid);
         }
 
@@ -68,7 +69,7 @@ const BootstrapPage = () => {
     };
 
     void bootstrap();
-  }, [currentUser, router]);
+  }, [uid, router]);
 
   if (error) {
     return (

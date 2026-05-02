@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import {
   createDraftProfile,
   getProfileByUserId,
@@ -68,7 +69,7 @@ const UNIVERSITY_OPTIONS: SelectOption[] = universityList.map((option) => ({
 
 const ProfileStepPage = () => {
   const router = useRouter();
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
   const [form, setForm] = useState<ProfileFormState>(initialForm);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -76,11 +77,11 @@ const ProfileStepPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!uid) {
       return;
     }
     const load = async () => {
-      const existing = await getProfileByUserId(currentUser.uid);
+      const existing = await getProfileByUserId(uid);
       if (existing) {
         setProfileId(existing.id);
         setForm({
@@ -96,7 +97,7 @@ const ProfileStepPage = () => {
       setIsLoading(false);
     };
     void load();
-  }, [currentUser]);
+  }, [uid]);
 
   const updateField = <K extends keyof ProfileFormState>(
     key: K,
@@ -128,7 +129,7 @@ const ProfileStepPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!currentUser) return;
+    if (!uid) return;
 
     setError(null);
     setIsSubmitting(true);
@@ -141,7 +142,6 @@ const ProfileStepPage = () => {
         return;
       }
 
-      const uid = currentUser.uid;
       const profilePayload = {
         nickname: form.nickname.trim(),
         birthYear: Number(form.birthYear),

@@ -2,10 +2,12 @@
 
 import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { MatchingProvider } from '@/features/matching/context/MatchingContext';
-import { MypageProvider } from '@/features/profile/context/MypageContext';
 import Loading from '@/shared/components/common/loading/Loading';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import {
+  selectAuthUid,
+  selectIsAuthLoading,
+} from '@/shared/lib/store/authSlice';
 import { useEntryState } from '@/shared/hooks/useEntryState';
 import { resolveEntryRoute } from '@/shared/lib/onboarding/resolveEntryRoute';
 import type { ReactNode } from 'react';
@@ -17,14 +19,15 @@ interface AuthenticatedRouteGateProps {
 export default function AuthenticatedRouteGate({ children }: AuthenticatedRouteGateProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { currentUser, isLoading: isAuthLoading } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
+  const isAuthLoading = useAppSelector(selectIsAuthLoading);
   const { entryState, isLoading: isEntryLoading } = useEntryState();
 
   useEffect(() => {
     if (isAuthLoading) {
       return;
     }
-    if (!currentUser) {
+    if (!uid) {
       router.replace('/');
       return;
     }
@@ -40,9 +43,9 @@ export default function AuthenticatedRouteGate({ children }: AuthenticatedRouteG
     if (isGatedRoute && target !== pathname) {
       router.replace(target);
     }
-  }, [currentUser, entryState, isAuthLoading, isEntryLoading, pathname, router]);
+  }, [uid, entryState, isAuthLoading, isEntryLoading, pathname, router]);
 
-  if (isAuthLoading || !currentUser) {
+  if (isAuthLoading || !uid) {
     return <Loading variant="page" />;
   }
   if (isEntryLoading || !entryState) {
@@ -56,9 +59,5 @@ export default function AuthenticatedRouteGate({ children }: AuthenticatedRouteG
     return <Loading variant="page" />;
   }
 
-  return (
-    <MatchingProvider>
-      <MypageProvider>{children}</MypageProvider>
-    </MatchingProvider>
-  );
+  return <>{children}</>;
 }

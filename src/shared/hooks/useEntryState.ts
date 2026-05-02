@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import {
+  selectAuthUid,
+  selectIsAuthLoading,
+} from '@/shared/lib/store/authSlice';
 import { getUserV2ByUid } from '@/shared/lib/firebase/usersV2';
 import { getProfileByUserId } from '@/shared/lib/firebase/profiles';
 import { getPreferenceByUserId } from '@/shared/lib/firebase/preferences';
@@ -20,7 +24,8 @@ const REQUIRED_TERMS_VERSION = '1.0';
 const REQUIRED_PRIVACY_VERSION = '1.0';
 
 export function useEntryState(): UseEntryStateResult {
-  const { currentUser, isLoading: isAuthLoading } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
+  const isAuthLoading = useAppSelector(selectIsAuthLoading);
   const [entryState, setEntryState] = useState<UserEntryState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -34,7 +39,7 @@ export function useEntryState(): UseEntryStateResult {
     setIsError(false);
 
     try {
-      if (!currentUser) {
+      if (!uid) {
         setEntryState({
           authenticated: false,
           user: null,
@@ -46,7 +51,6 @@ export function useEntryState(): UseEntryStateResult {
         return;
       }
 
-      const uid = currentUser.uid;
       const [user, profile, preference, photos, consent] = await Promise.all([
         getUserV2ByUid(uid),
         getProfileByUserId(uid),
@@ -84,7 +88,7 @@ export function useEntryState(): UseEntryStateResult {
   useEffect(() => {
     void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser?.uid, isAuthLoading]);
+  }, [uid, isAuthLoading]);
 
   return {
     entryState,

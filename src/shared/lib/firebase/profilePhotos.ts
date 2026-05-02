@@ -10,6 +10,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { toPlainTimestamps } from '@/shared/lib/firebase/serialize';
 import type { ProfilePhoto } from '@/shared/types/model/photo';
 
 const COLLECTION = 'profilePhotos';
@@ -22,7 +23,9 @@ export const getProfilePhotosByUserId = async (userId: string): Promise<ProfileP
   const q = query(collection(db, COLLECTION), where('userId', '==', userId));
   const snap = await getDocs(q);
   return snap.docs
-    .map((d) => ({ id: d.id, ...(d.data() as Omit<ProfilePhoto, 'id'>) }))
+    .map((d) =>
+      toPlainTimestamps({ id: d.id, ...(d.data() as Omit<ProfilePhoto, 'id'>) })
+    )
     .filter((p) => p.status !== 'deleted')
     .sort((a, b) => a.order - b.order);
 };

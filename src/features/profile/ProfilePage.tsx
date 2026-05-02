@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   GraduationCap,
   Heart,
@@ -17,52 +17,65 @@ import PageTransition from '@/shared/components/common/PageTransition';
 import Loading from '@/shared/components/common/loading/Loading';
 import Header from '@/shared/components/common/Header';
 import {
-  MypageStateContext,
-  MypageStatusContext,
-} from '@/features/profile/context/MypageContext';
+  useGetMeQuery,
+  useGetPublicProfileQuery,
+} from '@/shared/lib/api/profileApi';
+import { useGetMyBlockedUserIdsQuery, useBlockMutation } from '@/shared/lib/api/blockApi';
+import { useGetMyReactionQuery, useReactMutation } from '@/shared/lib/api/reactionApi';
+import { useGetActiveMatchExistsQuery } from '@/shared/lib/api/matchApi';
+import { useGetProfilePhotosQuery } from '@/shared/lib/api/photoApi';
 import Button from '@/shared/components/common/button/Button';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
-import { auth } from '@/firebase';
-import { getUserDataByUid } from '@/shared/lib/firebase/users';
-import { getProfilePhotosByUserId } from '@/shared/lib/firebase/profilePhotos';
-import {
-  createReaction,
-  getReaction,
-} from '@/shared/lib/firebase/reactions';
-import {
-  createMatch,
-  getActiveMatchByUsers,
-} from '@/shared/lib/firebase/matches';
-import { writeMatchToLegacyChatRoom } from '@/shared/lib/firebase/legacyBridge';
-import { createBlock, getBlockedUserIds } from '@/shared/lib/firebase/blocks';
-import { getEntitlementByUserId } from '@/shared/lib/firebase/entitlements';
-import {
-  countLikesToday,
-  countSuperLikesToday,
-} from '@/shared/lib/firebase/dailyLimits';
-import { markRecommendationReacted } from '@/shared/lib/firebase/recommendationLogs';
 import { cx } from '@/shared/lib/classNames';
 import type { ProfilePhoto } from '@/shared/types/model/photo';
 import type { ReactionType } from '@/shared/types/model/reaction';
-import type { UserProfile } from '@/shared/types/domain';
 import styles from './ProfilePage.module.scss';
 
 const ProfilePage = () => {
   const [modal, setModal] = useState<ModalConfig | null>(null);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { uid } = useParams<{ uid: string }>();
   const searchParams = useSearchParams();
-  const state = useContext(MypageStateContext);
-  const { isFetching: isMypageFetching } = useContext(MypageStatusContext);
   const router = useRouter();
   const isViewOnly = searchParams.get('viewOnly') === '1';
+  const isUidValid = Boolean(uid) && !Array.isArray(uid);
+  const targetUid = isUidValid ? (uid as string) : '';
+
+  const { data: state, isLoading: isMypageFetching } = useGetMeQuery();
+  const canView = state?.profileStatus === 1;
+  const {
+    data: userProfile,
+    isLoading: isProfileLoading,
+  } = useGetPublicProfileQuery(targetUid, {
+    skip: !isUidValid || !canView,
+  });
+
+  const skipReactionState = !isUidValid || isViewOnly;
+  const { data: myReactionType = null } = useGetMyReactionQuery(targetUid, {
+    skip: skipReactionState,
+  });
+  const { data: isAlreadyMatched = false } = useGetActiveMatchExistsQuery(
+    targetUid,
+    { skip: skipReactionState }
+  );
+  const { data: blockedIds = [] } = useGetMyBlockedUserIdsQuery(undefined, {
+    skip: skipReactionState,
+  });
+  const isBlocked = isUidValid && blockedIds.includes(targetUid);
+
+  const [react, { isLoading: isReactPending }] = useReactMutation();
+  const [block] = useBlockMutation();
+
   const [imgError, setImgError] = useState(false);
-  const [isProfileLoading, setIsProfileLoading] = useState(true);
-  const [extraPhotos, setExtraPhotos] = useState<ProfilePhoto[]>([]);
-  const [myReactionType, setMyReactionType] = useState<ReactionType | null>(null);
-  const [isAlreadyMatched, setIsAlreadyMatched] = useState(false);
-  const [isReacting, setIsReacting] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
+  // selectFromResult로 메모이즈된 파생 셀렉터를 사용해 다른 사진 필드 변화 시
+  // 불필요한 리렌더를 막는다.
+  const { extraPhotos } = useGetProfilePhotosQuery(targetUid, {
+    skip: !isUidValid || !canView,
+    selectFromResult: ({ data }) => ({
+      extraPhotos: (data ?? []).filter(
+        (p) => !p.isMain && p.status === 'approved'
+      ),
+    }),
+  });
 
   const openAlert = useCallback(
     (title: string, description: string, onConfirm?: () => void) => {
@@ -77,176 +90,64 @@ const ProfilePage = () => {
     []
   );
 
+  // 프로필 미완성 사용자가 다른 프로필을 열람하려 하면 안내 후 마이페이지로.
   useEffect(() => {
-    if (!uid || Array.isArray(uid)) {
-      setIsProfileLoading(false);
-      return;
-    }
-
-    if (!state || !uid || Array.isArray(uid)) {
-      return;
-    }
-
-    if (state.profileStatus === undefined) {
+    if (isMypageFetching || !state || !isUidValid) {
       return;
     }
     if (state.profileStatus !== 1) {
-      setIsProfileLoading(false);
-      openAlert('프로필 열람', '먼저 프로필을 완성해주세요', () => router.replace('/my-profile'));
-      return;
+      openAlert('프로필 열람', '먼저 프로필을 완성해주세요', () =>
+        router.replace('/my-profile')
+      );
     }
+  }, [isMypageFetching, state, isUidValid, openAlert, router]);
 
-    let isMounted = true;
-
-    const fetchUserProfile = async () => {
-      setIsProfileLoading(true);
-
-      try {
-        const userData = await getUserDataByUid(uid);
-        if (userData && isMounted) {
-          setUserProfile(userData);
-        } else {
-          openAlert('오류', '존재하지 않는 프로필입니다', () => router.back());
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        if (isMounted) {
-          setIsProfileLoading(false);
-        }
-      }
-    };
-
-    void fetchUserProfile();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [openAlert, router, state, uid]);
+  // RTK Query가 null을 반환하면 존재하지 않는 프로필.
+  useEffect(() => {
+    if (!canView || isProfileLoading) return;
+    if (userProfile === null) {
+      openAlert('오류', '존재하지 않는 프로필입니다', () => router.back());
+    }
+  }, [canView, isProfileLoading, userProfile, openAlert, router]);
 
   useEffect(() => {
     setImgError(false);
   }, [userProfile?.profilePictureUrl]);
 
-  // 다중 사진 fetch — 승인된 사진만, 메인은 제외 (메인은 위 큰 카드로 표시).
-  useEffect(() => {
-    if (!uid || Array.isArray(uid) || !userProfile) {
-      return;
-    }
-    const load = async () => {
-      try {
-        const photos = await getProfilePhotosByUserId(uid);
-        setExtraPhotos(
-          photos.filter((p) => !p.isMain && p.status === 'approved')
-        );
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    void load();
-  }, [uid, userProfile]);
-
-  // 내가 이 프로필에 이미 반응했는지, 매칭됐는지, 차단했는지 로드.
-  useEffect(() => {
-    const currentUserUid = auth.currentUser?.uid;
-    if (!currentUserUid || !uid || Array.isArray(uid) || isViewOnly) {
-      return;
-    }
-    const load = async () => {
-      try {
-        const [reaction, match, blockedSet] = await Promise.all([
-          getReaction(currentUserUid, uid),
-          getActiveMatchByUsers(currentUserUid, uid),
-          getBlockedUserIds(currentUserUid),
-        ]);
-        setMyReactionType(reaction?.type ?? null);
-        setIsAlreadyMatched(match !== null);
-        setIsBlocked(blockedSet.has(uid));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    void load();
-  }, [uid, isViewOnly]);
-
-  // TODO(Phase 3): Functions로 이동. mutual like 검증, daily limit 체크, match 생성을 서버에서.
   const handleReact = async (type: ReactionType) => {
-    const currentUserUid = auth.currentUser?.uid;
-    if (!currentUserUid || !uid || Array.isArray(uid) || isReacting) {
-      return;
-    }
-    setIsReacting(true);
+    if (!isUidValid || isReactPending) return;
     try {
-      // 좋아요/슈퍼좋아요는 daily limit 체크. pass는 무제한.
-      if (type === 'like' || type === 'superLike') {
-        const entitlement = await getEntitlementByUserId(currentUserUid);
-        const limit =
-          type === 'like'
-            ? entitlement?.dailyLikeLimit ?? 3
-            : entitlement?.dailySuperLikeLimit ?? 0;
-        const used =
-          type === 'like'
-            ? await countLikesToday(currentUserUid)
-            : await countSuperLikesToday(currentUserUid);
-        if (used >= limit) {
+      const result = await react({ toUserId: targetUid, type }).unwrap();
+      if (!result.ok) {
+        if (result.reason === 'daily_limit') {
           openAlert(
             type === 'like' ? '좋아요 한도' : '슈퍼좋아요 한도',
             '오늘의 한도를 모두 사용했어요. 내일 다시 시도해주세요'
           );
-          return;
         }
+        return;
       }
-
-      const myReactionId = await createReaction(currentUserUid, uid, type);
-      setMyReactionType(type);
-      void markRecommendationReacted(currentUserUid, uid, type);
-
+      if (result.matched) {
+        setModal({
+          actions: [
+            { label: '계속 둘러보기', tone: 'secondary' },
+            { label: '채팅으로', onClick: () => router.push('/chat-list') },
+          ],
+          closeOnBackdrop: true,
+          showCloseButton: true,
+          title: '매칭 성공',
+          description: '서로 좋아요를 보내 매칭되었어요!',
+        });
+        return;
+      }
       if (type === 'like' || type === 'superLike') {
-        const theirReaction = await getReaction(uid, currentUserUid);
-        if (theirReaction?.type === 'like' || theirReaction?.type === 'superLike') {
-          await createMatch(currentUserUid, uid, [
-            myReactionId,
-            theirReaction.id,
-          ]);
-          await writeMatchToLegacyChatRoom(currentUserUid, uid);
-          setIsAlreadyMatched(true);
-          setModal({
-            actions: [
-              { label: '계속 둘러보기', tone: 'secondary' },
-              { label: '채팅으로', onClick: () => router.push('/chat-list') },
-            ],
-            closeOnBackdrop: true,
-            showCloseButton: true,
-            title: '매칭 성공',
-            description: '서로 좋아요를 보내 매칭되었어요!',
-          });
-          return;
-        }
         openAlert('좋아요 전송', '상대방도 좋아요를 보내면 매칭이 돼요');
         return;
       }
       // pass: 별도 모달 없이 뒤로 이동.
       router.back();
-    } catch (error) {
-      console.error(error);
+    } catch {
       openAlert('오류', '처리 중 오류가 발생했어요');
-    } finally {
-      setIsReacting(false);
-    }
-  };
-
-  const performBlock = async () => {
-    const currentUserUid = auth.currentUser?.uid;
-    if (!currentUserUid || !uid || Array.isArray(uid)) return;
-    try {
-      await createBlock(currentUserUid, uid);
-      setIsBlocked(true);
-      openAlert('차단 완료', '해당 사용자가 추천에서 제외됩니다', () =>
-        router.replace('/matching')
-      );
-    } catch (error) {
-      console.error(error);
-      openAlert('오류', '차단 중 오류가 발생했어요');
     }
   };
 
@@ -254,7 +155,20 @@ const ProfilePage = () => {
     setModal({
       actions: [
         { label: '취소', tone: 'secondary' },
-        { label: '차단', onClick: () => void performBlock() },
+        {
+          label: '차단',
+          onClick: async () => {
+            if (!isUidValid) return;
+            try {
+              await block({ blockedUserId: targetUid }).unwrap();
+              openAlert('차단 완료', '해당 사용자가 추천에서 제외됩니다', () =>
+                router.replace('/matching')
+              );
+            } catch {
+              openAlert('오류', '차단 중 오류가 발생했어요');
+            }
+          },
+        },
       ],
       closeOnBackdrop: true,
       showCloseButton: true,
@@ -387,12 +301,12 @@ const ProfilePage = () => {
                           text="패스"
                           type="light"
                           onClick={() => void handleReact('pass')}
-                          disabled={isReacting}
+                          disabled={isReactPending}
                         />
                         <Button
                           text="좋아요"
                           onClick={() => void handleReact('like')}
-                          disabled={isReacting}
+                          disabled={isReactPending}
                         />
                       </>
                     )}

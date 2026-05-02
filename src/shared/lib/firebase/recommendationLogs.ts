@@ -9,6 +9,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
+import { toPlainTimestamps } from '@/shared/lib/firebase/serialize';
 import type { ReactionType } from '@/shared/types/model/reaction';
 import type { RecommendationLog } from '@/shared/types/model/recommendation';
 
@@ -42,10 +43,12 @@ export const getRecommendationLogsByUser = async (
 ): Promise<RecommendationLog[]> => {
   const q = query(collection(db, COLLECTION), where('userId', '==', userId));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({
-    id: d.id,
-    ...(d.data() as Omit<RecommendationLog, 'id'>),
-  }));
+  return snap.docs.map((d) =>
+    toPlainTimestamps({
+      id: d.id,
+      ...(d.data() as Omit<RecommendationLog, 'id'>),
+    })
+  );
 };
 
 // reaction 발생 시 해당 추천 로그에 결과를 기록.

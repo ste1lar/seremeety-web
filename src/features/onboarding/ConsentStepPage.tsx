@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Timestamp } from 'firebase/firestore';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import { createConsent } from '@/shared/lib/firebase/consents';
 import { getProfileByUserId, updateProfile } from '@/shared/lib/firebase/profiles';
 import { setOnboardingStatus } from '@/shared/lib/firebase/usersV2';
@@ -19,7 +20,7 @@ const REQUIRED_PRIVACY_VERSION = '1.0';
 
 const ConsentStepPage = () => {
   const router = useRouter();
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
   const [agreedTerms, setAgreedTerms] = useState(false);
   const [agreedPrivacy, setAgreedPrivacy] = useState(false);
   const [agreedMarketing, setAgreedMarketing] = useState(false);
@@ -29,14 +30,12 @@ const ConsentStepPage = () => {
   const canSubmit = agreedTerms && agreedPrivacy && !isSubmitting;
 
   const handleSubmit = async () => {
-    if (!currentUser || !canSubmit) {
+    if (!uid || !canSubmit) {
       return;
     }
     setIsSubmitting(true);
     setError(null);
     try {
-      const uid = currentUser.uid;
-
       await createConsent(uid, {
         termsVersion: REQUIRED_TERMS_VERSION,
         privacyVersion: REQUIRED_PRIVACY_VERSION,

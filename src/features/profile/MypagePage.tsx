@@ -1,9 +1,9 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Music4, Settings } from 'lucide-react';
 import Link from 'next/link';
-import { MypageStateContext, MypageStatusContext } from '@/features/profile/context/MypageContext';
+import { useGetMeQuery } from '@/shared/lib/api/profileApi';
 import Loading from '@/shared/components/common/loading/Loading';
 import Header from '@/shared/components/common/Header';
 import MyProfilePreview from '@/features/profile/components/mypage/MyProfilePreview';
@@ -20,8 +20,7 @@ const getProfileStats = (userProfile: UserProfile): ProfileStats => ({
 });
 
 const MypagePage = () => {
-  const userProfile = useContext(MypageStateContext);
-  const { isFetching } = useContext(MypageStatusContext);
+  const { data: userProfile, isLoading: isFetching } = useGetMeQuery();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import {
   createPreference,
   getPreferenceByUserId,
@@ -35,7 +36,7 @@ const initialForm: PreferenceFormState = {
 
 const PreferenceStepPage = () => {
   const router = useRouter();
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
   const [form, setForm] = useState<PreferenceFormState>(initialForm);
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,11 +44,11 @@ const PreferenceStepPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!uid) {
       return;
     }
     const load = async () => {
-      const existing = await getPreferenceByUserId(currentUser.uid);
+      const existing = await getPreferenceByUserId(uid);
       if (existing) {
         setPreferenceId(existing.id);
         setForm({
@@ -60,7 +61,7 @@ const PreferenceStepPage = () => {
       setIsLoading(false);
     };
     void load();
-  }, [currentUser]);
+  }, [uid]);
 
   const toggleLocation = (location: string) => {
     setForm((prev) => {
@@ -85,7 +86,7 @@ const PreferenceStepPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!currentUser) return;
+    if (!uid) return;
     setError(null);
     setIsSubmitting(true);
 
@@ -97,7 +98,6 @@ const PreferenceStepPage = () => {
         return;
       }
 
-      const uid = currentUser.uid;
       const payload = {
         targetGender: form.targetGender,
         minAge: Number(form.minAge),

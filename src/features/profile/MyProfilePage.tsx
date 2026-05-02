@@ -1,20 +1,21 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  MypageDispatchContext,
-  MypageStateContext,
-  MypageStatusContext,
-} from '@/features/profile/context/MypageContext';
-import { MatchingDispatchContext } from '@/features/matching/context/MatchingContext';
+  useGetMeQuery,
+  useUpdateMeMutation,
+} from '@/shared/lib/api/profileApi';
+import { baseApi } from '@/shared/lib/api/baseApi';
+import { useAppDispatch } from '@/shared/lib/store/hooks';
 import Loading from '@/shared/components/common/loading/Loading';
 import PageTransition from '@/shared/components/common/PageTransition';
 import Header from '@/shared/components/common/Header';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import MyProfileForm from '@/features/profile/components/my-profile/MyProfileForm';
 import ProfilePhotosManager from '@/features/profile/components/photos/ProfilePhotosManager';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import { createDraftProfile, getProfileByUserId } from '@/shared/lib/firebase/profiles';
 import { myProfileForm } from '@/shared/lib/constants';
 import { getAgeByBirthDate } from '@/shared/lib/format';
@@ -39,12 +40,16 @@ const isProfileFormUnchanged = (a: UserProfile, b: UserProfile): boolean =>
   PROFILE_FORM_KEYS.every((key) => a[key] === b[key]);
 
 const MyProfilePage = () => {
-  const state = useContext(MypageStateContext);
-  const { isFetching, isFetchError, isUpdating } = useContext(MypageStatusContext);
-  const fetchUserProfiles = useContext(MatchingDispatchContext);
+  const {
+    data: state,
+    isLoading: isFetching,
+    isError: isFetchError,
+    refetch,
+  } = useGetMeQuery();
+  const [updateMe, { isLoading: isUpdating }] = useUpdateMeMutation();
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const { onUpdate, onRefresh } = useContext(MypageDispatchContext);
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
   const [formData, setFormData] = useState<UserProfile | null>(null);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [modal, setModal] = useState<ModalConfig | null>(null);
@@ -58,20 +63,20 @@ const MyProfilePage = () => {
   // Phase 4: profilePhotos 컬렉션 사용을 위해 신규 Profile 문서 보장.
   // grandfather 사용자(old shape만 있고 신규 profile 없음)도 마이페이지 진입 시 자동 생성.
   useEffect(() => {
-    if (!currentUser) {
+    if (!uid) {
       return;
     }
     const ensureProfile = async () => {
-      const existing = await getProfileByUserId(currentUser.uid);
+      const existing = await getProfileByUserId(uid);
       if (existing) {
         setProfileId(existing.id);
       } else {
-        const newId = await createDraftProfile(currentUser.uid);
+        const newId = await createDraftProfile(uid);
         setProfileId(newId);
       }
     };
     void ensureProfile();
-  }, [currentUser]);
+  }, [uid]);
 
   const handleFormDataChange = useCallback((id: ProfileFieldId, data: string) => {
     setFormData((prevState) => {
@@ -95,12 +100,15 @@ const MyProfilePage = () => {
         if (!prev) return prev;
         return { ...prev, profilePictureUrl: main?.displayUrl ?? '' };
       });
-      // 사진 변경 시 users/{uid}는 dual-write로 갱신되지만
-      // MypageContext가 캐시한 state는 stale → 마이페이지로 돌아가도 96px 아바타가 안 갱신됨.
-      // 명시적으로 다시 fetch 해서 동기화한다.
-      void onRefresh();
+      // ProfilePhotosManager는 RTK Query 외부에서 firebase에 직접 write한다.
+      // - users/{uid}.profilePictureUrl dual-write → Me 캐시 stale → refetch
+      // - profilePhotos 컬렉션 → MyProfilePreview의 Photo 캐시 stale → invalidate
+      void refetch();
+      if (uid) {
+        dispatch(baseApi.util.invalidateTags([{ type: 'Photo', id: uid }]));
+      }
     },
-    [onRefresh]
+    [uid, dispatch, refetch]
   );
 
   const openAlert = useCallback((title: string, description: string, onConfirm?: () => void) => {
@@ -113,24 +121,22 @@ const MyProfilePage = () => {
     });
   }, []);
 
+  // updateMe mutation이 'Recommendation' 태그도 무효화하므로
+  // 첫 저장 후 별도 fetchUserProfiles 호출은 필요 없다. /matching 진입 시 자동 재페치.
   const executeSave = useCallback(
-    async (nextFormData: UserProfile, isFirstSave: boolean) => {
-      const result = await onUpdate({ ...nextFormData, profileStatus: 1 });
-
-      if (!result.success) {
-        openAlert('프로필 저장 실패', result.message ?? '오류가 발생했습니다');
+    async (nextFormData: UserProfile) => {
+      try {
+        await updateMe({ ...nextFormData, profileStatus: 1 }).unwrap();
+      } catch {
+        openAlert('프로필 저장 실패', '오류가 발생했습니다');
         return;
       }
 
-      if (isFirstSave) {
-        await fetchUserProfiles();
-      }
-
-      openAlert('프로필 저장 성공', result.message ?? '성공적으로 저장되었습니다!', () => {
+      openAlert('프로필 저장 성공', '성공적으로 저장되었습니다!', () => {
         router.push('/mypage');
       });
     },
-    [fetchUserProfiles, onUpdate, openAlert, router]
+    [openAlert, router, updateMe]
   );
 
   const onSave = async (nextFormData: UserProfile) => {
@@ -160,7 +166,7 @@ const MyProfilePage = () => {
       setModal({
         actions: [
           { label: '취소', tone: 'secondary' },
-          { label: '확인', onClick: () => void executeSave(nextFormData, true) },
+          { label: '확인', onClick: () => void executeSave(nextFormData) },
         ],
         closeOnBackdrop: true,
         showCloseButton: true,
@@ -175,7 +181,7 @@ const MyProfilePage = () => {
       return;
     }
 
-    await executeSave(nextFormData, false);
+    await executeSave(nextFormData);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -235,9 +241,9 @@ const MyProfilePage = () => {
           </div>
         ) : (
           <form className={styles.content} id="my-profile-form" onSubmit={handleSubmit}>
-            {currentUser && profileId && (
+            {uid && profileId && (
               <ProfilePhotosManager
-                userId={currentUser.uid}
+                userId={uid}
                 profileId={profileId}
                 onChange={handlePhotosChange}
               />

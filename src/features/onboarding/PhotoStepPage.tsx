@@ -7,7 +7,8 @@ import {
 } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useAuthSession } from '@/shared/providers/AuthSessionProvider';
+import { useAppSelector } from '@/shared/lib/store/hooks';
+import { selectAuthUid } from '@/shared/lib/store/authSlice';
 import { getProfileByUserId } from '@/shared/lib/firebase/profiles';
 import {
   createProfilePhoto,
@@ -24,7 +25,7 @@ import styles from './PhotoStepPage.module.scss';
 
 const PhotoStepPage = () => {
   const router = useRouter();
-  const { currentUser } = useAuthSession();
+  const uid = useAppSelector(selectAuthUid);
 
   const [profileId, setProfileId] = useState<string | null>(null);
   const [mainPhoto, setMainPhoto] = useState<ProfilePhoto | null>(null);
@@ -39,15 +40,15 @@ const PhotoStepPage = () => {
   const [openCropper, setOpenCropper] = useState(false);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!uid) {
       return;
     }
     const load = async () => {
-      const profile = await getProfileByUserId(currentUser.uid);
+      const profile = await getProfileByUserId(uid);
       if (profile) {
         setProfileId(profile.id);
       }
-      const photos = await getProfilePhotosByUserId(currentUser.uid);
+      const photos = await getProfilePhotosByUserId(uid);
       const main = photos.find((p) => p.isMain);
       if (main) {
         setMainPhoto(main);
@@ -56,7 +57,7 @@ const PhotoStepPage = () => {
       setIsLoading(false);
     };
     void load();
-  }, [currentUser]);
+  }, [uid]);
 
   const handleSelectImage = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -75,7 +76,7 @@ const PhotoStepPage = () => {
   };
 
   const handleCropComplete = async () => {
-    if (!croppedImage || !currentUser || !profileId) {
+    if (!croppedImage || !uid || !profileId) {
       setOpenCropper(false);
       return;
     }
@@ -84,7 +85,6 @@ const PhotoStepPage = () => {
     setError(null);
 
     try {
-      const uid = currentUser.uid;
       const file = dataURLToFile(croppedImage, 'profile_picture.jpg');
       const compressed = await compressImage(file);
       const uploadedUrl = await uploadImageToStorage(compressed, uid);
@@ -121,12 +121,12 @@ const PhotoStepPage = () => {
   };
 
   const handleNext = async () => {
-    if (!currentUser || !mainPhoto) {
+    if (!uid || !mainPhoto) {
       return;
     }
     setIsAdvancing(true);
     try {
-      await setOnboardingStatus(currentUser.uid, 'preference_required');
+      await setOnboardingStatus(uid, 'preference_required');
       router.replace('/onboarding/preferences');
     } catch (err) {
       console.error(err);

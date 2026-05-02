@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { MessagesSquare } from 'lucide-react';
 import { auth } from '@/firebase';
-import { ChatLoadingContext } from '@/features/chat/context/ChatContext';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
 import Loading from '@/shared/components/common/loading/Loading';
 import ChatRoomItem from './ChatRoomItem';
@@ -11,11 +10,11 @@ import styles from './ChatListContent.module.scss';
 
 interface ChatListContentProps {
   chatRooms: ChatRoomRecord[];
+  isLoading: boolean;
   style?: CSSProperties;
 }
 
-const ChatListContent = ({ chatRooms, style }: ChatListContentProps) => {
-  const isChatLoading = useContext(ChatLoadingContext);
+const ChatListContent = ({ chatRooms, isLoading, style }: ChatListContentProps) => {
   const [enhancedChatRooms, setEnhancedChatRooms] = useState<EnhancedChatRoom[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
@@ -63,7 +62,7 @@ const ChatListContent = ({ chatRooms, style }: ChatListContentProps) => {
     void enhanceChatRooms();
   }, [chatRooms]);
 
-  if (isChatLoading || !isDataLoaded) {
+  if (isLoading || !isDataLoaded) {
     return <Loading className={styles.loading} />;
   } else {
     return (
