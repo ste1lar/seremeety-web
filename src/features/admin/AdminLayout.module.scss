@@ -1,0 +1,52 @@
+@use '@/styles/base' as *;
+
+.root {
+  min-height: 100dvh;
+  background: #f7f8fa;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: $color-white;
+  border-bottom: $border-1 solid $color-border-subtle;
+  padding: $size-16 $size-20;
+}
+
+.title {
+  font-family: $font-family-heading;
+  font-size: $size-24;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 0 $size-12 0;
+}
+
+.nav {
+  display: flex;
+  gap: $size-16;
+  flex-wrap: wrap;
+}
+
+.navItem {
+  font-size: $size-14;
+  font-weight: 500;
+  color: $color-text-secondary;
+  text-decoration: none;
+  padding: $size-5 $size-10;
+  border-radius: $size-5;
+  border: $border-1 solid transparent;
+
+  &--active {
+    color: $color-brand;
+    border-color: $color-brand;
+  }
+
+  @include hover-color();
+}
+
+.main {
+  padding: $size-20;
+  max-width: 960px;
+  margin: 0 auto;
+}

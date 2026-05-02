@@ -114,6 +114,11 @@
     opacity: 0.96;
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   &--primary {
     background: $gradient-brand;
     color: $color-white;

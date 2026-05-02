@@ -1,0 +1,58 @@
+@use '@/styles/base' as *;
+
+.reasons {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.legend {
+  font-size: $size-14;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin-bottom: $size-8;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: $size-10;
+  font-size: $size-16;
+  cursor: pointer;
+
+  input {
+    accent-color: $color-brand;
+  }
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: $size-8;
+  margin-top: $size-16;
+}
+
+.detailLabel {
+  font-size: $size-14;
+  font-weight: 600;
+  color: $color-text-primary;
+}
+
+.textarea {
+  width: 100%;
+  border: $border-1 solid $color-border-muted;
+  border-radius: $size-8;
+  padding: $size-10;
+  font-size: $size-14;
+  font-family: inherit;
+  resize: vertical;
+  min-height: $size-44 * 2;
+
+  &:focus-visible {
+    outline: 2px solid $color-brand;
+    outline-offset: 2px;
+  }
+}

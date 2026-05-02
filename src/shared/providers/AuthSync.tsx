@@ -7,6 +7,7 @@ import { useAppDispatch } from '@/shared/lib/store/hooks';
 import {
   setAuthInitializing,
   setAuthReady,
+  setAuthRole,
   setAuthUid,
 } from '@/shared/lib/store/authSlice';
 import { getUserDataByUid, setNewUserData } from '@/shared/lib/firebase/users';
@@ -40,10 +41,13 @@ export function AuthSync({ children }: AuthSyncProps) {
             await setNewUserData(user);
           } else {
             // 기존 사용자(old-shape doc만 있음): User v2 필드가 없으면 grandfather.
-            const userV2 = await getUserV2ByUid(user.uid);
+            let userV2 = await getUserV2ByUid(user.uid);
             if (!userV2) {
               await grandfatherExistingUser(user.uid);
+              userV2 = await getUserV2ByUid(user.uid);
             }
+            // role을 store에 동기화. admin 라우트 가드에서 사용.
+            dispatch(setAuthRole(userV2?.role ?? 'user'));
           }
         } catch (error) {
           console.error(error);

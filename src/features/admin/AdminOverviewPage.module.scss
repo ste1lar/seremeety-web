@@ -1,0 +1,47 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $size-20;
+}
+
+.heading {
+  font-size: $size-20;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $size-16;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  background: $color-white;
+  border: $border-1 solid $color-border-subtle;
+  border-radius: $size-8;
+  padding: $size-16;
+}
+
+.cardLabel {
+  font-size: $size-14;
+  color: $color-text-secondary;
+  margin: 0 0 $size-8 0;
+}
+
+.cardValue {
+  font-size: $size-32;
+  font-weight: 700;
+  margin: 0;
+  color: $color-brand;
+}
+
+.note {
+  font-size: $size-14;
+  color: $color-text-secondary;
+}

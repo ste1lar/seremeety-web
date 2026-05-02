@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { toPlainTimestamps } from '@/shared/lib/firebase/serialize';
-import type { ProfilePhoto } from '@/shared/types/model/photo';
+import type { PhotoStatus, ProfilePhoto } from '@/shared/types/model/photo';
 
 const COLLECTION = 'profilePhotos';
 
@@ -30,6 +30,17 @@ export const getProfilePhotosByUserId = async (userId: string): Promise<ProfileP
     .sort((a, b) => a.order - b.order);
 };
 
+// admin 검수 큐용. status로 필터한 모든 사진.
+export const getPhotosByStatus = async (
+  status: PhotoStatus
+): Promise<ProfilePhoto[]> => {
+  const q = query(collection(db, COLLECTION), where('status', '==', status));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) =>
+    toPlainTimestamps({ id: d.id, ...(d.data() as Omit<ProfilePhoto, 'id'>) })
+  );
+};
+
 export const createProfilePhoto = async (
   userId: string,
   profileId: string,
@@ -43,9 +54,8 @@ export const createProfilePhoto = async (
     userId,
     profileId,
     ...partial,
-    // TODO(Phase 8): admin 검수 도입 시 'pending'으로 되돌리고 승인 워크플로 연결.
-    // 현재는 ConsentStepPage AUTO_APPROVE와 동일한 임시 자동 승인 정책을 따른다.
-    status: 'approved',
+    // 신규 사진은 admin 검수 대기 상태로 시작. /admin/photos 큐에서 승인/반려.
+    status: 'pending',
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });

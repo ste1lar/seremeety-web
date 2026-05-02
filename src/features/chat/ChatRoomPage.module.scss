@@ -7,3 +7,12 @@
 .loading {
   min-height: 40svh;
 }
+
+.blockedNotice {
+  margin: 0;
+  padding: $size-16 $size-20;
+  font-size: $size-14;
+  color: $color-text-secondary;
+  background-color: $color-border-subtle;
+  text-align: center;
+}

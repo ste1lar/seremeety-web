@@ -1,0 +1,147 @@
+@use '@/styles/base' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $size-16;
+}
+
+.heading {
+  font-size: $size-20;
+  font-weight: 600;
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $size-12;
+}
+
+.item {
+  background: $color-white;
+  border: $border-1 solid $color-border-subtle;
+  border-radius: $size-8;
+  padding: $size-16;
+  display: flex;
+  flex-direction: column;
+  gap: $size-10;
+}
+
+.itemHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $size-8;
+}
+
+.nickname {
+  font-size: $size-16;
+  font-weight: 700;
+}
+
+.meta {
+  font-size: $size-12;
+  color: $color-text-secondary;
+}
+
+.bio {
+  font-size: $size-14;
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: $size-12;
+  row-gap: $size-4;
+  font-size: $size-12;
+  margin: 0;
+
+  dt {
+    color: $color-text-secondary;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.media {
+  position: relative;
+  width: 120px;
+  aspect-ratio: 1 / 1;
+  border-radius: $size-5;
+  overflow: hidden;
+  border: $border-1 solid $color-border-subtle;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $size-8;
+  align-items: center;
+  margin-top: $size-8;
+}
+
+.reason {
+  flex: 1 1 200px;
+  min-height: $size-32;
+  padding: $size-5 $size-8;
+  border: $border-1 solid $color-border-muted;
+  border-radius: $size-5;
+  font-size: $size-12;
+
+  &:focus-visible {
+    outline: 2px solid $color-brand;
+    outline-offset: 1px;
+  }
+}
+
+.approve {
+  min-height: $size-32;
+  padding: $size-5 $size-12;
+  background: $color-brand;
+  color: $color-white;
+  border: 0;
+  border-radius: $size-5;
+  font-size: $size-12;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.reject {
+  min-height: $size-32;
+  padding: $size-5 $size-12;
+  background: $color-white;
+  color: $color-brand;
+  border: $border-1 solid $color-brand;
+  border-radius: $size-5;
+  font-size: $size-12;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.subText {
+  font-size: $size-12;
+  color: $color-text-secondary;
+}

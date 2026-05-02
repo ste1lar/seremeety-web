@@ -13,6 +13,7 @@ import {
   useGetChatRoomQuery,
   useSendMessageMutation,
 } from '@/shared/lib/api/chatApi';
+import { useIsChatBlockedQuery } from '@/shared/lib/api/blockApi';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
 import { getUserDataByUid } from '@/shared/lib/firebase/users';
 import type { UserProfile } from '@/shared/types/domain';
@@ -24,6 +25,7 @@ const ChatRoomPage = () => {
   const targetRoomId = isRoomIdValid ? (chatRoomId as string) : '';
 
   const [otherUserData, setOtherUserData] = useState<UserProfile | null>(null);
+  const [otherUid, setOtherUid] = useState<string | null>(null);
   const [modal, setModal] = useState<ModalConfig | null>(null);
   const router = useRouter();
 
@@ -33,6 +35,9 @@ const ChatRoomPage = () => {
   );
   const { data: chatRoomMessages = [], isSuccess: isMessagesReady } =
     useGetChatRoomMessagesQuery(targetRoomId, { skip: !isRoomIdValid });
+  const { data: isBlocked = false } = useIsChatBlockedQuery(otherUid ?? '', {
+    skip: !otherUid,
+  });
   const [sendMessage] = useSendMessageMutation();
 
   useEffect(() => {
@@ -53,16 +58,18 @@ const ChatRoomPage = () => {
   useEffect(() => {
     if (!chatRoom) {
       setOtherUserData(null);
+      setOtherUid(null);
       return;
     }
     const currentUid = auth.currentUser?.uid;
     if (!currentUid) return;
 
-    const otherUid =
+    const nextOtherUid =
       chatRoom.users[0] !== currentUid ? chatRoom.users[0] : chatRoom.users[1];
+    setOtherUid(nextOtherUid);
 
     let cancelled = false;
-    void getUserDataByUid(otherUid).then((data) => {
+    void getUserDataByUid(nextOtherUid).then((data) => {
       if (!cancelled) {
         setOtherUserData(data);
       }
@@ -74,6 +81,9 @@ const ChatRoomPage = () => {
   }, [chatRoom]);
 
   const handleSendMessage = async (text: string, roomId: string) => {
+    if (isBlocked) {
+      return;
+    }
     try {
       await sendMessage({ chatRoomId: roomId, text }).unwrap();
     } catch (error) {
@@ -97,10 +107,16 @@ const ChatRoomPage = () => {
               nickname={otherUserData.nickname}
               profilePictureUrl={otherUserData.profilePictureUrl}
             />
-            <ChatRoomInput
-              onUpdateChatRoom={handleSendMessage}
-              chatRoomId={targetRoomId}
-            />
+            {isBlocked ? (
+              <p className={styles.blockedNotice} role="status">
+                차단된 사용자와는 메시지를 주고받을 수 없어요.
+              </p>
+            ) : (
+              <ChatRoomInput
+                onUpdateChatRoom={handleSendMessage}
+                chatRoomId={targetRoomId}
+              />
+            )}
           </>
         )}
       </PageTransition>

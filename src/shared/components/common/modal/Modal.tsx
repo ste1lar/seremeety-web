@@ -15,6 +15,7 @@ import styles from './Modal.module.scss';
 
 export interface ModalAction {
   autoClose?: boolean;
+  disabled?: boolean;
   label: string;
   onClick?: () => void;
   tone?: 'primary' | 'secondary';
@@ -126,6 +127,7 @@ const Modal = ({
                     styles[`action--${action.tone ?? 'primary'}`]
                   )}
                   type="button"
+                  disabled={action.disabled}
                   onClick={() => handleActionClick(action)}
                 >
                   {action.label}

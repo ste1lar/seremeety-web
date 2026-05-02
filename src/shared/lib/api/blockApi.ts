@@ -3,6 +3,7 @@ import { baseApi } from '@/shared/lib/api/baseApi';
 import {
   createBlock,
   getBlockedUserIds,
+  isBlockedBetween,
 } from '@/shared/lib/firebase/blocks';
 
 interface BlockArgs {
@@ -27,6 +28,24 @@ export const blockApi = baseApi.injectEndpoints({
       providesTags: ['Block'],
       // 차단 목록은 거의 변하지 않음.
       keepUnusedDataFor: 300,
+    }),
+
+    // 두 사용자 간 어느 한쪽이라도 차단했는지. ChatRoom 메시지 송신 가드에 사용.
+    isChatBlocked: builder.query<boolean, string>({
+      async queryFn(otherUserId) {
+        try {
+          const uid = auth.currentUser?.uid;
+          if (!uid) return { data: false };
+          const blocked = await isBlockedBetween(uid, otherUserId);
+          return { data: blocked };
+        } catch (error) {
+          return { error: error as Error };
+        }
+      },
+      providesTags: (_r, _e, otherUserId) => [
+        'Block',
+        { type: 'Block', id: `between_${otherUserId}` },
+      ],
     }),
 
     block: builder.mutation<void, BlockArgs>({
@@ -63,4 +82,8 @@ export const blockApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetMyBlockedUserIdsQuery, useBlockMutation } = blockApi;
+export const {
+  useGetMyBlockedUserIdsQuery,
+  useBlockMutation,
+  useIsChatBlockedQuery,
+} = blockApi;

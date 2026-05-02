@@ -11,7 +11,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '@/firebase';
-import type { Profile } from '@/shared/types/model/profile';
+import type { Profile, ProfileStatus } from '@/shared/types/model/profile';
 
 const COLLECTION = 'profiles';
 
@@ -23,6 +23,19 @@ export const getProfileByUserId = async (userId: string): Promise<Profile | null
   }
   const docSnap = snap.docs[0];
   return { id: docSnap.id, ...(docSnap.data() as Omit<Profile, 'id'>) };
+};
+
+// admin 검수 큐용. status로 필터한 모든 프로필을 반환한다.
+// MVP 운영 도구라 페이징은 생략 — 검수 대기 큐는 작게 유지된다는 가정.
+export const getProfilesByStatus = async (
+  status: ProfileStatus
+): Promise<Profile[]> => {
+  const q = query(collection(db, COLLECTION), where('status', '==', status));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({
+    id: d.id,
+    ...(d.data() as Omit<Profile, 'id'>),
+  }));
 };
 
 export const getProfileById = async (profileId: string): Promise<Profile | null> => {

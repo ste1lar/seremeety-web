@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import {
+  Flag,
   GraduationCap,
   Heart,
   Mars,
@@ -24,8 +25,10 @@ import { useGetMyBlockedUserIdsQuery, useBlockMutation } from '@/shared/lib/api/
 import { useGetMyReactionQuery, useReactMutation } from '@/shared/lib/api/reactionApi';
 import { useGetActiveMatchExistsQuery } from '@/shared/lib/api/matchApi';
 import { useGetProfilePhotosQuery } from '@/shared/lib/api/photoApi';
+import { useCreateReportMutation } from '@/shared/lib/api/reportApi';
 import Button from '@/shared/components/common/button/Button';
 import Modal, { type ModalConfig } from '@/shared/components/common/modal/Modal';
+import ReportModal from '@/shared/components/common/report-modal/ReportModal';
 import { cx } from '@/shared/lib/classNames';
 import type { ProfilePhoto } from '@/shared/types/model/photo';
 import type { ReactionType } from '@/shared/types/model/reaction';
@@ -64,6 +67,8 @@ const ProfilePage = () => {
 
   const [react, { isLoading: isReactPending }] = useReactMutation();
   const [block] = useBlockMutation();
+  const [createReport, { isLoading: isReporting }] = useCreateReportMutation();
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   const [imgError, setImgError] = useState(false);
   // selectFromResult로 메모이즈된 파생 셀렉터를 사용해 다른 사진 필드 변화 시
@@ -151,6 +156,26 @@ const ProfilePage = () => {
     }
   };
 
+  const handleReportSubmit = async (reason: string, description: string) => {
+    if (!isUidValid) return;
+    try {
+      await createReport({
+        targetType: 'profile',
+        targetId: targetUid,
+        targetUserId: targetUid,
+        reason,
+        description: description || undefined,
+      }).unwrap();
+      setIsReportOpen(false);
+      openAlert(
+        '신고 접수',
+        '신고가 접수되었어요. 관리자가 검토할게요'
+      );
+    } catch {
+      openAlert('오류', '신고 처리 중 오류가 발생했어요');
+    }
+  };
+
   const handleBlockClick = () => {
     setModal({
       actions: [
@@ -206,13 +231,22 @@ const ProfilePage = () => {
           menuAriaLabel="프로필 메뉴"
           menu={
             !isViewOnly && userProfile && !isBlocked ? (
-              <button
-                type="button"
-                onClick={handleBlockClick}
-                aria-label="이 사용자 차단"
-              >
-                <UserX aria-hidden="true" size="1em" />
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setIsReportOpen(true)}
+                  aria-label="이 사용자 신고"
+                >
+                  <Flag aria-hidden="true" size="1em" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBlockClick}
+                  aria-label="이 사용자 차단"
+                >
+                  <UserX aria-hidden="true" size="1em" />
+                </button>
+              </>
             ) : undefined
           }
         />
@@ -318,6 +352,14 @@ const ProfilePage = () => {
         </article>
       </section>
       {modalElement}
+      <ReportModal
+        open={isReportOpen}
+        isSubmitting={isReporting}
+        onClose={() => setIsReportOpen(false)}
+        onSubmit={(reason, description) =>
+          void handleReportSubmit(reason, description)
+        }
+      />
     </PageTransition>
   );
 };

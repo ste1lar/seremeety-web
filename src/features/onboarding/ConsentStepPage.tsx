@@ -44,33 +44,18 @@ const ConsentStepPage = () => {
       });
 
       const profile = await getProfileByUserId(uid);
-
-      // TODO(Phase 8): admin 승인 페이지가 추가되면 아래 자동 승인 블록 제거.
-      // 현재는 dev/test 편의를 위해 consent 제출과 동시에 profile.status를
-      // 'approved'로 마킹하고 onboardingStatus를 'approved'로 종료한다.
-      // 동시에 old users/{uid}.profileStatus = 1로 dual-write하여 기존
-      // /matching, /mypage 페이지가 그대로 동작하도록 한다.
-      const AUTO_APPROVE = true;
-
       if (profile) {
         await updateProfile(profile.id, {
-          status: AUTO_APPROVE ? 'approved' : 'pending',
+          status: 'pending',
           submittedAt: Timestamp.now(),
-          ...(AUTO_APPROVE
-            ? { reviewedAt: Timestamp.now(), reviewedBy: 'auto-dev' }
-            : {}),
         });
       }
 
-      if (AUTO_APPROVE) {
-        await writeProfileStatusToLegacyUser(uid, true);
-        await setOnboardingStatus(uid, 'approved');
-        router.replace('/matching');
-      } else {
-        await writeProfileStatusToLegacyUser(uid, false);
-        await setOnboardingStatus(uid, 'review_pending');
-        router.replace('/onboarding/review-pending');
-      }
+      // /admin/profiles 큐에서 승인 후 onboardingStatus 'approved' 전이.
+      // 그 전까지는 추천에서 제외되도록 legacy users.profileStatus도 0 유지.
+      await writeProfileStatusToLegacyUser(uid, false);
+      await setOnboardingStatus(uid, 'review_pending');
+      router.replace('/onboarding/review-pending');
     } catch (err) {
       console.error(err);
       setError('제출 중 오류가 발생했어요.');
